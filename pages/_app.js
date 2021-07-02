@@ -1,3 +1,4 @@
+/* eslint-disable */
 import GlobalStyles from "styles/global-styles";
 
 function App({ Component, pageProps }) {
