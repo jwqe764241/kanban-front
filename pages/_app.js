@@ -1,7 +1,12 @@
-import "styles/reset.css";
+import GlobalStyles from "styles/global-styles";
 
 function App({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+  return (
+    <>
+      <GlobalStyles />
+      <Component {...pageProps} />
+    </>
+  );
 }
 
 export default App;
