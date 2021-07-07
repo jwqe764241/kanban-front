@@ -17,7 +17,7 @@ const Brand = styled.a`
   -webkit-align-items: center;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 25px;
   font-weight: 800;
   color: white;
   transition: background-color 0.2s ease;
