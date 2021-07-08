@@ -3,9 +3,8 @@ import PropTypes from "prop-types";
 import { Draggable } from "react-beautiful-dnd";
 
 const Container = styled.div`
-  border: 1px solid lightgrey;
-  border-radius: 2px;
-  padding: 8px;
+  border-radius: 4px;
+  padding: 10px;
   margin-bottom: 8px;
   background-color: ${(props) =>
     props.isDragDisabled
@@ -15,26 +14,31 @@ const Container = styled.div`
       : "white"};
 `;
 
+const Tag = styled.div``;
+
+const Content = styled.div`
+  padding: 15px 0px;
+  font-weight: 400;
+`;
+
+const Menus = styled.div``;
+
 function Task(props) {
   const { task, index } = props;
   const { content } = task;
-  const isDragDisabled = task.id === "task-1";
 
   return (
-    <Draggable
-      draggableId={task.id}
-      index={index}
-      isDragDisabled={isDragDisabled}
-    >
+    <Draggable draggableId={task.id} index={index}>
       {(provided, snapshot) => (
         <Container
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           isDragging={snapshot.isDragging}
-          isDragDisabled={isDragDisabled}
         >
-          {content}
+          <Tag />
+          <Content>{content}</Content>
+          <Menus />
         </Container>
       )}
     </Draggable>
