@@ -16,7 +16,7 @@ const Container = styled.div`
 `;
 const Title = styled.h3`
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 500;
   padding: 15px 0px 20px 0px;
 `;
 

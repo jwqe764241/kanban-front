@@ -16,7 +16,7 @@ const Panel = styled.div`
 
 const KanbanName = styled.div`
   font-size: 35px;
-  font-weight: 800;
+  font-weight: 500;
   color: #707090;
 `;
 
@@ -39,12 +39,12 @@ const initData = {
   columns: {
     "column-1": {
       id: "column-1",
-      title: "To do",
+      title: "Backlog",
       taskIds: ["task-1", "task-2", "task-3", "task-4"],
     },
     "column-2": {
       id: "column-2",
-      title: "In progress",
+      title: "In Progress",
       taskIds: [],
     },
   },
