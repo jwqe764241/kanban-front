@@ -5,25 +5,35 @@ import Task from "components/Task";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 
 const Container = styled.div`
-  margin-right: 10px;
-  border: 1px solid lightgrey;
-  background-color: white;
-  border-radius: 2px;
-  width: 220px;
-
+  width: 280px;
+  border-radius: 3px;
+  margin-right: 40px;
   display: inline-flex;
   flex-direction: column;
+  background-color: #f6f8fc;
+  box-shadow: rgb(0 0 0 / 24%) 0px 4px 8px;
+  overflow: hidden;
 `;
 const Title = styled.h3`
-  padding: 8px;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 15px 0px 20px 0px;
 `;
-const TaskList = styled.div`
-  padding: 8px;
+
+const TaskContainer = styled.div`
+  padding: 0px 10px;
   transition: background-color 0.2s ease;
-  background-color: ${(props) =>
-    props.isDraggingOver ? "skyblue" : "inherit"};
   flex-grow: 1;
+  color: #707090;
+`;
+
+const TaskList = styled.div`
   min-height: 100px;
+`;
+
+const ColorBar = styled.div`
+  height: 4px;
+  background: linear-gradient(to right, #cb7fec, #df758d);
 `;
 
 const InnerList = React.memo(
@@ -50,24 +60,27 @@ function Column(props) {
     <Draggable draggableId={column.id} index={index}>
       {(provided) => (
         <Container {...provided.draggableProps} ref={provided.innerRef}>
-          <Title {...provided.dragHandleProps}>{title}</Title>
-          <Droppable
-            droppableId={column.id}
-            // type={column.id === "column-3" ? "done" : "activate"}
-            isDropDisabled={isDropDisabled}
-            type="task"
-          >
-            {(provided, snapshot) => (
-              <TaskList
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                isDraggingOver={snapshot.isDraggingOver}
-              >
-                <InnerList tasks={tasks} />
-                {provided.placeholder}
-              </TaskList>
-            )}
-          </Droppable>
+          <ColorBar />
+          <TaskContainer>
+            <Title {...provided.dragHandleProps}>{title}</Title>
+            <Droppable
+              droppableId={column.id}
+              // type={column.id === "column-3" ? "done" : "activate"}
+              isDropDisabled={isDropDisabled}
+              type="task"
+            >
+              {(provided, snapshot) => (
+                <TaskList
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  isDraggingOver={snapshot.isDraggingOver}
+                >
+                  <InnerList tasks={tasks} />
+                  {provided.placeholder}
+                </TaskList>
+              )}
+            </Droppable>
+          </TaskContainer>
         </Container>
       )}
     </Draggable>
