@@ -7,8 +7,26 @@ import {
   resetServerContext,
 } from "react-beautiful-dnd";
 
-const Container = styled.div`
-  display: flex;
+const Panel = styled.div`
+  flex: 1;
+  overflow: auto;
+  background-color: #eef2f9;
+  padding: 40px;
+`;
+
+const KanbanName = styled.div`
+  font-size: 35px;
+  font-weight: 800;
+  color: #707090;
+`;
+
+const KanbanContainer = styled.div`
+  margin-top: 30px;
+`;
+
+const ColumnContainer = styled.div`
+  display: block;
+  box-sizing: border-box;
 `;
 
 const initData = {
@@ -63,110 +81,47 @@ function Homepage() {
 
   resetServerContext();
 
-  const onDragEnd = (result) => {
-    const { destination, source, draggableId, type } = result;
-
-    if (!destination) {
-      return;
-    }
-
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
-      return;
-    }
-
-    if (type === "column") {
-      const newColumnOrder = Array.from(data.columnOrder);
-      newColumnOrder.splice(source.index, 1);
-      newColumnOrder.splice(destination.index, 0, draggableId);
-
-      const newState = {
-        ...data,
-        columnOrder: newColumnOrder,
-      };
-
-      setData(newState);
-      return;
-    }
-
-    const start = data.columns[source.droppableId];
-    const finish = data.columns[destination.droppableId];
-
-    if (start === finish) {
-      const newTaskIds = Array.from(start.taskIds);
-      newTaskIds.splice(source.index, 1);
-      newTaskIds.splice(destination.index, 0, draggableId);
-
-      const newColumn = {
-        ...start,
-        taskIds: newTaskIds,
-      };
-
-      const newState = {
-        ...data,
-        columns: {
-          ...data.columns,
-          [newColumn.id]: newColumn,
-        },
-      };
-
-      setData(newState);
-      return;
-    }
-
-    const startTaskIds = Array.from(start.taskIds);
-    startTaskIds.splice(source.index, 1);
-    const newStart = {
-      ...start,
-      taskIds: startTaskIds,
-    };
-
-    const finishTaskIds = Array.from(finish.taskIds);
-    finishTaskIds.splice(destination.index, 0, draggableId);
-    const newFinish = {
-      ...finish,
-      taskIds: finishTaskIds,
-    };
-
-    const newState = {
-      ...data,
-      columns: {
-        ...data.columns,
-        [newStart.id]: newStart,
-        [newFinish.id]: newFinish,
-      },
-    };
-
-    setData(newState);
-  };
+  const onDragEnd = (result) => {};
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="all-columns" direction="horizontal" type="column">
-        {(provided) => (
-          <Container {...provided.droppableProps} ref={provided.innerRef}>
-            {data.columnOrder.map((columnId, index) => {
-              const column = data.columns[columnId];
-              const tasks = column.taskIds.map((taskId) => data.tasks[taskId]);
-              const isDropDisabled = false;
+    <Panel>
+      <KanbanName>Studio Board</KanbanName>
+      <KanbanContainer>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable
+            droppableId="all-columns"
+            direction="horizontal"
+            type="column"
+          >
+            {(provided) => (
+              <ColumnContainer
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
+                {data.columnOrder.map((columnId, index) => {
+                  const column = data.columns[columnId];
+                  const tasks = column.taskIds.map(
+                    (taskId) => data.tasks[taskId],
+                  );
+                  const isDropDisabled = false;
 
-              return (
-                <InnerList
-                  key={column.id}
-                  column={column}
-                  tasks={tasks}
-                  index={index}
-                  isDropDisabled={isDropDisabled}
-                />
-              );
-            })}
-            {provided.placeholder}
-          </Container>
-        )}
-      </Droppable>
-    </DragDropContext>
+                  return (
+                    <InnerList
+                      key={column.id}
+                      column={column}
+                      tasks={tasks}
+                      index={index}
+                      isDropDisabled={isDropDisabled}
+                    />
+                  );
+                })}
+                {provided.placeholder}
+              </ColumnContainer>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </KanbanContainer>
+    </Panel>
   );
 }
 

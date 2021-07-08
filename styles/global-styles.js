@@ -33,6 +33,14 @@ const GlobalStyle = createGlobalStyle`
 	html * {
 		font-family: 'NanumGothic';
 	}
+
+	html,
+      body,
+      body > div:first-child,
+      div#__next,
+      div#__next > div {
+        height: 100%;
+      }
 `;
 
 export default GlobalStyle;

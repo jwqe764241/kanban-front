@@ -5,13 +5,13 @@ import Task from "components/Task";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 
 const Container = styled.div`
-  margin: 8px;
+  margin-right: 10px;
   border: 1px solid lightgrey;
   background-color: white;
   border-radius: 2px;
   width: 220px;
 
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
 `;
 const Title = styled.h3`
