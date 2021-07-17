@@ -2,6 +2,8 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Draggable } from "react-beautiful-dnd";
 
+import Priority from "components/kanban/Priority";
+
 const Container = styled.div`
   border-radius: 4px;
   padding: 10px;
@@ -36,7 +38,9 @@ function Task(props) {
           {...provided.dragHandleProps}
           isDragging={snapshot.isDragging}
         >
-          <Tag />
+          <Tag>
+            <Priority level="low" />
+          </Tag>
           <Content>{content}</Content>
           <Menus />
         </Container>
