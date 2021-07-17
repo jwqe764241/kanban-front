@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Column from "components/Column";
+import Column from "components/kanban/Column";
 import styled from "styled-components";
 import {
   DragDropContext,
