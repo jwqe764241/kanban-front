@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "core/apiAxios";
 
+import Alert from "@material-ui/lab/Alert";
+
 const Placeholder = styled.div`
   height: 100px;
 `;
@@ -76,11 +78,22 @@ const Button = styled.input`
     background-color: #218838;
     border-color: #1e7e34;
   }
+
+  &:disabled {
+    background-color: #1d6a2f;
+    border-color: #1d6a2f;
+  }
+`;
+
+const AlertPanel = styled.div`
+  margin: 15px 0px;
 `;
 
 function Home() {
   const [data, setData] = useState({ login: "", password: "" });
-  const []
+  const [isLoginFailed, setIsLoginFailed] = useState(false);
+  const [isLoginProgressed, setIsLoginProgressed] = useState(false);
+
   const router = useRouter();
 
   const onChange = (e) => {
@@ -91,19 +104,20 @@ function Home() {
     });
   };
 
-  const onLoginSuccess = (response) => {
-    if (response.status === 200) router.push("/dashboard");
-  };
+  const handleLogin = async () => {
+    setIsLoginProgressed(true);
 
-  const onLoginFailed = (error) => {
-    console.log(error);
-  };
+    try {
+      const response = await axios.post("/auth/login", data, {
+        withCredentials: true,
+      });
+      if (response.status === 200) router.push("/dashboard");
+    } catch (e) {
+      setIsLoginFailed(true);
+      console.log(e);
+    }
 
-  const handleLogin = () => {
-    axios
-      .post("/auth/login", data, { withCredentials: true })
-      .then(onLoginSuccess)
-      .catch(onLoginFailed);
+    setIsLoginProgressed(false);
   };
 
   const { login, password } = data;
@@ -115,6 +129,13 @@ function Home() {
         <FormHeader>
           <HeaderText>Sign in</HeaderText>
         </FormHeader>
+        {isLoginFailed ? (
+          <AlertPanel>
+            <Alert severity="error">Incorrect username or password.</Alert>
+          </AlertPanel>
+        ) : (
+          <></>
+        )}
         <FormBody>
           <Label htmlFor="login">Username</Label>
           <Input
@@ -132,7 +153,16 @@ function Home() {
             value={password}
             onChange={onChange}
           />
-          <Button type="button" value="Sign in" onClick={handleLogin} />
+          {isLoginProgressed ? (
+            <Button
+              type="button"
+              value="Signing in..."
+              onClick={handleLogin}
+              disabled
+            />
+          ) : (
+            <Button type="button" value="Sign in" onClick={handleLogin} />
+          )}
         </FormBody>
       </Form>
     </Panel>
