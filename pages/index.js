@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import axios from "core/apiAxios";
 
 const Placeholder = styled.div`
   height: 100px;
@@ -76,6 +79,35 @@ const Button = styled.input`
 `;
 
 function Home() {
+  const [data, setData] = useState({ login: "", password: "" });
+  const []
+  const router = useRouter();
+
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setData({
+      ...data,
+      [name]: value,
+    });
+  };
+
+  const onLoginSuccess = (response) => {
+    if (response.status === 200) router.push("/dashboard");
+  };
+
+  const onLoginFailed = (error) => {
+    console.log(error);
+  };
+
+  const handleLogin = () => {
+    axios
+      .post("/auth/login", data, { withCredentials: true })
+      .then(onLoginSuccess)
+      .catch(onLoginFailed);
+  };
+
+  const { login, password } = data;
+
   return (
     <Panel>
       <Placeholder />
@@ -84,11 +116,23 @@ function Home() {
           <HeaderText>Sign in</HeaderText>
         </FormHeader>
         <FormBody>
-          <Label>Username</Label>
-          <Input />
-          <Label>Password</Label>
-          <Input type="password" />
-          <Button type="button" value="Sign in" />
+          <Label htmlFor="login">Username</Label>
+          <Input
+            id="login"
+            type="text"
+            name="login"
+            value={login}
+            onChange={onChange}
+          />
+          <Label htmlFor="password">Password</Label>
+          <Input
+            id="password"
+            type="password"
+            name="password"
+            value={password}
+            onChange={onChange}
+          />
+          <Button type="button" value="Sign in" onClick={handleLogin} />
         </FormBody>
       </Form>
     </Panel>
