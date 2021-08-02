@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "core/apiAxios";
+import { parseCookie } from "core/utils";
 
 import Alert from "@material-ui/lab/Alert";
 
@@ -91,7 +92,10 @@ const AlertPanel = styled.div`
 
 function Home() {
   const [data, setData] = useState({ login: "", password: "" });
-  const [isLoginFailed, setIsLoginFailed] = useState(false);
+  const [isLoginFailed, setIsLoginFailed] = useState({
+    status: false,
+    message: "",
+  });
   const [isLoginProgressed, setIsLoginProgressed] = useState(false);
 
   const router = useRouter();
@@ -107,14 +111,30 @@ function Home() {
   const handleLogin = async () => {
     setIsLoginProgressed(true);
 
+    console.log(axios.defaults.headers.common.Authorization);
+
     try {
       const response = await axios.post("/auth/login", data, {
         withCredentials: true,
       });
-      if (response.status === 200) router.push("/dashboard");
+
+      if (response.status === 200) {
+        console.log(response);
+        axios.defaults.headers.common.Authorization = `Bearer ${response.data}`;
+      }
+      // if (response.status === 200) router.push("/dashboard");
     } catch (e) {
-      setIsLoginFailed(true);
-      console.log(e);
+      if (e.code === "ECONNABORTED") {
+        setIsLoginFailed({
+          status: true,
+          message: "Server is bussy, try again later.",
+        });
+      } else if (e.response && e.response.status === 401) {
+        setIsLoginFailed({
+          status: true,
+          message: "Incorrect username or password.",
+        });
+      }
     }
 
     setIsLoginProgressed(false);
@@ -129,9 +149,9 @@ function Home() {
         <FormHeader>
           <HeaderText>Sign in</HeaderText>
         </FormHeader>
-        {isLoginFailed ? (
+        {isLoginFailed.status ? (
           <AlertPanel>
-            <Alert severity="error">Incorrect username or password.</Alert>
+            <Alert severity="error">{isLoginFailed.message}</Alert>
           </AlertPanel>
         ) : (
           <></>
@@ -167,6 +187,23 @@ function Home() {
       </Form>
     </Panel>
   );
+}
+
+export async function getServerSideProps(context) {
+  const cookies = parseCookie(context.req.headers.cookie);
+  const refreshCookie = cookies.REFRESH_TOKEN;
+  if (!refreshCookie) {
+    return {
+      props: {},
+    };
+  }
+
+  return {
+    redirect: {
+      destination: "/",
+      permanent: false,
+    },
+  };
 }
 
 export default Home;
