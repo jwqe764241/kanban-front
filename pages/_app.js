@@ -13,7 +13,7 @@ const Layout = styled.div`
 `;
 
 const excludePath = new Set([
-  "/",
+  "/login",
   "/_error"
 ])
 
