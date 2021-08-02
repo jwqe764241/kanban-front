@@ -111,18 +111,15 @@ function Login() {
   const handleLogin = async () => {
     setIsLoginProgressed(true);
 
-    console.log(axios.defaults.headers.common.Authorization);
-
     try {
       const response = await axios.post("/auth/login", data, {
         withCredentials: true,
       });
 
       if (response.status === 200) {
-        console.log(response);
         axios.defaults.headers.common.Authorization = `Bearer ${response.data}`;
+        router.push("/");
       }
-      // if (response.status === 200) router.push("/dashboard");
     } catch (e) {
       if (e.code === "ECONNABORTED") {
         setIsLoginFailed({
@@ -201,7 +198,7 @@ export async function getServerSideProps(context) {
   return {
     redirect: {
       destination: "/",
-      permanent: true,
+      permanent: false,
     },
   };
 }
