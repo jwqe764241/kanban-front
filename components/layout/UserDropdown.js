@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import axios from "core/apiAxios";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -69,6 +71,7 @@ const DropdownButton = styled.button`
 function UserDropdown(props) {
   const { innerRef } = props;
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const checkIfClickedOutside = (e) => {
@@ -88,6 +91,18 @@ function UserDropdown(props) {
     setIsOpen(true);
   };
 
+  const onLogoutClick = async () => {
+    try {
+      const response = await axios.post("/auth/logout", null, {
+        withCredentials: true,
+      });
+
+      if (response.status === 200) {
+        router.push("/login");
+      }
+    } catch (e) {}
+  };
+
   return (
     <Container>
       <NoneStyledButton type="button" onClick={onMenuButtonClick}>
@@ -96,7 +111,9 @@ function UserDropdown(props) {
       </NoneStyledButton>
       {isOpen && (
         <DropdownList ref={innerRef}>
-          <DropdownButton type="button">Logout</DropdownButton>
+          <DropdownButton type="button" onClick={onLogoutClick}>
+            Logout
+          </DropdownButton>
         </DropdownList>
       )}
     </Container>
