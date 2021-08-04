@@ -49,12 +49,16 @@ const DropdownList = styled.ul`
   user-select: none;
 `;
 
-const DropdownItem = styled.li`
+const DropdownButton = styled.button`
   color: #24292e;
   font-size: 14px;
   font-weight: 300;
   padding: 6px 5px 6px 20px;
   cursor: pointer;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
 
   &:hover {
     background-color: #00509d;
@@ -80,19 +84,19 @@ function UserDropdown(props) {
     };
   }, [isOpen]);
 
-  const onClick = () => {
+  const onMenuButtonClick = () => {
     setIsOpen(true);
   };
 
   return (
     <Container>
-      <NoneStyledButton type="button" onClick={onClick}>
+      <NoneStyledButton type="button" onClick={onMenuButtonClick}>
         <Avatar />
         <Caret />
       </NoneStyledButton>
       {isOpen && (
         <DropdownList ref={innerRef}>
-          <DropdownItem>Logout</DropdownItem>
+          <DropdownButton type="button">Logout</DropdownButton>
         </DropdownList>
       )}
     </Container>
