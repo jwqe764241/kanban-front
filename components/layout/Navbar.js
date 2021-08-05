@@ -1,8 +1,14 @@
 import { useRef } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 import styled from "styled-components";
+import axios from "core/apiAxios";
 
-import ProjectDropdown from "components/layout/ProjectDropdown";
-import UserDropdown from "components/layout/UserDropdown";
+import {
+  DropdownButton,
+  ProjectDropdown,
+  UserDropdown,
+} from "components/layout/Dropdown";
 
 const Container = styled.div`
   padding: 16px 32px;
@@ -47,6 +53,22 @@ const MenuContainer = styled.div`
 
 function Navbar() {
   const ref = useRef();
+  const router = useRouter();
+
+  const onLogoutClick = async () => {
+    try {
+      const response = await axios.post("/auth/logout", null, {
+        withCredentials: true,
+      });
+
+      if (response.status === 200) {
+        router.push("/login");
+      }
+    } catch (e) {
+      // TODO: replace alert to modal
+      alert("Failed to logout!");
+    }
+  };
 
   return (
     <Container>
@@ -54,8 +76,16 @@ function Navbar() {
         <Brand>Kanban</Brand>
         <Tools />
         <MenuContainer>
-          <ProjectDropdown innerRef={ref} />
-          <UserDropdown innerRef={ref} />
+          <ProjectDropdown innerRef={ref}>
+            <Link href="/new">
+              <DropdownButton type="button">New Project</DropdownButton>
+            </Link>
+          </ProjectDropdown>
+          <UserDropdown innerRef={ref}>
+            <DropdownButton type="button" onClick={onLogoutClick}>
+              Logout
+            </DropdownButton>
+          </UserDropdown>
         </MenuContainer>
       </InnerContainer>
     </Container>
