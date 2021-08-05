@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
@@ -44,19 +45,32 @@ const DropdownButton = styled.button`
 
 const DropdownMenu = (props) => {
   const { innerRef, icon, children } = props;
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
+  // close dropdown menu when user clicked outside
   useEffect(() => {
-    const checkIsClickedOutside = (e) => {
+    const handleClick = (e) => {
       if (isOpen && innerRef.current && !innerRef.current.contains(e.target)) {
         setIsOpen(false);
       }
     };
-    document.addEventListener("mousedown", checkIsClickedOutside);
+    document.addEventListener("mousedown", handleClick);
     return () => {
-      document.removeEventListener("mousedown", checkIsClickedOutside);
+      document.removeEventListener("mousedown", handleClick);
     };
   }, [isOpen]);
+
+  // close dropdown menu when route changed
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setIsOpen(false);
+    };
+    router.events.on("routeChangeStart", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChange);
+    };
+  }, [router.asPath]);
 
   const onMenuButtonClick = () => {
     setIsOpen(true);
