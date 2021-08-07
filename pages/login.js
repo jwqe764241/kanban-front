@@ -6,6 +6,8 @@ import { parseCookie } from "core/utils";
 
 import Alert from "@material-ui/lab/Alert";
 
+import { SuccessButton } from "components/layout/Button";
+
 const Placeholder = styled.div`
   height: 100px;
 `;
@@ -59,30 +61,6 @@ const Input = styled.input`
   &:focus {
     box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
     border-color: #868686;
-  }
-`;
-
-const Button = styled.input`
-  width: 100%;
-  padding: 8px 0px;
-  margin-top: 10px;
-  color: #fff;
-  background-color: #28a745;
-  border: 1px solid;
-  border-radius: 6px;
-  border-color: #28a745;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    color: #fff;
-    background-color: #218838;
-    border-color: #1e7e34;
-  }
-
-  &:disabled {
-    background-color: #1d6a2f;
-    border-color: #1d6a2f;
   }
 `;
 
@@ -171,14 +149,13 @@ function Login() {
             onChange={onChange}
           />
           {isLoginProgressed ? (
-            <Button
-              type="button"
-              value="Signing in..."
-              onClick={handleLogin}
-              disabled
-            />
+            <SuccessButton type="button" onClick={handleLogin} disabled>
+              Signing in...
+            </SuccessButton>
           ) : (
-            <Button type="button" value="Sign in" onClick={handleLogin} />
+            <SuccessButton type="button" onClick={handleLogin}>
+              Sign in
+            </SuccessButton>
           )}
         </FormBody>
       </Form>
