@@ -6,6 +6,7 @@ import { parseCookie } from "core/utils";
 
 import Alert from "@material-ui/lab/Alert";
 
+import { Input } from "components/layout/Form";
 import { SuccessButton } from "components/layout/Button";
 
 const Placeholder = styled.div`
@@ -48,22 +49,6 @@ const Label = styled.label`
   margin-bottom: 10px;
 `;
 
-const Input = styled.input`
-  width: 100%;
-  margin-bottom: 15px;
-  border: 1px solid;
-  border-color: rgb(216, 222, 226);
-  border-radius: 6px;
-  line-height: 20px;
-  outline: none;
-  padding: 5px 12px;
-
-  &:focus {
-    box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
-    border-color: #868686;
-  }
-`;
-
 const AlertPanel = styled.div`
   margin: 15px 0px;
 `;
@@ -99,17 +84,17 @@ function Login() {
         router.push("/");
       }
     } catch (e) {
+      let message = "Unknown error. try again later.";
+
       if (e.code === "ECONNABORTED") {
-        setIsLoginFailed({
-          status: true,
-          message: "Server is bussy, try again later.",
-        });
+        message = "Server is bussy, try again later.";
+      } else if (e.message === "Network Error") {
+        message = "Server is not responded, try again later.";
       } else if (e.response && e.response.status === 401) {
-        setIsLoginFailed({
-          status: true,
-          message: "Incorrect username or password.",
-        });
+        message = "Incorrect username or password.";
       }
+
+      setIsLoginFailed({ status: true, message });
     }
 
     setIsLoginProgressed(false);
