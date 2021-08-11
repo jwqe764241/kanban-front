@@ -82,7 +82,9 @@ function Navbar() {
   return (
     <Container>
       <InnerContainer>
-        <Brand>Kanban</Brand>
+        <Link href="/">
+          <Brand>Kanban</Brand>
+        </Link>
         <Tools />
         <MenuContainer>
           <ProjectDropdown innerRef={ref}>

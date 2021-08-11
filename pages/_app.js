@@ -5,6 +5,7 @@ import App from "next/app";
 import styled from "styled-components";
 import Navbar from "components/layout/Navbar";
 import { Component } from "react";
+import wrapper from "core/store";
 
 const Layout = styled.div`
   display: flex;
@@ -44,4 +45,4 @@ MyApp.getInitialProps = async (appContext) => {
   return { pageProps : {...pageProps, pathname: ctx.pathname} };
 }
 
-export default MyApp;
+export default wrapper.withRedux(MyApp);

@@ -6,7 +6,7 @@ import { parseCookie } from "core/utils";
 
 import Alert from "@material-ui/lab/Alert";
 
-import { Input } from "components/layout/Form";
+import { Input, InputWrap } from "components/layout/Form";
 import { SuccessButton } from "components/layout/Button";
 
 const Placeholder = styled.div`
@@ -117,22 +117,26 @@ function Login() {
           <></>
         )}
         <FormBody>
-          <Label htmlFor="login">Username</Label>
-          <Input
-            id="login"
-            type="text"
-            name="login"
-            value={login}
-            onChange={onChange}
-          />
-          <Label htmlFor="password">Password</Label>
-          <Input
-            id="password"
-            type="password"
-            name="password"
-            value={password}
-            onChange={onChange}
-          />
+          <InputWrap style={{ marginBottom: "15px" }}>
+            <Label htmlFor="login">Username</Label>
+            <Input
+              id="login"
+              type="text"
+              name="login"
+              value={login}
+              onChange={onChange}
+            />
+          </InputWrap>
+          <InputWrap style={{ marginBottom: "25px" }}>
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              name="password"
+              value={password}
+              onChange={onChange}
+            />
+          </InputWrap>
           {isLoginProgressed ? (
             <SuccessButton type="button" onClick={handleLogin} disabled>
               Signing in...
