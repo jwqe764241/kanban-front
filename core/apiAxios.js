@@ -27,7 +27,7 @@ const createRequester = (axiosInstance, dispatch) => {
         // try reqeust with given token
         const response = await axiosInstance.get(url, {
           ...option,
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `${token}` },
         });
         return response;
       } catch (e) {
@@ -40,7 +40,7 @@ const createRequester = (axiosInstance, dispatch) => {
           );
           const response = await axiosInstance.get(url, {
             ...option,
-            headers: { Authorization: `Bearer ${refreshedToken}` },
+            headers: { Authorization: `${refreshedToken}` },
           });
           return response;
         }
@@ -51,7 +51,7 @@ const createRequester = (axiosInstance, dispatch) => {
         // try reqeust with given token
         const response = await axiosInstance.post(url, data, {
           ...option,
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `${token}` },
         });
         return response;
       } catch (e) {
@@ -64,7 +64,7 @@ const createRequester = (axiosInstance, dispatch) => {
           );
           const response = await axiosInstance.post(url, data, {
             ...option,
-            headers: { Authorization: `Bearer ${refreshedToken}` },
+            headers: { Authorization: `${refreshedToken}` },
           });
           return response;
         }

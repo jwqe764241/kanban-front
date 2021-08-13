@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "core/apiAxios";
 import { parseCookie } from "core/utils";
+import { useDispatch } from "react-redux";
 
 import Alert from "@material-ui/lab/Alert";
 
@@ -54,14 +55,15 @@ const AlertPanel = styled.div`
 `;
 
 function Login() {
+  const router = useRouter();
+  const dispatch = useDispatch();
+
   const [data, setData] = useState({ login: "", password: "" });
   const [isLoginFailed, setIsLoginFailed] = useState({
     status: false,
     message: "",
   });
   const [isLoginProgressed, setIsLoginProgressed] = useState(false);
-
-  const router = useRouter();
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -80,7 +82,7 @@ function Login() {
       });
 
       if (response.status === 200) {
-        axios.defaults.headers.common.Authorization = `Bearer ${response.data}`;
+        dispatch({ type: "UPDATE", payload: `${response.data}` });
         router.push("/");
       }
     } catch (e) {
