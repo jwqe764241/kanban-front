@@ -30,17 +30,20 @@ function New() {
 
   const handleCreate = async () => {
     setIsProgressed(true);
+
     try {
       const response = await requester.post("/project", data, {}, token);
       if (response.status === 201) {
         router.push("/");
       }
     } catch (e) {
+      // TODO: error object of first sended request is fine, but after first request, error object is empty.
       const errorResponse = e.response;
-      if (errorResponse.status === 409) {
+      if (errorResponse && errorResponse.status === 409) {
         alert("Project name already exist, please use another name");
       }
     }
+
     setIsProgressed(false);
   };
 
