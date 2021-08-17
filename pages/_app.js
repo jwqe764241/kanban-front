@@ -28,7 +28,7 @@ function MyApp({ Component, pageProps }) {
   ) : (
     <>
       <Layout>
-        <Navbar username={auth.username}/>
+        <Navbar username={auth?.username}/>
         <Component {...pageProps} />
       </Layout>
     </>
