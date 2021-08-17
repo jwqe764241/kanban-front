@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import styled from "styled-components";
 import axios from "core/apiAxios";
+import PropTypes from "prop-types";
 
 import {
   DropdownButton,
@@ -60,9 +61,28 @@ const MenuContainer = styled.div`
   }
 `;
 
-function Navbar() {
+const UserInfo = styled.div`
+  padding: 5px 10px 8px 20px;
+  border-bottom: 1px solid #e1e4e8;
+
+  div {
+    &:nth-child(1) {
+      font-weight: 400;
+      font-size: 14px;
+      padding-bottom: 8px;
+    }
+
+    &:nth-child(2) {
+      font-weight: 600;
+      font-size: 14px;
+    }
+  }
+`;
+
+function Navbar(props) {
   const ref = useRef();
   const router = useRouter();
+  const { username } = props;
 
   const onLogoutClick = async () => {
     try {
@@ -93,6 +113,10 @@ function Navbar() {
             </Link>
           </ProjectDropdown>
           <UserDropdown innerRef={ref}>
+            <UserInfo>
+              <div>Signed in as</div>
+              <div>{username}</div>
+            </UserInfo>
             <DropdownButton type="button" onClick={onLogoutClick}>
               Logout
             </DropdownButton>
@@ -102,5 +126,13 @@ function Navbar() {
     </Container>
   );
 }
+
+Navbar.propTypes = {
+  username: PropTypes.string,
+};
+
+Navbar.defaultProps = {
+  username: "",
+};
 
 export default Navbar;

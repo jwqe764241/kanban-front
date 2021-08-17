@@ -1,11 +1,11 @@
 /* eslint-disable */
 import "styles/reset.css";
 import "styles/global.css";
-import App from "next/app";
 import styled from "styled-components";
-import Navbar from "components/layout/Navbar";
-import { Component } from "react";
 import wrapper from "core/store";
+import { getCookie, parseJwtClaims } from "core/utils";
+
+import Navbar from "components/layout/Navbar";
 
 const Layout = styled.div`
   display: flex;
@@ -19,7 +19,8 @@ const excludePath = new Set([
 ])
 
 function MyApp({ Component, pageProps }) {
-  const pathname = pageProps && pageProps.pathname;
+  const { pathname, auth } = pageProps;
+
   return excludePath.has(pathname) ? (
     <>
       <Component {...pageProps} />
@@ -27,7 +28,7 @@ function MyApp({ Component, pageProps }) {
   ) : (
     <>
       <Layout>
-        <Navbar />
+        <Navbar username={auth.username}/>
         <Component {...pageProps} />
       </Layout>
     </>
@@ -36,13 +37,25 @@ function MyApp({ Component, pageProps }) {
 
 MyApp.getInitialProps = async (appContext) => {
   const {ctx, Component} = appContext;
-  let pageProps = {};
+  let pageProps = {
+    pathname: ctx.pathname
+  };
 
-  if(Component.getInitialProps) {
-    pageProps = await Component.getInitialProps(ctx);
+  const refreshToken = getCookie("REFRESH_TOKEN", ctx.req);
+  if (refreshToken) {
+    const payload = parseJwtClaims(refreshToken);
+    pageProps.auth = {
+      login: payload.login,
+      username: payload.name,
+    };
   }
 
-  return { pageProps : {...pageProps, pathname: ctx.pathname} };
+  if(Component.getInitialProps) {
+    const props = await Component.getInitialProps(ctx);
+    Object.assign(pageProps, props);
+  }
+
+  return { pageProps };
 }
 
 export default wrapper.withRedux(MyApp);
