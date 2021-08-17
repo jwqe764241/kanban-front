@@ -82,7 +82,7 @@ function Login() {
       });
 
       if (response.status === 200) {
-        dispatch({ type: "UPDATE", payload: `${response.data}` });
+        dispatch({ type: "UPDATE_TOKEN", payload: `${response.data}` });
         router.push("/");
       }
     } catch (e) {

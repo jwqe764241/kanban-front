@@ -6,7 +6,7 @@ const reducer = (state = { token: "" }, action) => {
   switch (action.type) {
     case HYDRATE:
       return { ...state, ...action.payload };
-    case "UPDATE":
+    case "UPDATE_TOKEN":
       return { ...state, token: action.payload };
     default:
       return state;

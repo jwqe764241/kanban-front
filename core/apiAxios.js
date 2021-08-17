@@ -13,7 +13,7 @@ const refreshAccessToken = async (axiosInstance, dispatch) => {
   if (response.status === 200) {
     const token = response.data;
     dispatch({
-      type: "UPDATE",
+      type: "UPDATE_TOKEN",
       payload: token,
     });
     return token;
