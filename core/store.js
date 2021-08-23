@@ -5,7 +5,10 @@ import { createWrapper, HYDRATE } from "next-redux-wrapper";
 const reducer = (state = { token: "" }, action) => {
   switch (action.type) {
     case HYDRATE:
-      return { ...state, ...action.payload };
+      return {
+        ...state,
+        token: action.payload.token ? action.payload.token : state.token,
+      };
     case "UPDATE_TOKEN":
       return { ...state, token: action.payload };
     default:
