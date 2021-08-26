@@ -5,74 +5,96 @@ const instance = axios.create({
   timeout: 30000,
 });
 
-const refreshAccessToken = async (axiosInstance, dispatch) => {
-  const response = await axiosInstance.post("auth/refresh-access-token", null, {
-    withCredentials: true,
-  });
-
-  if (response.status === 200) {
-    const token = response.data;
-    dispatch({
-      type: "UPDATE_TOKEN",
-      payload: token,
+// request to get access token
+const getAccessToken = async (inst, option) => {
+  try {
+    const response = await inst.post("auth/refresh-access-token", null, {
+      withCredentials: true,
+      ...option,
     });
-    return token;
-  }
+
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (e) {}
+
+  return null;
 };
 
-const createRequester = (axiosInstance, dispatch) => {
+// dispatch refreshed access token to redux store
+const updateAccessToken = async (inst, dispatch, option) => {
+  const token = await getAccessToken(inst, option);
+  dispatch({
+    type: "UPDATE_TOKEN",
+    payload: token,
+  });
+  return token;
+};
+
+// create server requester
+const createRequester = (inst, dispatch) => {
   return {
     get: async (url, option, token) => {
+      let err;
+      // try request.
       try {
-        // try reqeust with given token
-        const response = await axiosInstance.get(url, {
+        const res = await inst.get(url, {
           ...option,
-          headers: { Authorization: `${token}` },
+          headers: { Authorization: token },
         });
-        return response;
+        return res;
       } catch (e) {
-        const errorResponse = e.response;
-        // if token is invalid, refresh access token and try again
-        if (errorResponse && errorResponse.status === 401) {
-          const refreshedToken = await refreshAccessToken(
-            axiosInstance,
-            dispatch,
-          );
-          const response = await axiosInstance.get(url, {
-            ...option,
-            headers: { Authorization: `${refreshedToken}` },
-          });
-          return response;
-        }
+        err = e.response;
       }
+
+      // if err status is 401, update access token
+      let updatedToken;
+      const errRes = err.response;
+      if (errRes && errRes.status === 401) {
+        updatedToken = await updateAccessToken(inst, dispatch);
+      } else {
+        throw err;
+      }
+
+      // retry with updated access token
+      const res = await inst.get(url, {
+        ...option,
+        headers: { Authorization: updatedToken },
+      });
+      return res;
     },
-    post: async (url, data, option, token) => {
+    post: async (url, data, token, option) => {
+      let err;
+      // try request.
       try {
-        // try reqeust with given token
-        const response = await axiosInstance.post(url, data, {
+        const res = await inst.post(url, data, {
           ...option,
-          headers: { Authorization: `${token}` },
+          headers: { Authorization: token },
         });
-        return response;
+        return res;
       } catch (e) {
-        const errorResponse = e.response;
-        // if token is invalid, refresh access token and try again
-        if (errorResponse && errorResponse.status === 401) {
-          const refreshedToken = await refreshAccessToken(
-            axiosInstance,
-            dispatch,
-          );
-          const response = await axiosInstance.post(url, data, {
-            ...option,
-            headers: { Authorization: `${refreshedToken}` },
-          });
-          return response;
-        }
+        err = e;
       }
+
+      // if err status is 401, update access token
+      let updatedToken;
+      const errRes = err.response;
+      if (errRes && errRes.status === 401) {
+        updatedToken = await updateAccessToken(inst, dispatch);
+      } else {
+        throw err;
+      }
+
+      // retry with updated access token
+      const res = await inst.post(url, data, {
+        ...option,
+        headers: { Authorization: updatedToken },
+      });
+      return res;
     },
   };
 };
 
 export default instance;
 
-export { createRequester };
+export { createRequester, updateAccessToken };
