@@ -2,17 +2,20 @@ import axios from "axios";
 
 const instance = axios.create({
   baseURL: process.env.API_BASE_URL,
-  timeout: 30000,
 });
 
 // request to get access token
-const getAccessToken = async (inst, option) => {
-  try {
-    const response = await inst.post("auth/refresh-access-token", null, {
-      withCredentials: true,
-      ...option,
-    });
+// if refreshToken was given, update access token with given token
+const getAccessToken = async (inst, refreshToken) => {
+  const option = {
+    withCredentials: true,
+    ...(refreshToken && {
+      headers: { Cookie: `REFRESH_TOKEN=${refreshToken}` },
+    }),
+  };
 
+  try {
+    const response = await inst.post("auth/refresh-access-token", null, option);
     if (response.status === 200) {
       return response.data;
     }
@@ -22,8 +25,9 @@ const getAccessToken = async (inst, option) => {
 };
 
 // dispatch refreshed access token to redux store
-const updateAccessToken = async (inst, dispatch, option) => {
-  const token = await getAccessToken(inst, option);
+// if refreshToken was given, update access token with given token
+const updateAccessToken = async (inst, dispatch, refreshToken) => {
+  const token = await getAccessToken(inst, refreshToken);
   dispatch({
     type: "UPDATE_TOKEN",
     payload: token,
@@ -32,9 +36,10 @@ const updateAccessToken = async (inst, dispatch, option) => {
 };
 
 // create server requester
-const createRequester = (inst, dispatch) => {
+// if refreshToken was given, update access token with given token
+const createRequester = (inst, dispatch, refreshToken) => {
   return {
-    get: async (url, option, token) => {
+    get: async (url, token, option) => {
       let err;
       // try request.
       try {
@@ -44,14 +49,14 @@ const createRequester = (inst, dispatch) => {
         });
         return res;
       } catch (e) {
-        err = e.response;
+        err = e;
       }
 
       // if err status is 401, update access token
       let updatedToken;
       const errRes = err.response;
       if (errRes && errRes.status === 401) {
-        updatedToken = await updateAccessToken(inst, dispatch);
+        updatedToken = await updateAccessToken(inst, dispatch, refreshToken);
       } else {
         throw err;
       }
@@ -80,7 +85,7 @@ const createRequester = (inst, dispatch) => {
       let updatedToken;
       const errRes = err.response;
       if (errRes && errRes.status === 401) {
-        updatedToken = await updateAccessToken(inst, dispatch);
+        updatedToken = await updateAccessToken(inst, dispatch, refreshToken);
       } else {
         throw err;
       }
