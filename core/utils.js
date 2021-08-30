@@ -25,4 +25,23 @@ function parseJwtClaims(token) {
   return JSON.parse(Buffer.from(token.split(".")[1], "base64"));
 }
 
-export { parseCookie, parseJwtClaims, getCookie };
+const monthTable = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+function getMonthString(month) {
+  return monthTable[month];
+}
+
+export { parseCookie, parseJwtClaims, getCookie, getMonthString };

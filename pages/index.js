@@ -1,7 +1,8 @@
+import Link from "next/link";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { parseCookie } from "core/utils";
+import { parseCookie, getMonthString } from "core/utils";
 import wrapper from "core/store";
 import axios, { createRequester } from "core/apiAxios";
 
@@ -22,6 +23,11 @@ const Name = styled.div`
   font-weight: 400;
   color: #2455e7;
   margin-bottom: 10px;
+  cursor: pointer;
+
+  &: hover {
+    text-decoration: underline;
+  }
 `;
 
 const Description = styled.div`
@@ -31,19 +37,28 @@ const Description = styled.div`
   margin-bottom: 20px;
 `;
 
-const Date = styled.div`
-  font-size: 14px;
-  font-weight: 400px;
+const Info = styled.div`
+  font-size: 12px;
+  font-weight: 300;
   color: #646464;
 `;
 
 const Project = ({ project }) => {
-  const { id, name, description, registerDate } = project;
+  const { id, name, description, registerUsername, registerDate } = project;
+  const date = new Date(registerDate);
+  const dateStr = `${getMonthString(
+    date.getMonth(),
+  )} ${date.getDate()}, ${date.getFullYear()}`;
   return (
     <Wrap>
-      <Name>{name}</Name>
+      <Link href={`/projects/${id}`}>
+        <Name>{name}</Name>
+      </Link>
       <Description>{description}</Description>
-      <Date>{registerDate}</Date>
+      <Info>
+        <span style={{ marginRight: "10px" }}>{registerUsername}</span>
+        <span>{dateStr}</span>
+      </Info>
     </Wrap>
   );
 };
@@ -53,6 +68,7 @@ Project.propTypes = {
     id: PropTypes.number.isRequired,
     name: PropTypes.string,
     description: PropTypes.string,
+    registerUsername: PropTypes.string,
     registerDate: PropTypes.string,
   }).isRequired,
 };
@@ -63,10 +79,12 @@ const Sections = styled.div`
 
 const Projects = styled.div`
   width: 660px;
+  padding: 0px 20px;
 `;
 
 const Tasks = styled.div`
   width: 300px;
+  padding: 0px 20px;
 `;
 
 function Home(props) {
