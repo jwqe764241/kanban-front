@@ -7,7 +7,6 @@ import wrapper from "core/store";
 import axios, { createRequester } from "core/apiAxios";
 
 import { ContainerLg } from "components/layout/Container";
-import { Header } from "components/layout/Page";
 
 const Wrap = styled.div`
   padding: 24px 0px;
@@ -48,7 +47,7 @@ const Project = ({ project }) => {
 
   return (
     <Wrap>
-      <Link href={`/projects/${id}`}>
+      <Link href={`/projects/${id}/kanbans`}>
         <Name>{name}</Name>
       </Link>
       <Description>{description}</Description>
