@@ -36,7 +36,7 @@ const Brand = styled.a`
 
   :hover {
     text-decoration: none;
-    color: white;
+    color: lightgrey;
   }
 `;
 
