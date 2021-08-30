@@ -44,4 +44,17 @@ function getMonthString(month) {
   return monthTable[month];
 }
 
-export { parseCookie, parseJwtClaims, getCookie, getMonthString };
+function getDateString(str) {
+  const date = new Date(str);
+  return `${getMonthString(
+    date.getMonth(),
+  )} ${date.getDate()}, ${date.getFullYear()}`;
+}
+
+export {
+  parseCookie,
+  parseJwtClaims,
+  getCookie,
+  getMonthString,
+  getDateString,
+};

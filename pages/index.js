@@ -2,7 +2,7 @@ import Link from "next/link";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { parseCookie, getMonthString } from "core/utils";
+import { parseCookie, getDateString } from "core/utils";
 import wrapper from "core/store";
 import axios, { createRequester } from "core/apiAxios";
 
@@ -45,10 +45,7 @@ const Info = styled.div`
 
 const Project = ({ project }) => {
   const { id, name, description, registerUsername, registerDate } = project;
-  const date = new Date(registerDate);
-  const dateStr = `${getMonthString(
-    date.getMonth(),
-  )} ${date.getDate()}, ${date.getFullYear()}`;
+
   return (
     <Wrap>
       <Link href={`/projects/${id}`}>
@@ -57,7 +54,7 @@ const Project = ({ project }) => {
       <Description>{description}</Description>
       <Info>
         <span style={{ marginRight: "10px" }}>{registerUsername}</span>
-        <span>{dateStr}</span>
+        <span>{getDateString(registerDate)}</span>
       </Info>
     </Wrap>
   );
