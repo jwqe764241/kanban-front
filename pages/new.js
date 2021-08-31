@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import axios, { createRequester } from "core/apiAxios";
 import { useSelector, useDispatch } from "react-redux";
 
-import { Label, Input, InputWrap } from "components/layout/Form";
+import { Input, TextArea, Label, InputWrap } from "components/layout/Form";
 import { Header, Body } from "components/layout/Page";
 import { ContainerMd } from "components/layout/Container";
 import { SuccessButton } from "components/layout/Button";
@@ -65,9 +65,9 @@ function New() {
         </InputWrap>
         <InputWrap>
           <Label block>Description</Label>
-          <Input
+          <TextArea
+            style={{ height: "100px" }}
             id="description"
-            type="text"
             name="description"
             value={data.description}
             onChange={onChange}
