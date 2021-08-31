@@ -127,7 +127,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
       ]);
 
       result.projects = projectResponse.data;
-    } catch (e) {}
+    } catch (e) {
+      alert("can't get user data.");
+    }
 
     return {
       props: { ...result },
