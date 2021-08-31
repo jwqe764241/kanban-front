@@ -1,32 +1,42 @@
+import { useRef } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 import styled from "styled-components";
+import axios from "core/apiAxios";
+import PropTypes from "prop-types";
+
+import {
+  DropdownButton,
+  ProjectDropdown,
+  UserDropdown,
+} from "components/layout/Dropdown";
 
 const Container = styled.div`
+  padding: 16px 32px;
+  background-color: #24292e;
+`;
+
+const InnerContainer = styled.div`
+  height: 30px;
   display: flex;
-  height: 70px;
 `;
 
 const Brand = styled.a`
-  background-color: #868fdb;
-  width: 150px;
-  display: -webkit-flexbox;
-  display: -ms-flexbox;
-  display: -webkit-flex;
+  padding-right: 30px;
   display: flex;
   -webkit-flex-align: center;
   -ms-flex-align: center;
   -webkit-align-items: center;
   align-items: center;
   justify-content: center;
-  font-size: 25px;
+  font-size: 19px;
   font-weight: 800;
   color: white;
-  transition: background-color 0.2s ease;
   cursor: pointer;
 
   :hover {
     text-decoration: none;
-    color: white;
-    background-color: #7c84c1;
+    color: lightgrey;
   }
 `;
 
@@ -34,57 +44,95 @@ const Tools = styled.div`
   display: flex;
   flex-grow: 1;
   padding-left: 25px;
-  background: linear-gradient(to right, #9aa7fb, #70b3f8);
 `;
 
-const SearchIcon = () => {
-  return (
-    <div style={{ padding: "0px 10px 0px 0px" }}>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        fill="currentColor"
-        className="bi bi-search"
-        viewBox="0 0 16 16"
-        style={{ height: "100%", color: "white" }}
-      >
-        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-      </svg>
-    </div>
-  );
-};
-
-const SearchInput = styled.input`
-  flex-grow: 1;
-  border: none;
-  background: transparent;
-  color: white;
-
-  ::placeholder {
-    color: white;
-  }
-
-  :focus {
-    outline: none;
-  }
-`;
-
-const Menubar = styled.div`
+const MenuContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-left: auto;
+
+  & > * {
+    margin-right: 5px;
+
+    &:last-child {
+      margin-right: 0px;
+    }
+  }
+`;
+
+const UserInfo = styled.div`
+  padding: 5px 10px 8px 20px;
+  border-bottom: 1px solid #e1e4e8;
+
+  div {
+    &:nth-child(1) {
+      font-weight: 400;
+      font-size: 14px;
+      padding-bottom: 8px;
+    }
+
+    &:nth-child(2) {
+      font-weight: 600;
+      font-size: 14px;
+    }
+  }
 `;
 
 function Navbar(props) {
+  const ref = useRef();
+  const router = useRouter();
+  const { username } = props;
+
+  const onLogoutClick = async () => {
+    try {
+      const response = await axios.post("/auth/logout", null, {
+        withCredentials: true,
+      });
+
+      if (response.status === 200) {
+        router.push("/login");
+      }
+    } catch (e) {
+      // TODO: replace alert to modal
+      alert("Failed to logout!");
+    }
+  };
+
   return (
     <Container>
-      <Brand>Kanban</Brand>
-      <Tools>
-        <SearchIcon />
-        <SearchInput type="text" placeholder="Search for tasks..." />
-        <Menubar />
-      </Tools>
+      <InnerContainer>
+        <Link href="/">
+          <Brand>Kanban</Brand>
+        </Link>
+        <Tools />
+        <MenuContainer>
+          <ProjectDropdown innerRef={ref}>
+            <Link href="/new">
+              <DropdownButton type="button">New Project</DropdownButton>
+            </Link>
+          </ProjectDropdown>
+          <UserDropdown innerRef={ref}>
+            <UserInfo>
+              <div>Signed in as</div>
+              <div>{username}</div>
+            </UserInfo>
+            <DropdownButton type="button" onClick={onLogoutClick}>
+              Logout
+            </DropdownButton>
+          </UserDropdown>
+        </MenuContainer>
+      </InnerContainer>
     </Container>
   );
 }
+
+Navbar.propTypes = {
+  username: PropTypes.string,
+};
+
+Navbar.defaultProps = {
+  username: "",
+};
 
 export default Navbar;

@@ -3,8 +3,12 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "core/apiAxios";
 import { parseCookie } from "core/utils";
+import { useDispatch } from "react-redux";
 
 import Alert from "@material-ui/lab/Alert";
+
+import { Input, InputWrap } from "components/layout/Form";
+import { SuccessButton } from "components/layout/Button";
 
 const Placeholder = styled.div`
   height: 100px;
@@ -46,59 +50,20 @@ const Label = styled.label`
   margin-bottom: 10px;
 `;
 
-const Input = styled.input`
-  width: 100%;
-  margin-bottom: 15px;
-  border: 1px solid;
-  border-color: rgb(216, 222, 226);
-  border-radius: 6px;
-  line-height: 20px;
-  outline: none;
-  padding: 5px 12px;
-
-  &:focus {
-    box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
-    border-color: #868686;
-  }
-`;
-
-const Button = styled.input`
-  width: 100%;
-  padding: 8px 0px;
-  margin-top: 10px;
-  color: #fff;
-  background-color: #28a745;
-  border: 1px solid;
-  border-radius: 6px;
-  border-color: #28a745;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    color: #fff;
-    background-color: #218838;
-    border-color: #1e7e34;
-  }
-
-  &:disabled {
-    background-color: #1d6a2f;
-    border-color: #1d6a2f;
-  }
-`;
-
 const AlertPanel = styled.div`
   margin: 15px 0px;
 `;
 
 function Login() {
+  const router = useRouter();
+  const dispatch = useDispatch();
+
   const [data, setData] = useState({ login: "", password: "" });
   const [isLoginFailed, setIsLoginFailed] = useState({
     status: false,
     message: "",
   });
   const [isLoginProgressed, setIsLoginProgressed] = useState(false);
-
-  const router = useRouter();
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -111,30 +76,27 @@ function Login() {
   const handleLogin = async () => {
     setIsLoginProgressed(true);
 
-    console.log(axios.defaults.headers.common.Authorization);
-
     try {
       const response = await axios.post("/auth/login", data, {
         withCredentials: true,
       });
 
       if (response.status === 200) {
-        console.log(response);
-        axios.defaults.headers.common.Authorization = `Bearer ${response.data}`;
+        dispatch({ type: "UPDATE_TOKEN", payload: `${response.data}` });
+        router.push("/");
       }
-      // if (response.status === 200) router.push("/dashboard");
     } catch (e) {
+      let message = "Unknown error. try again later.";
+
       if (e.code === "ECONNABORTED") {
-        setIsLoginFailed({
-          status: true,
-          message: "Server is bussy, try again later.",
-        });
+        message = "Server is bussy, try again later.";
+      } else if (e.message === "Network Error") {
+        message = "Server is not responded, try again later.";
       } else if (e.response && e.response.status === 401) {
-        setIsLoginFailed({
-          status: true,
-          message: "Incorrect username or password.",
-        });
+        message = "Incorrect username or password.";
       }
+
+      setIsLoginFailed({ status: true, message });
     }
 
     setIsLoginProgressed(false);
@@ -157,31 +119,34 @@ function Login() {
           <></>
         )}
         <FormBody>
-          <Label htmlFor="login">Username</Label>
-          <Input
-            id="login"
-            type="text"
-            name="login"
-            value={login}
-            onChange={onChange}
-          />
-          <Label htmlFor="password">Password</Label>
-          <Input
-            id="password"
-            type="password"
-            name="password"
-            value={password}
-            onChange={onChange}
-          />
-          {isLoginProgressed ? (
-            <Button
-              type="button"
-              value="Signing in..."
-              onClick={handleLogin}
-              disabled
+          <InputWrap style={{ marginBottom: "15px" }}>
+            <Label htmlFor="login">Username</Label>
+            <Input
+              id="login"
+              type="text"
+              name="login"
+              value={login}
+              onChange={onChange}
             />
+          </InputWrap>
+          <InputWrap style={{ marginBottom: "25px" }}>
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              name="password"
+              value={password}
+              onChange={onChange}
+            />
+          </InputWrap>
+          {isLoginProgressed ? (
+            <SuccessButton type="button" onClick={handleLogin} disabled>
+              Signing in...
+            </SuccessButton>
           ) : (
-            <Button type="button" value="Sign in" onClick={handleLogin} />
+            <SuccessButton type="button" onClick={handleLogin}>
+              Sign in
+            </SuccessButton>
           )}
         </FormBody>
       </Form>
@@ -201,7 +166,7 @@ export async function getServerSideProps(context) {
   return {
     redirect: {
       destination: "/",
-      permanent: true,
+      permanent: false,
     },
   };
 }
