@@ -4,10 +4,19 @@ import wrapper from "core/store";
 import { parseCookie } from "core/utils";
 import axios, { createRequester } from "core/apiAxios";
 
+import { ContainerXL } from "components/layout/Container";
 import ProjectHeader from "components/project/ProjectHeader";
+import MemberList from "components/project/members/MemberList";
 
-const Members = ({ project }) => {
-  return <ProjectHeader project={project} activeMenu="members" />;
+const Members = ({ project, members }) => {
+  return (
+    <>
+      <ProjectHeader project={project} activeMenu="members" />
+      <ContainerXL>
+        <MemberList list={members}>dsfdsf</MemberList>
+      </ContainerXL>
+    </>
+  );
 };
 
 Members.propTypes = {
@@ -18,6 +27,11 @@ Members.propTypes = {
     registerUsername: PropTypes.string,
     registerDate: PropTypes.string,
   }).isRequired,
+  members: PropTypes.arrayOf(PropTypes.object),
+};
+
+Members.defaultProps = {
+  members: [],
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
@@ -32,10 +46,14 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
     const { token } = store.getState();
     try {
-      const response = await requester.get(`/projects/${id}`, token);
+      const [userResponse, memberResponse] = await Promise.all([
+        requester.get(`/projects/${id}`, token),
+        requester.get(`/projects/${id}/members`, token),
+      ]);
       return {
         props: {
-          project: response.data,
+          project: userResponse.data,
+          members: memberResponse.data,
         },
       };
     } catch (e) {

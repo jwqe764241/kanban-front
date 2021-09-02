@@ -14,4 +14,8 @@ const ContainerLg = styled(Container)`
   width: 960px;
 `;
 
-export { Container, ContainerMd, ContainerLg };
+const ContainerXL = styled(Container)`
+  width: 1280px;
+`;
+
+export { Container, ContainerMd, ContainerLg, ContainerXL };
