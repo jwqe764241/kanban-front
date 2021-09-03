@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import { getDateTimeString } from "core/utils";
 
 import { ListItem } from "components/layout/List";
 
@@ -65,7 +66,7 @@ const MemberListItem = ({ member, onRemoveMemberClick }) => {
           <RemoveButton onClick={() => onRemoveMemberClick(member.id)} />
         </RemoveButtonWrap>
       </div>
-      <Date>{member.date}</Date>
+      <Date>{getDateTimeString(member.date)}</Date>
     </ListItem>
   );
 };
