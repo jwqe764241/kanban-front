@@ -51,10 +51,20 @@ function getDateString(str) {
   )} ${date.getDate()}, ${date.getFullYear()}`;
 }
 
+function getIndexOfId(arr, id) {
+  for (let i = 0; i < arr.length; i += 1) {
+    if (arr[i].id === id) {
+      return i;
+    }
+  }
+  return -1;
+}
+
 export {
   parseCookie,
   parseJwtClaims,
   getCookie,
   getMonthString,
   getDateString,
+  getIndexOfId,
 };

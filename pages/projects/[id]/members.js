@@ -1,19 +1,71 @@
-import { connect } from "react-redux";
+import { useState } from "react";
+import { connect, useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
+import styled from "styled-components";
 import wrapper from "core/store";
-import { parseCookie } from "core/utils";
+import { parseCookie, getIndexOfId } from "core/utils";
 import axios, { createRequester } from "core/apiAxios";
 
 import { ContainerXL } from "components/layout/Container";
+import { SuccessButton } from "components/layout/Button";
 import ProjectHeader from "components/project/ProjectHeader";
 import MemberList from "components/project/members/MemberList";
 
-const Members = ({ project, members }) => {
+const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+`;
+
+const Members = ({ project, memberList }) => {
+  const [members, setMembers] = useState(memberList);
+  const { token } = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const requester = createRequester(axios, dispatch);
+
+  const onInviteMemberClick = () => {
+    alert("clicked!");
+  };
+
+  const onRemoveMemberClick = async (userId) => {
+    if (!confirm("Are you sure you want to remove this member?")) return;
+
+    try {
+      const response = await requester.delete(
+        `/projects/${project.id}/members/${userId}`,
+        token,
+      );
+      if (response.status === 200) {
+        const index = getIndexOfId(members, userId);
+        if (index !== -1) {
+          members.splice(index, 1);
+          setMembers([...members]);
+        }
+      }
+    } catch (e) {
+      const { response } = e;
+      if (response.status === 400) {
+        alert("You can't remove project owner");
+      } else if (response.status === 403) {
+        alert("You have no permission to do this");
+      }
+    }
+  };
+
   return (
     <>
       <ProjectHeader project={project} activeMenu="members" />
       <ContainerXL>
-        <MemberList list={members}>dsfdsf</MemberList>
+        <Container>
+          <div />
+          <SuccessButton
+            style={{ width: "130px" }}
+            onClick={onInviteMemberClick}
+          >
+            Invite member
+          </SuccessButton>
+        </Container>
+        <MemberList list={members} onRemoveMemberClick={onRemoveMemberClick} />
       </ContainerXL>
     </>
   );
@@ -27,11 +79,11 @@ Members.propTypes = {
     registerUsername: PropTypes.string,
     registerDate: PropTypes.string,
   }).isRequired,
-  members: PropTypes.arrayOf(PropTypes.object),
+  memberList: PropTypes.arrayOf(PropTypes.object),
 };
 
 Members.defaultProps = {
-  members: [],
+  memberList: [],
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
@@ -53,7 +105,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           project: userResponse.data,
-          members: memberResponse.data,
+          memberList: memberResponse.data,
         },
       };
     } catch (e) {
