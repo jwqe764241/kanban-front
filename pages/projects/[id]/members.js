@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { connect, useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import styled from "styled-components";
@@ -10,6 +10,7 @@ import { ContainerXL } from "components/layout/Container";
 import { SuccessButton } from "components/layout/Button";
 import ProjectHeader from "components/project/ProjectHeader";
 import MemberList from "components/project/members/MemberList";
+import InviteUserModal from "components/project/members/InviteUserModal";
 
 const Container = styled.div`
   display: flex;
@@ -18,13 +19,39 @@ const Container = styled.div`
 `;
 
 const Members = ({ project, memberList }) => {
-  const [members, setMembers] = useState(memberList);
+  const ref = useRef();
   const { token } = useSelector((state) => state);
   const dispatch = useDispatch();
   const requester = createRequester(axios, dispatch);
 
-  const onInviteMemberClick = () => {
-    alert("clicked!");
+  const [members, setMembers] = useState(memberList);
+  const [isInviteUserOpen, setInviteUserOpen] = useState(false);
+
+  const onSuggest = async (value) => {
+    try {
+      const response = await requester.get(
+        `/projects/${project.id}/members/suggestions?q=${value}`,
+        token,
+      );
+      return response.data;
+    } catch (e) {
+      return [];
+    }
+  };
+
+  const onInvite = async (user) => {
+    try {
+      const response = await requester.post(
+        `/projects/${project.id}/members`,
+        { userId: user.id },
+        token,
+      );
+      if (response.status === 200) {
+        alert("success");
+      }
+    } catch (e) {
+      alert("failed");
+    }
   };
 
   const onRemoveMemberClick = async (userId) => {
@@ -60,13 +87,22 @@ const Members = ({ project, memberList }) => {
           <div />
           <SuccessButton
             style={{ width: "130px" }}
-            onClick={onInviteMemberClick}
+            onClick={() => {
+              setInviteUserOpen(true);
+            }}
           >
-            Invite member
+            Invite a member
           </SuccessButton>
         </Container>
         <MemberList list={members} onRemoveMemberClick={onRemoveMemberClick} />
       </ContainerXL>
+      <InviteUserModal
+        innerRef={ref}
+        show={isInviteUserOpen}
+        setShow={setInviteUserOpen}
+        onSuggest={onSuggest}
+        onInvite={onInvite}
+      />
     </>
   );
 };
