@@ -22,6 +22,7 @@ const Container = styled.div`
 const InviteUserModal = ({ show, setShow, onSuggest, onInvite, innerRef }) => {
   const [suggestionUsers, setSuggestionUsers] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [isInviting, setInviting] = useState(false);
 
   const onSuggestionSelect = (user) => {
     setSelectedUser(user);
@@ -43,7 +44,9 @@ const InviteUserModal = ({ show, setShow, onSuggest, onInvite, innerRef }) => {
 
   const onInviteClick = () => {
     if (selectedUser) {
+      setInviting(() => !isInviting);
       onInvite(selectedUser);
+      setInviting(() => !isInviting);
     }
   };
 
@@ -73,15 +76,16 @@ const InviteUserModal = ({ show, setShow, onSuggest, onInvite, innerRef }) => {
         )}
       </Container>
       <Buttons>
-        {selectedUser ? (
-          <SuccessButton onClick={onInviteClick}>
-            Invite a member to project
-          </SuccessButton>
-        ) : (
-          <SuccessButton onClick={onInviteClick} disabled>
-            Select a member to invite
-          </SuccessButton>
-        )}
+        <SuccessButton
+          onClick={onInviteClick}
+          disabled={!!(selectedUser == null || isInviting)}
+        >
+          {selectedUser != null
+            ? isInviting === true
+              ? "Inviting user..."
+              : "Invite a member to project"
+            : "Select a member to invite"}
+        </SuccessButton>
       </Buttons>
     </Modal>
   );
