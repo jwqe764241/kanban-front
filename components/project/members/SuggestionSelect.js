@@ -7,7 +7,7 @@ const Select = styled.ul`
   margin-top: 20px;
   border: 1px solid #e1e4e8;
   border-radius: 6px;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 
 const Item = styled.li`
@@ -41,6 +41,17 @@ const Login = styled.div`
   padding-top: 5px;
 `;
 
+const Empty = styled.div`
+  height: 50px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  font-size: 14px;
+  font-weight: 600;
+  color: #9e9e9e;
+`;
+
 const SuggestionSelect = ({ list, onSelect }) => {
   const onItemClick = (e) => {
     const { index } = e.currentTarget.dataset;
@@ -54,12 +65,16 @@ const SuggestionSelect = ({ list, onSelect }) => {
     <>
       {list ? (
         <Select>
-          {list.map((user, index) => (
-            <Item key={user.id} data-index={index} onClick={onItemClick}>
-              <Name>{user.name}</Name>
-              <Login>{user.login}</Login>
-            </Item>
-          ))}
+          {list.length > 0 ? (
+            list.map((user, index) => (
+              <Item key={user.id} data-index={index} onClick={onItemClick}>
+                <Name>{user.name}</Name>
+                <Login>{user.login}</Login>
+              </Item>
+            ))
+          ) : (
+            <Empty>Could not found matched users :(</Empty>
+          )}
         </Select>
       ) : (
         <></>
