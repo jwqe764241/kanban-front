@@ -45,7 +45,7 @@ SelectedUser.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
-    login: PropTypes.number.isRequired,
+    login: PropTypes.string.isRequired,
   }).isRequired,
   onCancel: PropTypes.func.isRequired,
 };
