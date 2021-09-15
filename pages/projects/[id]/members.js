@@ -42,15 +42,18 @@ const Members = ({ project, memberList }) => {
   const onInvite = async (user) => {
     try {
       const response = await requester.post(
-        `/projects/${project.id}/members`,
+        `/projects/${project.id}/members/`,
         { userId: user.id },
         token,
       );
       if (response.status === 200) {
-        alert("success");
+        setInviteUserOpen(false);
       }
     } catch (e) {
-      alert("failed");
+      const { response } = e;
+      if (response.status === 409) {
+        alert("User was already invited");
+      }
     }
   };
 
@@ -96,13 +99,17 @@ const Members = ({ project, memberList }) => {
         </Container>
         <MemberList list={members} onRemoveMemberClick={onRemoveMemberClick} />
       </ContainerXL>
-      <InviteUserModal
-        innerRef={ref}
-        show={isInviteUserOpen}
-        setShow={setInviteUserOpen}
-        onSuggest={onSuggest}
-        onInvite={onInvite}
-      />
+      {isInviteUserOpen ? (
+        <InviteUserModal
+          innerRef={ref}
+          show
+          setShow={setInviteUserOpen}
+          onSuggest={onSuggest}
+          onInvite={onInvite}
+        />
+      ) : (
+        <></>
+      )}
     </>
   );
 };
