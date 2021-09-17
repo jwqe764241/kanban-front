@@ -18,7 +18,16 @@ const Container = styled.div`
   margin-bottom: 15px;
 `;
 
-const Members = ({ project, memberList }) => {
+const ListContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const ListWrap = styled.div`
+  width: 49%;
+`;
+
+const Members = ({ project, memberList, invitedUserList }) => {
   const ref = useRef();
   const { token } = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -26,6 +35,7 @@ const Members = ({ project, memberList }) => {
 
   const [members, setMembers] = useState(memberList);
   const [isInviteUserOpen, setInviteUserOpen] = useState(false);
+  const [invitedUsers, setInvitedUsers] = useState(invitedUserList);
 
   const onSuggest = async (value) => {
     try {
@@ -82,6 +92,10 @@ const Members = ({ project, memberList }) => {
     }
   };
 
+  const removeInviteClick = async (userId) => {
+    alert(userId);
+  };
+
   return (
     <>
       <ProjectHeader project={project} activeMenu="members" />
@@ -97,7 +111,22 @@ const Members = ({ project, memberList }) => {
             Invite a member
           </SuccessButton>
         </Container>
-        <MemberList list={members} onRemoveMemberClick={onRemoveMemberClick} />
+        <ListContainer>
+          <ListWrap>
+            <MemberList
+              list={members}
+              headerText="Members"
+              onRemoveMemberClick={onRemoveMemberClick}
+            />
+          </ListWrap>
+          <ListWrap>
+            <MemberList
+              list={invitedUsers}
+              headerText="Invited Users"
+              onRemoveMemberClick={removeInviteClick}
+            />
+          </ListWrap>
+        </ListContainer>
       </ContainerXL>
       {isInviteUserOpen ? (
         <InviteUserModal
@@ -123,10 +152,12 @@ Members.propTypes = {
     registerDate: PropTypes.string,
   }).isRequired,
   memberList: PropTypes.arrayOf(PropTypes.object),
+  invitedUserList: PropTypes.arrayOf(PropTypes.object),
 };
 
 Members.defaultProps = {
   memberList: [],
+  invitedUserList: [],
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
@@ -140,22 +171,33 @@ export const getServerSideProps = wrapper.getServerSideProps(
     );
 
     const { token } = store.getState();
+    const props = {};
     try {
-      const [userResponse, memberResponse] = await Promise.all([
+      const [projectResponse, memberResponse] = await Promise.all([
         requester.get(`/projects/${id}`, token),
         requester.get(`/projects/${id}/members`, token),
       ]);
-      return {
-        props: {
-          project: userResponse.data,
-          memberList: memberResponse.data,
-        },
-      };
+      props.project = projectResponse.data;
+      props.memberList = memberResponse.data;
     } catch (e) {
       return {
         notFound: true,
       };
     }
+
+    try {
+      const invitedUserResponse = await requester.get(
+        `/projects/${id}/invitations`,
+        token,
+      );
+      props.invitedUsers = invitedUserResponse.data;
+    } catch (e) {
+      props.invitedUsers = [];
+    }
+
+    return {
+      props,
+    };
   },
 );
 
