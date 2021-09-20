@@ -116,6 +116,7 @@ const Members = ({ project, memberList, invitedUserList }) => {
             <MemberList
               list={members}
               headerText="Members"
+              emptyText="No members in this project"
               onRemoveMemberClick={onRemoveMemberClick}
             />
           </ListWrap>
@@ -123,6 +124,7 @@ const Members = ({ project, memberList, invitedUserList }) => {
             <MemberList
               list={invitedUsers}
               headerText="Invited Users"
+              emptyText="You haven't invited any users yet"
               onRemoveMemberClick={removeInviteClick}
             />
           </ListWrap>

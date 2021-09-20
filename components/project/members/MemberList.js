@@ -14,7 +14,7 @@ const EmptyList = styled.div`
   font-weight: 500;
 `;
 
-const MemberList = ({ list, headerText, onRemoveMemberClick }) => {
+const MemberList = ({ list, headerText, emptyText, onRemoveMemberClick }) => {
   return (
     <>
       {list && list.length > 0 ? (
@@ -29,7 +29,7 @@ const MemberList = ({ list, headerText, onRemoveMemberClick }) => {
           ))}
         </List>
       ) : (
-        <EmptyList>You haven&apos;t invited any users yet</EmptyList>
+        <EmptyList>{emptyText}</EmptyList>
       )}
     </>
   );
@@ -38,12 +38,14 @@ const MemberList = ({ list, headerText, onRemoveMemberClick }) => {
 MemberList.propTypes = {
   list: PropTypes.arrayOf(PropTypes.object),
   headerText: PropTypes.string,
+  emptyText: PropTypes.string,
   onRemoveMemberClick: PropTypes.func,
 };
 
 MemberList.defaultProps = {
   list: [],
   headerText: "",
+  emptyText: "",
   onRemoveMemberClick: () => {},
 };
 
