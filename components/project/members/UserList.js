@@ -2,8 +2,8 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import { List } from "components/layout/List";
-import MemberListHeader from "components/project/members/MemberListHeader";
-import MemberListItem from "components/project/members/MemberListItem";
+import UserListHeader from "components/project/members/UserListHeader";
+import UserListItem from "components/project/members/UserListItem";
 
 const EmptyList = styled.div`
   border: 1px solid #e1e4e8;
@@ -14,17 +14,17 @@ const EmptyList = styled.div`
   font-weight: 500;
 `;
 
-const MemberList = ({ list, headerText, emptyText, onRemoveMemberClick }) => {
+const UserList = ({ list, headerText, emptyText, onRemoveItemClick }) => {
   return (
     <>
       {list && list.length > 0 ? (
         <List>
-          <MemberListHeader count={list.length} text={headerText} />
-          {list.map((member) => (
-            <MemberListItem
-              key={member.name}
-              member={member}
-              onRemoveMemberClick={onRemoveMemberClick}
+          <UserListHeader count={list.length} text={headerText} />
+          {list.map((user) => (
+            <UserListItem
+              key={user.name}
+              user={user}
+              onRemoveItemClick={onRemoveItemClick}
             />
           ))}
         </List>
@@ -35,18 +35,18 @@ const MemberList = ({ list, headerText, emptyText, onRemoveMemberClick }) => {
   );
 };
 
-MemberList.propTypes = {
+UserList.propTypes = {
   list: PropTypes.arrayOf(PropTypes.object),
   headerText: PropTypes.string,
   emptyText: PropTypes.string,
-  onRemoveMemberClick: PropTypes.func,
+  onRemoveItemClick: PropTypes.func,
 };
 
-MemberList.defaultProps = {
+UserList.defaultProps = {
   list: [],
   headerText: "",
   emptyText: "",
-  onRemoveMemberClick: () => {},
+  onRemoveItemClick: () => {},
 };
 
-export default MemberList;
+export default UserList;

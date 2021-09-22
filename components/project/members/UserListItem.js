@@ -30,33 +30,33 @@ const RemoveButtonWrap = styled(Column)`
   text-align: end;
 `;
 
-const MemberListItem = ({ member, onRemoveMemberClick }) => {
+const UserListItem = ({ user, onRemoveItemClick }) => {
   return (
     <ListItem>
       <div>
-        <Username>{member.name}</Username>
-        <Email>{member.email}</Email>
+        <Username>{user.name}</Username>
+        <Email>{user.email}</Email>
         <RemoveButtonWrap>
-          <RemoveButton onClick={() => onRemoveMemberClick(member.id)} />
+          <RemoveButton onClick={() => onRemoveItemClick(user.id)} />
         </RemoveButtonWrap>
       </div>
-      <Date>{getDateTimeString(member.date)}</Date>
+      <Date>{getDateTimeString(user.date)}</Date>
     </ListItem>
   );
 };
 
-MemberListItem.propTypes = {
-  member: PropTypes.shape({
+UserListItem.propTypes = {
+  user: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
   }).isRequired,
-  onRemoveMemberClick: PropTypes.func,
+  onRemoveItemClick: PropTypes.func,
 };
 
-MemberListItem.defaultProps = {
-  onRemoveMemberClick: () => {},
+UserListItem.defaultProps = {
+  onRemoveItemClick: () => {},
 };
 
-export default MemberListItem;
+export default UserListItem;

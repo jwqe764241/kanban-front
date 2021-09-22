@@ -9,7 +9,7 @@ import axios, { createRequester } from "core/apiAxios";
 import { ContainerXL } from "components/layout/Container";
 import { SuccessButton } from "components/layout/Button";
 import ProjectHeader from "components/project/ProjectHeader";
-import MemberList from "components/project/members/MemberList";
+import UserList from "components/project/members/UserList";
 import InviteUserModal from "components/project/members/InviteUserModal";
 
 const Container = styled.div`
@@ -132,19 +132,19 @@ const Members = ({ project, memberList, invitedUserList }) => {
         </Container>
         <ListContainer>
           <ListWrap>
-            <MemberList
+            <UserList
               list={members}
               headerText="Members"
               emptyText="No members in this project"
-              onRemoveMemberClick={onRemoveMemberClick}
+              onRemoveItemClick={onRemoveMemberClick}
             />
           </ListWrap>
           <ListWrap>
-            <MemberList
+            <UserList
               list={invitedUsers}
               headerText="Invited Users"
               emptyText="You haven't invited any users yet"
-              onRemoveMemberClick={onRemoveInviteClick}
+              onRemoveItemClick={onRemoveInviteClick}
             />
           </ListWrap>
         </ListContainer>
