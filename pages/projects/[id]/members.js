@@ -92,8 +92,27 @@ const Members = ({ project, memberList, invitedUserList }) => {
     }
   };
 
-  const removeInviteClick = async (userId) => {
-    alert(userId);
+  const onRemoveInviteClick = async (userId) => {
+    if (!confirm("Are you sure you want to remove this user?")) return;
+
+    try {
+      const response = await requester.delete(
+        `/projects/${project.id}/invitations/${userId}`,
+        token,
+      );
+      if (response.status === 200) {
+        const index = getIndexOfId(invitedUsers, userId);
+        if (index !== -1) {
+          invitedUsers.splice(index, 1);
+          setInvitedUsers([...invitedUsers]);
+        }
+      }
+    } catch (e) {
+      const { response } = e;
+      if (response.status === 403) {
+        alert("You have no permission to do this");
+      }
+    }
   };
 
   return (
@@ -125,7 +144,7 @@ const Members = ({ project, memberList, invitedUserList }) => {
               list={invitedUsers}
               headerText="Invited Users"
               emptyText="You haven't invited any users yet"
-              onRemoveMemberClick={removeInviteClick}
+              onRemoveMemberClick={onRemoveInviteClick}
             />
           </ListWrap>
         </ListContainer>
@@ -192,9 +211,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
         `/projects/${id}/invitations`,
         token,
       );
-      props.invitedUsers = invitedUserResponse.data;
+      props.invitedUserList = invitedUserResponse.data;
     } catch (e) {
-      props.invitedUsers = [];
+      props.invitedUserList = [];
     }
 
     return {
