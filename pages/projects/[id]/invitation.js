@@ -1,4 +1,4 @@
-import { connect, useSelector, useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import wrapper from "core/store";
 import { parseCookie } from "core/utils";
 import axios, { createRequester } from "core/apiAxios";
@@ -19,11 +19,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
     const { token } = store.getState();
     try {
-      const acceptResponse = await requester.post(
-        `/projects/${id}/invitation`,
-        null,
-        token,
-      );
+      await requester.post(`/projects/${id}/invitation`, null, token);
       return {
         redirect: {
           destination: `/projects/${id}/kanbans`,
