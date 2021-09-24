@@ -19,6 +19,7 @@ function New() {
     name: "",
     description: "",
   });
+  const [errors, setErrors] = useState();
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -38,7 +39,9 @@ function New() {
       }
     } catch (e) {
       const errorResponse = e.response;
-      if (errorResponse.status === 409) {
+      if (errorResponse.status === 400) {
+        setErrors(errorResponse.data.data);
+      } else if (errorResponse.status === 409) {
         alert("Project name already exist, please use another name");
       } else {
         alert("Unknown error.");
@@ -61,16 +64,18 @@ function New() {
             style={{ width: "300px" }}
             value={data.name}
             onChange={onChange}
+            errors={errors}
           />
         </InputWrap>
         <InputWrap>
           <Label block>Description</Label>
           <TextArea
-            style={{ height: "100px" }}
             id="description"
             name="description"
+            style={{ height: "100px" }}
             value={data.description}
             onChange={onChange}
+            errors={errors}
           />
         </InputWrap>
         {isProgressed ? (
