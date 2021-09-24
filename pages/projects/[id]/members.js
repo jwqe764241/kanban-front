@@ -68,7 +68,7 @@ const Members = ({ project, memberList, invitedUserList }) => {
   };
 
   const onRemoveMemberClick = async (userId) => {
-    if (!confirm("Are you sure you want to remove this member?")) return;
+    if (!window.confirm("Are you sure you want to remove this member?")) return;
 
     try {
       const response = await requester.delete(
@@ -93,7 +93,7 @@ const Members = ({ project, memberList, invitedUserList }) => {
   };
 
   const onRemoveInviteClick = async (userId) => {
-    if (!confirm("Are you sure you want to remove this user?")) return;
+    if (!window.confirm("Are you sure you want to remove this user?")) return;
 
     try {
       const response = await requester.delete(
