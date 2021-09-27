@@ -51,10 +51,33 @@ function getDateString(str) {
   )} ${date.getDate()}, ${date.getFullYear()}`;
 }
 
+function pad(num, size) {
+  const s = `000000000${num}`;
+  return s.substr(s.length - size);
+}
+
+function getDateTimeString(str) {
+  const date = new Date(str);
+  const m = pad(date.getMonth() + 1, 2);
+  const d = pad(date.getDate(), 2);
+  return `${date.getFullYear()}-${m}-${d} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+}
+
+function getIndexOfId(arr, id) {
+  for (let i = 0; i < arr.length; i += 1) {
+    if (arr[i].id === id) {
+      return i;
+    }
+  }
+  return -1;
+}
+
 export {
   parseCookie,
   parseJwtClaims,
   getCookie,
   getMonthString,
   getDateString,
+  getDateTimeString,
+  getIndexOfId,
 };

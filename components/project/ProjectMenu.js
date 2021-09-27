@@ -15,8 +15,9 @@ const MenuItem = styled.span`
   transition: color 0.1s ease;
   padding: 0px 15px 16px 15px;
   border-bottom: ${(props) => (props.active ? "2px solid #f9826c;" : "none")};
+  font-weight: ${(props) => (props.active ? "500" : "300")};
 
-  ${(props) => (!props.active ? "&:hover {color: #212427}" : "")};
+  ${(props) => (!props.active ? "&:hover { color: #212427 }" : "")};
 `;
 
 const ProjectMenu = ({ id, activeMenu }) => {
