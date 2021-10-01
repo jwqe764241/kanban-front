@@ -7,7 +7,12 @@ import axios, { createRequester } from "core/apiAxios";
 import ProjectHeader from "components/project/ProjectHeader";
 
 const Kanbans = ({ project }) => {
-  return <ProjectHeader project={project} activeMenu="kanbans" />;
+  return (
+    <>
+      <ProjectHeader project={project} activeMenu="kanbans" />
+      <div>xcvxcvxcvxcv</div>
+    </>
+  );
 };
 
 Kanbans.propTypes = {
