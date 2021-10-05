@@ -52,6 +52,16 @@ const RegisterDate = styled.div`
   color: #6a737d;
 `;
 
+const EmptyKanban = styled.div`
+  margin-top: 60px;
+  text-align: center;
+
+  & > * {
+    font-weight: 500;
+    color: #3e3e3e;
+  }
+`;
+
 const KanbanList = ({ project, kanbanList }) => {
   const router = useRouter();
   const { id } = router.query;
@@ -60,22 +70,42 @@ const KanbanList = ({ project, kanbanList }) => {
     <>
       <ProjectHeader project={project} activeMenu="kanbans" />
       <ContainerXL>
-        <Container>
-          <div />
-          <Link href={`/projects/${id}/kanbans/new`}>
-            <SuccessButton style={{ width: "120px" }}>New Kanban</SuccessButton>
-          </Link>
-        </Container>
-        {kanbanList.map(
-          ({ projectId, sequenceId, name, description, registerDate }) => (
-            <KanbanInfo key={sequenceId}>
-              <Link href={`/projects/${projectId}/kanbans/${sequenceId}`}>
-                <KanbanName>{name}</KanbanName>
+        {kanbanList && kanbanList.length > 0 ? (
+          <>
+            <Container>
+              <div />
+              <Link href={`/projects/${id}/kanbans/new`}>
+                <SuccessButton style={{ width: "120px" }}>
+                  New Kanban
+                </SuccessButton>
               </Link>
-              <KanbanDescription>{description}</KanbanDescription>
-              <RegisterDate>{getDateString(registerDate)}</RegisterDate>
-            </KanbanInfo>
-          ),
+            </Container>
+            {kanbanList.map(
+              ({ projectId, sequenceId, name, description, registerDate }) => (
+                <KanbanInfo key={sequenceId}>
+                  <Link href={`/projects/${projectId}/kanbans/${sequenceId}`}>
+                    <KanbanName>{name}</KanbanName>
+                  </Link>
+                  <KanbanDescription>{description}</KanbanDescription>
+                  <RegisterDate>{getDateString(registerDate)}</RegisterDate>
+                </KanbanInfo>
+              ),
+            )}
+          </>
+        ) : (
+          <EmptyKanban>
+            <div style={{ fontSize: "24px", marginBottom: "12px" }}>
+              No kanbans in this project!
+            </div>
+            <div style={{ fontSize: "18px", marginBottom: "25px" }}>
+              Create your first kanban
+            </div>
+            <Link href={`/projects/${id}/kanbans/new`}>
+              <SuccessButton style={{ width: "120px" }}>
+                New Kanban
+              </SuccessButton>
+            </Link>
+          </EmptyKanban>
         )}
       </ContainerXL>
     </>
