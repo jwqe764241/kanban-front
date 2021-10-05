@@ -55,10 +55,9 @@ const RegisterDate = styled.div`
 const EmptyKanban = styled.div`
   margin-top: 60px;
   text-align: center;
-
+  color: #3e3e3e;
   & > * {
     font-weight: 500;
-    color: #3e3e3e;
   }
 `;
 
