@@ -2,7 +2,9 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 const HeaderContainer = styled.div`
-  margin-bottom: 40px;
+  border-bottom: 1px solid #e1e4e8;
+  padding-bottom: 20px;
+  margin-bottom: 25px;
 `;
 
 const Title = styled.div`
