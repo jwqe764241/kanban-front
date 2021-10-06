@@ -126,6 +126,35 @@ const createRequester = (inst, dispatch, refreshToken) => {
       });
       return res;
     },
+    patch: async (url, data, token, option) => {
+      let err;
+      // try request.
+      try {
+        const res = await inst.patch(url, data, {
+          ...option,
+          headers: { Authorization: token },
+        });
+        return res;
+      } catch (e) {
+        err = e;
+      }
+
+      // if err status is 401, update access token
+      let updatedToken;
+      const errRes = err.response;
+      if (errRes && errRes.status === 401) {
+        updatedToken = await updateAccessToken(inst, dispatch, refreshToken);
+      } else {
+        throw err;
+      }
+
+      // retry with updated access token
+      const res = await inst.patch(url, data, {
+        ...option,
+        headers: { Authorization: updatedToken },
+      });
+      return res;
+    },
   };
 };
 

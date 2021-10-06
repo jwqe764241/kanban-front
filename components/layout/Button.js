@@ -55,7 +55,20 @@ const SuccessButton = styled(Button)`
   }
 `;
 
-const DangerButton = undefined;
+const DangerButton = styled(Button)`
+  color: #fff;
+  background-color: #dc3545;
+
+  &:hover {
+    color: #fff;
+    background-color: #be3241;
+  }
+
+  &:disabled {
+    background-color: #a82e3a;
+    cursor: default;
+  }
+`;
 
 const WarningButton = undefined;
 

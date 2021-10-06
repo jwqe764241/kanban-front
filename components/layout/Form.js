@@ -1,6 +1,15 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
+const HorizontalRule = styled.hr`
+  height: 0;
+  margin: 15px 0;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #e1e4e8; ;
+`;
+
 const Label = styled.label`
   display: ${(props) => (props.block ? "block" : "inline-block")};
   font-size: 14px;
@@ -98,4 +107,4 @@ TextArea.defaultProps = {
   name: undefined,
 };
 
-export { InputWrap, Label, Input, TextArea };
+export { HorizontalRule, InputWrap, Label, Input, TextArea };
