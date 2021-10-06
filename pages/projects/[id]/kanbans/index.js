@@ -1,55 +1,33 @@
+import { useRef } from "react";
 import { connect } from "react-redux";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import Link from "next/link";
 import wrapper from "core/store";
-import { parseCookie, getDateString } from "core/utils";
+import { parseCookie } from "core/utils";
 import axios, { createRequester } from "core/apiAxios";
 
 import ProjectHeader from "components/project/ProjectHeader";
+import KanbanListItem from "components/kanban/KanbanListItem";
 import { ContainerXL } from "components/layout/Container";
 import { SuccessButton } from "components/layout/Button";
 
-const Container = styled.div`
+const NewKanbanButton = ({ projectId }) => {
+  return (
+    <Link href={`/projects/${projectId}/kanbans/new`}>
+      <SuccessButton style={{ width: "120px" }}>New Kanban</SuccessButton>
+    </Link>
+  );
+};
+
+NewKanbanButton.propTypes = {
+  projectId: PropTypes.string.isRequired,
+};
+
+const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
-`;
-
-const KanbanInfo = styled.div`
-  padding: 24px 0px;
-  border-bottom: 1px solid #e1e4e8;
-  color: #212427;
-
-  &:first-child {
-    padding-top: 0px;
-  }
-`;
-
-const KanbanName = styled.div`
-  font-size: 16px;
-  font-weight: 500;
-  color: #2455e7;
-  margin-bottom: 10px;
-  cursor: pointer;
-
-  &: hover {
-    text-decoration: underline;
-  }
-`;
-
-const KanbanDescription = styled.div`
-  font-size: 14px;
-  font-weight: 400;
-  margin-bottom: 20px;
-  color: #484848;
-`;
-
-const RegisterDate = styled.div`
-  font-size: 12px;
-  font-weight: 300;
-  margin-top: 10px;
-  color: #6a737d;
 `;
 
 const EmptyKanban = styled.div`
@@ -59,11 +37,22 @@ const EmptyKanban = styled.div`
   & > * {
     font-weight: 500;
   }
+
+  & > div:nth-child(1) {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  & > div:nth-child(2) {
+    font-size: 18px;
+    margin-bottom: 25px;
+  }
 `;
 
 const KanbanList = ({ project, kanbanList }) => {
   const router = useRouter();
   const { id } = router.query;
+  const ref = useRef();
 
   return (
     <>
@@ -71,39 +60,23 @@ const KanbanList = ({ project, kanbanList }) => {
       <ContainerXL>
         {kanbanList && kanbanList.length > 0 ? (
           <>
-            <Container>
+            <ButtonContainer>
               <div />
-              <Link href={`/projects/${id}/kanbans/new`}>
-                <SuccessButton style={{ width: "120px" }}>
-                  New Kanban
-                </SuccessButton>
-              </Link>
-            </Container>
-            {kanbanList.map(
-              ({ projectId, sequenceId, name, description, registerDate }) => (
-                <KanbanInfo key={sequenceId}>
-                  <Link href={`/projects/${projectId}/kanbans/${sequenceId}`}>
-                    <KanbanName>{name}</KanbanName>
-                  </Link>
-                  <KanbanDescription>{description}</KanbanDescription>
-                  <RegisterDate>{getDateString(registerDate)}</RegisterDate>
-                </KanbanInfo>
-              ),
-            )}
+              <NewKanbanButton projectId={id} />
+            </ButtonContainer>
+            {kanbanList.map((kanban) => (
+              <KanbanListItem
+                key={kanban.sequenceId}
+                kanban={kanban}
+                innerRef={ref}
+              />
+            ))}
           </>
         ) : (
           <EmptyKanban>
-            <div style={{ fontSize: "24px", marginBottom: "12px" }}>
-              No kanbans in this project!
-            </div>
-            <div style={{ fontSize: "18px", marginBottom: "25px" }}>
-              Create your first kanban
-            </div>
-            <Link href={`/projects/${id}/kanbans/new`}>
-              <SuccessButton style={{ width: "120px" }}>
-                New Kanban
-              </SuccessButton>
-            </Link>
+            <div>No kanbans in this project!</div>
+            <div>Create your first kanban</div>
+            <NewKanbanButton projectId={id} />
           </EmptyKanban>
         )}
       </ContainerXL>
