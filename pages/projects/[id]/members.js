@@ -57,7 +57,7 @@ const Members = ({ project, memberList, invitedUserList }) => {
         token,
       );
       if (response.status === 200) {
-        setInviteUserOpen(false);
+        setInvitedUsers((oldArray) => [...oldArray, response.data]);
       }
     } catch (e) {
       const { response } = e;
@@ -65,6 +65,8 @@ const Members = ({ project, memberList, invitedUserList }) => {
         alert("User was already invited");
       }
     }
+
+    setInviteUserOpen(false);
   };
 
   const onRemoveMemberClick = async (userId) => {
