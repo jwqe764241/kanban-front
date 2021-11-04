@@ -15,9 +15,10 @@ const getAccessToken = async (inst, refreshToken) => {
   };
 
   try {
-    const response = await inst.post("auth/refresh-access-token", null, option);
+    const response = await inst.get("/auth/access-token", option);
     if (response.status === 200) {
-      return response.data;
+      const { token } = response.data;
+      return token;
     }
   } catch (e) {}
 
