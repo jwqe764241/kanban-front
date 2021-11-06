@@ -82,7 +82,8 @@ function Login() {
       });
 
       if (response.status === 200) {
-        dispatch({ type: "UPDATE_TOKEN", payload: `${response.data}` });
+        const { token } = response.data;
+        dispatch({ type: "UPDATE_TOKEN", payload: `${token}` });
         router.push("/");
       }
     } catch (e) {
