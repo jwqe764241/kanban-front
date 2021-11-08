@@ -3,7 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 const MenuContainer = styled.div`
-  margin-top: 40px;
+  margin-top: 20px;
 `;
 
 const MenuItem = styled.span`

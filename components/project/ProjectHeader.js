@@ -5,14 +5,14 @@ import { getDateString } from "core/utils";
 import ProjectMenu from "components/project/ProjectMenu";
 
 const ProjectInfo = styled.div`
-  padding: 40px 32px 20px 32px;
+  padding: 25px 32px 20px 32px;
   border-bottom: 1px solid #e1e4e8;
   color: #212427;
   background-color: #fafbfc;
 `;
 
 const NameWrap = styled.div`
-  padding-bottom: 20px;
+  padding-bottom: 15px;
 `;
 
 const Name = styled.span`
