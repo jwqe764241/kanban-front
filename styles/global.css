@@ -81,6 +81,7 @@ html * {
 }
 
 html,
-body {
+body,
+div#__next {
   height: 100%;
 }
