@@ -22,7 +22,7 @@ const Name = styled.span`
 `;
 
 const CreatedDate = styled.span`
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
   color: #4f4f4f;
 `;
