@@ -74,7 +74,7 @@ const Message = styled.div`
   font-weight: 400;
 `;
 
-const Buttons = styled.div`
+const ButtonContainer = styled.div`
   padding: 0px 20px 15px 20px;
   display: flex;
   justify-content: flex-end;
@@ -85,7 +85,7 @@ const Alert = ({ show, setShow, title, message, innerRef }) => {
     <Modal show={show} setShow={setShow} innerRef={innerRef}>
       <Title>{title}</Title>
       <Message>{message}</Message>
-      <Buttons>
+      <ButtonContainer>
         <SecondaryButton
           style={{ width: "70px", marginRight: "10px" }}
           onClick={() => {
@@ -94,7 +94,7 @@ const Alert = ({ show, setShow, title, message, innerRef }) => {
         >
           OK
         </SecondaryButton>
-      </Buttons>
+      </ButtonContainer>
     </Modal>
   );
 };
@@ -118,7 +118,7 @@ const Confirm = ({ show, setShow, title, message, onAccept, innerRef }) => {
     <Modal show={show} setShow={setShow} innerRef={innerRef}>
       <Title>{title}</Title>
       <Message>{message}</Message>
-      <Buttons>
+      <ButtonContainer>
         <SecondaryButton
           style={{ width: "80px", marginRight: "5px" }}
           onClick={() => {
@@ -130,7 +130,7 @@ const Confirm = ({ show, setShow, title, message, onAccept, innerRef }) => {
         <SuccessButton style={{ width: "70px" }} onClick={onAccept}>
           OK
         </SuccessButton>
-      </Buttons>
+      </ButtonContainer>
     </Modal>
   );
 };
@@ -150,4 +150,4 @@ Confirm.defaultProps = {
   innerRef: null,
 };
 
-export { Modal, Title, Buttons, Alert, Confirm };
+export { Modal, Title, Alert, Confirm };

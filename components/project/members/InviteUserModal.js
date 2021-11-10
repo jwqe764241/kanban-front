@@ -2,7 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-import { Modal, Buttons } from "components/layout/Modal";
+import { Modal } from "components/layout/Modal";
 import { SuccessButton } from "components/layout/Button";
 import { Input } from "components/layout/Form";
 import SuggestionSelect from "components/project/members/SuggestionSelect";
@@ -17,6 +17,12 @@ const Title = styled.div`
 
 const Container = styled.div`
   padding: 20px;
+`;
+
+const ButtonContainer = styled.div`
+  padding: 0px 20px 15px 20px;
+  display: flex;
+  justify-content: flex-end;
 `;
 
 const InviteUserModal = ({ show, setShow, onSuggest, onInvite, innerRef }) => {
@@ -75,7 +81,7 @@ const InviteUserModal = ({ show, setShow, onSuggest, onInvite, innerRef }) => {
           </>
         )}
       </Container>
-      <Buttons>
+      <ButtonContainer>
         <SuccessButton
           onClick={onInviteClick}
           disabled={!!(selectedUser == null || isInviting)}
@@ -86,7 +92,7 @@ const InviteUserModal = ({ show, setShow, onSuggest, onInvite, innerRef }) => {
               : "Invite a member to project"
             : "Select a member to invite"}
         </SuccessButton>
-      </Buttons>
+      </ButtonContainer>
     </Modal>
   );
 };
