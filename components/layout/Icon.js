@@ -15,7 +15,8 @@ export const DropdownIcon = () => {
   );
 };
 
-export const RemoveIcon = ({style}) => {
+// eslint-disable-next-line react/prop-types
+export const RemoveIcon = ({ style }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
