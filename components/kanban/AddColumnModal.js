@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import { Modal } from "components/layout/Modal";
-import { SuccessButton, RemoveButton } from "components/layout/Button";
+import { SuccessButton, NoStyleButton } from "components/layout/Button";
 import { Input, Label } from "components/layout/Form";
+import { RemoveIcon } from "components/layout/Icon";
 
 const TitleContainer = styled.div`
   padding: 20px 15px;
@@ -23,6 +24,22 @@ const Title = styled.div`
 const Container = styled.div`
   padding: 0px 15px;
 `;
+
+const RemoveButton = ({ onClick }) => {
+  return (
+    <NoStyleButton
+      style={{ float: "right", padding: 0 }}
+      type="button"
+      onClick={onClick}
+    >
+      <RemoveIcon style={{ verticalAlign: "baseline" }} />
+    </NoStyleButton>
+  );
+};
+
+RemoveButton.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};
 
 const AddColumnModal = ({ show, setShow, innerRef, onCreate }) => {
   const [isCreating, setCreating] = useState(false);
@@ -61,7 +78,7 @@ const AddColumnModal = ({ show, setShow, innerRef, onCreate }) => {
     <Modal show={show} setShow={setShow} innerRef={innerRef}>
       <TitleContainer>
         <Title>Add column</Title>
-        <RemoveButton style={{ float: "right" }} onClick={closeModal} />
+        <RemoveButton onClick={closeModal} />
       </TitleContainer>
       <Container>
         <div style={{ margin: "15px 0px" }}>

@@ -3,7 +3,10 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Draggable } from "react-beautiful-dnd";
 
-const Wrap = styled.div`
+import { DropdownMenu, DropdownButton } from "components/layout/Dropdown";
+import { DropdownIcon } from "components/layout/Icon";
+
+const ColumnContainer = styled.div`
   display: inline-block;
   width: 350px;
   border: 1px solid #d8dee4;
@@ -12,7 +15,7 @@ const Wrap = styled.div`
   margin-right: 20px;
 `;
 
-const ColumnMenu = styled.div`
+const TitleContainer = styled.div`
   padding: 15px 10px;
   font-size: 14px;
   font-weight: 500;
@@ -27,18 +30,28 @@ const Title = styled.div`
   display: inline-block;
 `;
 
-const TaskColumn = ({ taskColumn, index, tasks }) => {
+const DropdownWrap = styled.span`
+  cursor: pointer;
+  float: right;
+`;
+
+const TaskColumn = ({ taskColumn, index, tasks, innerRef }) => {
   const count = tasks.length;
 
   return (
     <Draggable draggableId={taskColumn.id.toString()} index={index}>
       {(provided) => (
-        <Wrap {...provided.draggableProps} ref={provided.innerRef}>
-          <ColumnMenu {...provided.dragHandleProps}>
+        <ColumnContainer {...provided.draggableProps} ref={provided.innerRef}>
+          <TitleContainer {...provided.dragHandleProps}>
             <Count>{count}</Count>
             <Title>{taskColumn.name}</Title>
-          </ColumnMenu>
-        </Wrap>
+            <DropdownWrap>
+              <DropdownMenu icon={<DropdownIcon />} innerRef={innerRef}>
+                <DropdownButton type="button">Delete</DropdownButton>
+              </DropdownMenu>
+            </DropdownWrap>
+          </TitleContainer>
+        </ColumnContainer>
       )}
     </Draggable>
   );
@@ -53,6 +66,7 @@ TaskColumn.propTypes = {
   }).isRequired,
   index: PropTypes.number.isRequired,
   tasks: PropTypes.arrayOf(PropTypes.object),
+  innerRef: PropTypes.object.isRequired,
 };
 
 TaskColumn.defaultProps = {

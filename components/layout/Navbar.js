@@ -5,11 +5,42 @@ import styled from "styled-components";
 import axios from "core/apiAxios";
 import PropTypes from "prop-types";
 
-import {
-  DropdownButton,
-  ProjectDropdown,
-  UserDropdown,
-} from "components/layout/Dropdown";
+import { DropdownMenu, DropdownButton } from "components/layout/Dropdown";
+import { ProjectMenuIcon, UserMenuIcon } from "components/layout/Icon";
+
+const ProjectDropdown = ({ innerRef, children }) => {
+  return (
+    <DropdownMenu icon={<ProjectMenuIcon />} innerRef={innerRef}>
+      {children}
+    </DropdownMenu>
+  );
+};
+
+ProjectDropdown.propTypes = {
+  innerRef: PropTypes.object.isRequired,
+  children: PropTypes.node,
+};
+
+ProjectDropdown.defaultProps = {
+  children: <></>,
+};
+
+const UserDropdown = ({ innerRef, children }) => {
+  return (
+    <DropdownMenu icon={<UserMenuIcon />} innerRef={innerRef}>
+      {children}
+    </DropdownMenu>
+  );
+};
+
+UserDropdown.propTypes = {
+  innerRef: PropTypes.object.isRequired,
+  children: PropTypes.node,
+};
+
+UserDropdown.defaultProps = {
+  children: <></>,
+};
 
 const Container = styled.div`
   padding: 16px 32px;
