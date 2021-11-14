@@ -12,7 +12,7 @@ import {
   Droppable,
   resetServerContext,
 } from "react-beautiful-dnd";
-import { Helper } from "core/kanbanUtils";
+import { KanbanData } from "core/kanbanUtils";
 
 import ProjectHeader from "components/project/ProjectHeader";
 import TaskColumn from "components/kanban/TaskColumn";
@@ -68,7 +68,7 @@ const EmptyColumn = styled.div`
 const Kanban = ({ project, kanban, taskColumns }) => {
   const ref = useRef();
   const client = useRef(null);
-  const helper = useRef(null);
+  const kanbanData = useRef(null);
   const { token } = useSelector((state) => state);
   const dispatch = useDispatch();
   const requester = createRequester(axios, dispatch);
@@ -80,8 +80,8 @@ const Kanban = ({ project, kanban, taskColumns }) => {
   resetServerContext();
 
   useEffect(() => {
-    helper.current = Helper(taskColumns);
-    setColumns(helper.current.get());
+    kanbanData.current = KanbanData(taskColumns);
+    setColumns(kanbanData.current.get());
 
     if (!authToken) {
       const getAuthToken = async () => {
@@ -114,8 +114,8 @@ const Kanban = ({ project, kanban, taskColumns }) => {
           `/topic/kanban/${kanban.sequenceId}`,
           (message) => {
             const action = JSON.parse(message.body);
-            helper.current.applyAction(action);
-            setColumns(helper.current.get());
+            kanbanData.current.applyAction(action);
+            setColumns(kanbanData.current.get());
           },
         );
       },

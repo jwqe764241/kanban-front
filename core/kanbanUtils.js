@@ -29,7 +29,7 @@ export function getOrderedColumn(columns) {
   return ordered;
 }
 
-export const Helper = (initColumns) => {
+export const KanbanData = (initColumns) => {
   const columns = {};
   initColumns.forEach((value) => {
     columns[value.id] = value;
