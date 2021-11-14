@@ -41,7 +41,7 @@ RemoveButton.propTypes = {
   onClick: PropTypes.func.isRequired,
 };
 
-const AddColumnModal = ({ show, setShow, innerRef, onCreate }) => {
+const AddColumnModal = ({ show, setShow, onCreate }) => {
   const [isCreating, setCreating] = useState(false);
   const [data, setData] = useState({ name: "" });
   const [errors, setErrors] = useState();
@@ -63,19 +63,22 @@ const AddColumnModal = ({ show, setShow, innerRef, onCreate }) => {
     const response = await onCreate(data);
     setCreating(false);
 
-    if (response.status === 409) {
+    const { status } = response;
+    if (status === 201) {
+      setShow(false);
+    } else if (status === 409) {
       setErrors({
         name: {
           message: "중복된 컬럼 이름입니다",
         },
       });
-    } else if (response.status === 400) {
+    } else if (status === 400) {
       setErrors(response.data.data);
     }
   };
 
   return (
-    <Modal show={show} setShow={setShow} innerRef={innerRef}>
+    <Modal show={show} setShow={setShow}>
       <TitleContainer>
         <Title>Add column</Title>
         <RemoveButton onClick={closeModal} />
@@ -109,7 +112,6 @@ const AddColumnModal = ({ show, setShow, innerRef, onCreate }) => {
 AddColumnModal.propTypes = {
   show: PropTypes.bool.isRequired,
   setShow: PropTypes.func.isRequired,
-  innerRef: PropTypes.object.isRequired,
   onCreate: PropTypes.func.isRequired,
 };
 

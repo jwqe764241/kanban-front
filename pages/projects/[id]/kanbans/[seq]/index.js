@@ -12,11 +12,12 @@ import {
   Droppable,
   resetServerContext,
 } from "react-beautiful-dnd";
-import { getOrderedColumn } from "core/kanbanUtils";
+import { Helper } from "core/kanbanUtils";
 
 import ProjectHeader from "components/project/ProjectHeader";
 import TaskColumn from "components/kanban/TaskColumn";
 import { NoStyleButton, SuccessButton } from "components/layout/Button";
+import { ModalPortal } from "components/layout/Modal";
 import AddColumnModal from "components/kanban/AddColumnModal";
 
 const KanbanInfo = styled.div`
@@ -67,6 +68,7 @@ const EmptyColumn = styled.div`
 const Kanban = ({ project, kanban, taskColumns }) => {
   const ref = useRef();
   const client = useRef(null);
+  const helper = useRef(null);
   const { token } = useSelector((state) => state);
   const dispatch = useDispatch();
   const requester = createRequester(axios, dispatch);
@@ -78,7 +80,8 @@ const Kanban = ({ project, kanban, taskColumns }) => {
   resetServerContext();
 
   useEffect(() => {
-    setColumns(getOrderedColumn(taskColumns));
+    helper.current = Helper(taskColumns);
+    setColumns(helper.current.get());
 
     if (!authToken) {
       const getAuthToken = async () => {
@@ -87,8 +90,7 @@ const Kanban = ({ project, kanban, taskColumns }) => {
             withCredentials: true,
           });
           if (result.status === 200) {
-            const { token } = result.data;
-            setAuthToken(token);
+            setAuthToken(result.data.token);
           }
         } catch (e) {
           alert("can't get token for websocket");
@@ -111,7 +113,9 @@ const Kanban = ({ project, kanban, taskColumns }) => {
         client.current.subscribe(
           `/topic/kanban/${kanban.sequenceId}`,
           (message) => {
-            console.log(`message arrived : ${message.body}`);
+            const action = JSON.parse(message.body);
+            helper.current.applyAction(action);
+            setColumns(helper.current.get());
           },
         );
       },
@@ -161,7 +165,12 @@ const Kanban = ({ project, kanban, taskColumns }) => {
                   {...provided.droppableProps}
                 >
                   {columns.map((data, index) => (
-                    <TaskColumn key={data.id} taskColumn={data} index={index} />
+                    <TaskColumn
+                      key={data.id}
+                      taskColumn={data}
+                      index={index}
+                      innerRef={ref}
+                    />
                   ))}
                   {provided.placeholder}
                   <AddColumnButton onClick={openAddColumnModal}>
@@ -183,16 +192,13 @@ const Kanban = ({ project, kanban, taskColumns }) => {
           </EmptyColumn>
         )}
       </KanbanContainer>
-      {isAddColumnOpen ? (
+      <ModalPortal>
         <AddColumnModal
-          innerRef={ref}
-          show
+          show={isAddColumnOpen}
           setShow={setAddColumnOpen}
           onCreate={onColumnCreate}
         />
-      ) : (
-        <></>
-      )}
+      </ModalPortal>
     </>
   );
 };

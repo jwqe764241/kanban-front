@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { connect, useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import styled from "styled-components";
@@ -10,6 +10,7 @@ import { ContainerXL } from "components/layout/Container";
 import { SuccessButton } from "components/layout/Button";
 import ProjectHeader from "components/project/ProjectHeader";
 import UserList from "components/project/members/UserList";
+import { ModalPortal } from "components/layout/Modal";
 import InviteUserModal from "components/project/members/InviteUserModal";
 
 const Container = styled.div`
@@ -28,7 +29,6 @@ const ListWrap = styled.div`
 `;
 
 const Members = ({ project, memberList, invitedUserList }) => {
-  const ref = useRef();
   const { token } = useSelector((state) => state);
   const dispatch = useDispatch();
   const requester = createRequester(axios, dispatch);
@@ -151,17 +151,14 @@ const Members = ({ project, memberList, invitedUserList }) => {
           </ListWrap>
         </ListContainer>
       </ContainerXL>
-      {isInviteUserOpen ? (
+      <ModalPortal>
         <InviteUserModal
-          innerRef={ref}
-          show
+          show={isInviteUserOpen}
           setShow={setInviteUserOpen}
           onSuggest={onSuggest}
           onInvite={onInvite}
         />
-      ) : (
-        <></>
-      )}
+      </ModalPortal>
     </>
   );
 };

@@ -1,10 +1,12 @@
-import React from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Draggable } from "react-beautiful-dnd";
 
 import { DropdownMenu, DropdownButton } from "components/layout/Dropdown";
 import { DropdownIcon } from "components/layout/Icon";
+import DeleteColumnModal from "components/kanban/DeleteColumnModal";
+import { ModalPortal } from "components/layout/Modal";
 
 const ColumnContainer = styled.div`
   display: inline-block;
@@ -37,23 +39,44 @@ const DropdownWrap = styled.span`
 
 const TaskColumn = ({ taskColumn, index, tasks, innerRef }) => {
   const count = tasks.length;
+  const [isDeleteColumnOpen, setDeleteColumnOpen] = useState(false);
+
+  const openDeleteColumnModal = () => {
+    setDeleteColumnOpen(true);
+  };
+
+  const onDelete = async () => {
+    alert("asdasd");
+  };
 
   return (
-    <Draggable draggableId={taskColumn.id.toString()} index={index}>
-      {(provided) => (
-        <ColumnContainer {...provided.draggableProps} ref={provided.innerRef}>
-          <TitleContainer {...provided.dragHandleProps}>
-            <Count>{count}</Count>
-            <Title>{taskColumn.name}</Title>
-            <DropdownWrap>
-              <DropdownMenu icon={<DropdownIcon />} innerRef={innerRef}>
-                <DropdownButton type="button">Delete</DropdownButton>
-              </DropdownMenu>
-            </DropdownWrap>
-          </TitleContainer>
-        </ColumnContainer>
-      )}
-    </Draggable>
+    <>
+      <Draggable draggableId={taskColumn.id.toString()} index={index}>
+        {(provided) => (
+          <ColumnContainer {...provided.draggableProps} ref={provided.innerRef}>
+            <TitleContainer {...provided.dragHandleProps}>
+              <Count>{count}</Count>
+              <Title>{taskColumn.name}</Title>
+              <DropdownWrap>
+                <DropdownMenu icon={<DropdownIcon />} innerRef={innerRef}>
+                  <DropdownButton type="button" onClick={openDeleteColumnModal}>
+                    Delete Column
+                  </DropdownButton>
+                </DropdownMenu>
+              </DropdownWrap>
+            </TitleContainer>
+          </ColumnContainer>
+        )}
+      </Draggable>
+      <ModalPortal>
+        <DeleteColumnModal
+          show={isDeleteColumnOpen}
+          setShow={setDeleteColumnOpen}
+          onDelete={onDelete}
+          columnName={taskColumn.name}
+        />
+      </ModalPortal>
+    </>
   );
 };
 

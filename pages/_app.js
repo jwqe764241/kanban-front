@@ -24,6 +24,7 @@ function MyApp({ Component, pageProps }) {
   return excludePath.has(pathname) ? (
     <>
       <Component {...pageProps} />
+      <div id="modal-root" />
     </>
   ) : (
     <>
@@ -31,6 +32,7 @@ function MyApp({ Component, pageProps }) {
         <Navbar username={auth?.username}/>
         <Component {...pageProps} />
       </Layout>
+      <div id="modal-root" />
     </>
   )
 }

@@ -1,12 +1,28 @@
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
+import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import { SuccessButton, SecondaryButton } from "components/layout/Button";
 
+const ModalPortal = ({ children }) => {
+  const [isBrowser, setIsBrowser] = useState(false);
+
+  useEffect(() => {
+    setIsBrowser(true);
+  }, []);
+
+  if (isBrowser) {
+    const modalRoot = document.getElementById("modal-root");
+    return ReactDOM.createPortal(children, modalRoot);
+  }
+
+  return null;
+};
+
 const Background = styled.div`
   position: fixed;
-  z-index: 1;
+  z-index: 9999;
   left: 0;
   top: 0;
   width: 100%;
@@ -23,10 +39,12 @@ const Container = styled.div`
   border-radius: 6px;
 `;
 
-const Modal = ({ show, setShow, children, innerRef }) => {
+const Modal = ({ show, setShow, children }) => {
+  const ref = useRef();
+
   useEffect(() => {
     const handleClick = (e) => {
-      if (show && innerRef.current && !innerRef.current.contains(e.target)) {
+      if (show && ref.current && !ref.current.contains(e.target)) {
         setShow(false);
       }
     };
@@ -42,7 +60,7 @@ const Modal = ({ show, setShow, children, innerRef }) => {
 
   return (
     <Background>
-      <Container ref={innerRef}>{children}</Container>
+      <Container ref={ref}>{children}</Container>
     </Background>
   );
 };
@@ -51,12 +69,10 @@ Modal.propTypes = {
   show: PropTypes.bool.isRequired,
   setShow: PropTypes.func.isRequired,
   children: PropTypes.node,
-  innerRef: PropTypes.object,
 };
 
 Modal.defaultProps = {
   children: <></>,
-  innerRef: null,
 };
 
 const Title = styled.div`
@@ -150,4 +166,4 @@ Confirm.defaultProps = {
   innerRef: null,
 };
 
-export { Modal, Title, Alert, Confirm };
+export { ModalPortal, Modal, Title, Alert, Confirm };

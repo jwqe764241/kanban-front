@@ -3,7 +3,7 @@ export function getOrderedColumn(columns) {
     return [];
   }
 
-  if (columns.length == 1) {
+  if (columns.length === 1) {
     return [columns[0]];
   }
 
@@ -28,3 +28,32 @@ export function getOrderedColumn(columns) {
 
   return ordered;
 }
+
+export const Helper = (initColumns) => {
+  const columns = {};
+  initColumns.forEach((value) => {
+    columns[value.id] = value;
+  });
+
+  const applyColumnAction = (actionType, payload) => {
+    if (actionType === "Insert") {
+      columns[payload.id] = payload;
+    }
+  };
+
+  const applyTaskAction = (actionType, payload) => {};
+
+  return {
+    get: () => {
+      return getOrderedColumn(Object.values(columns));
+    },
+    applyAction: (action) => {
+      const { target, actionType, payload } = action;
+      if (target === "Column") {
+        applyColumnAction(actionType, payload);
+      } else if (target === "Task") {
+        applyTaskAction(actionType, payload);
+      }
+    },
+  };
+};

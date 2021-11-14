@@ -25,7 +25,7 @@ const ButtonContainer = styled.div`
   justify-content: flex-end;
 `;
 
-const InviteUserModal = ({ show, setShow, onSuggest, onInvite, innerRef }) => {
+const InviteUserModal = ({ show, setShow, onSuggest, onInvite }) => {
   const [suggestionUsers, setSuggestionUsers] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isInviting, setInviting] = useState(false);
@@ -57,7 +57,7 @@ const InviteUserModal = ({ show, setShow, onSuggest, onInvite, innerRef }) => {
   };
 
   return (
-    <Modal show={show} setShow={setShow} innerRef={innerRef}>
+    <Modal show={show} setShow={setShow}>
       <Title>Invite a member</Title>
       <Container>
         {selectedUser ? (
@@ -102,7 +102,6 @@ InviteUserModal.propTypes = {
   setShow: PropTypes.func.isRequired,
   onSuggest: PropTypes.func.isRequired,
   onInvite: PropTypes.func.isRequired,
-  innerRef: PropTypes.object.isRequired,
 };
 
 export default InviteUserModal;
