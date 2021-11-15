@@ -124,7 +124,7 @@ const Kanban = ({ project, kanban }) => {
       },
       onConnect: () => {
         client.current.subscribe(
-          `/topic/kanban/${kanban.sequenceId}`,
+          `/topic/project/${project.id}/kanban/${kanban.sequenceId}`,
           (message) => {
             const action = JSON.parse(message.body);
             kanbanData.current.applyAction(action);
