@@ -38,6 +38,12 @@ export const KanbanData = (initColumns) => {
   const applyColumnAction = (actionType, payload) => {
     if (actionType === "Insert") {
       columns[payload.id] = payload;
+    } else if (actionType === "Delete") {
+      const { deletedColumnId, updatedColumn } = payload;
+      delete columns[deletedColumnId];
+      if (updatedColumn) {
+        columns[updatedColumn.id] = updatedColumn;
+      }
     }
   };
 

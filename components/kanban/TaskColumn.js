@@ -37,16 +37,12 @@ const DropdownWrap = styled.span`
   float: right;
 `;
 
-const TaskColumn = ({ taskColumn, index, tasks, innerRef }) => {
+const TaskColumn = ({ taskColumn, index, tasks, onDeleteColumn, innerRef }) => {
   const count = tasks.length;
   const [isDeleteColumnOpen, setDeleteColumnOpen] = useState(false);
 
   const openDeleteColumnModal = () => {
     setDeleteColumnOpen(true);
-  };
-
-  const onDelete = async () => {
-    alert("asdasd");
   };
 
   return (
@@ -72,8 +68,8 @@ const TaskColumn = ({ taskColumn, index, tasks, innerRef }) => {
         <DeleteColumnModal
           show={isDeleteColumnOpen}
           setShow={setDeleteColumnOpen}
-          onDelete={onDelete}
-          columnName={taskColumn.name}
+          taskColumn={taskColumn}
+          onDelete={onDeleteColumn}
         />
       </ModalPortal>
     </>
@@ -89,6 +85,7 @@ TaskColumn.propTypes = {
   }).isRequired,
   index: PropTypes.number.isRequired,
   tasks: PropTypes.arrayOf(PropTypes.object),
+  onDeleteColumn: PropTypes.func.isRequired,
   innerRef: PropTypes.object.isRequired,
 };
 

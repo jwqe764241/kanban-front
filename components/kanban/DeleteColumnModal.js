@@ -44,7 +44,7 @@ RemoveButton.propTypes = {
   onClick: PropTypes.func.isRequired,
 };
 
-const DeleteColumnModal = ({ show, setShow, onDelete, columnName }) => {
+const DeleteColumnModal = ({ show, setShow, taskColumn, onDelete }) => {
   const [isDeleting, setDeleting] = useState(false);
 
   const closeModal = () => {
@@ -53,16 +53,13 @@ const DeleteColumnModal = ({ show, setShow, onDelete, columnName }) => {
 
   const onDeleteClick = async () => {
     setDeleting(true);
-    await onDelete();
-    setDeleting(false);
-
-    setShow(false);
+    await onDelete(taskColumn);
   };
 
   return (
     <Modal show={show} setShow={setShow}>
       <TitleContainer>
-        <Title>Delete {columnName}</Title>
+        <Title>Delete {taskColumn.name}</Title>
         <RemoveButton onClick={closeModal} />
       </TitleContainer>
       <Container>
@@ -92,8 +89,13 @@ const DeleteColumnModal = ({ show, setShow, onDelete, columnName }) => {
 DeleteColumnModal.propTypes = {
   show: PropTypes.bool.isRequired,
   setShow: PropTypes.func.isRequired,
+  taskColumn: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    prevId: PropTypes.number,
+    registerDate: PropTypes.string,
+  }).isRequired,
   onDelete: PropTypes.func.isRequired,
-  columnName: PropTypes.string.isRequired,
 };
 
 export default DeleteColumnModal;

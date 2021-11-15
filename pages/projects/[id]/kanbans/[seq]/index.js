@@ -65,7 +65,7 @@ const EmptyColumn = styled.div`
   }
 `;
 
-const Kanban = ({ project, kanban, taskColumns }) => {
+const Kanban = ({ project, kanban }) => {
   const ref = useRef();
   const client = useRef(null);
   const kanbanData = useRef(null);
@@ -80,8 +80,21 @@ const Kanban = ({ project, kanban, taskColumns }) => {
   resetServerContext();
 
   useEffect(() => {
-    kanbanData.current = KanbanData(taskColumns);
-    setColumns(kanbanData.current.get());
+    const getColumns = async () => {
+      try {
+        const response = await requester.get(
+          `/projects/${project.id}/kanbans/${kanban.sequenceId}/columns`,
+          token,
+        );
+        if (response.status === 200) {
+          kanbanData.current = KanbanData(response.data);
+          setColumns(kanbanData.current.get());
+        }
+      } catch (e) {
+        alert("can't get columns");
+      }
+    };
+    getColumns();
 
     if (!authToken) {
       const getAuthToken = async () => {
@@ -144,6 +157,19 @@ const Kanban = ({ project, kanban, taskColumns }) => {
     }
   };
 
+  const onDeleteColumn = async (taskColumn) => {
+    try {
+      const response = await requester.delete(
+        `/projects/${project.id}/kanbans/${kanban.sequenceId}/columns/${taskColumn.id}`,
+        token,
+      );
+      return response;
+    } catch (e) {
+      const { response } = e;
+      return response;
+    }
+  };
+
   return (
     <>
       <ProjectHeader project={project} activeMenu="kanbans" />
@@ -151,7 +177,7 @@ const Kanban = ({ project, kanban, taskColumns }) => {
         <KanbanName>{kanban.name}</KanbanName>
       </KanbanInfo>
       <KanbanContainer>
-        {taskColumns && taskColumns.length > 0 ? (
+        {columns && columns.length > 0 ? (
           <DragDropContext>
             <Droppable
               droppableId="all-columns"
@@ -169,6 +195,7 @@ const Kanban = ({ project, kanban, taskColumns }) => {
                       key={data.id}
                       taskColumn={data}
                       index={index}
+                      onDeleteColumn={onDeleteColumn}
                       innerRef={ref}
                     />
                   ))}
@@ -218,7 +245,6 @@ Kanban.propTypes = {
     description: PropTypes.string,
     registerDate: PropTypes.string,
   }).isRequired,
-  taskColumns: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
@@ -233,23 +259,16 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
     const { token } = store.getState();
     try {
-      const [projectResponse, kanbanResponse, taskColumnsResponse] =
-        await Promise.all([
-          requester.get(`/projects/${id}`, token),
-          requester.get(`/projects/${id}/kanbans/${seq}`, token),
-          requester.get(`/projects/${id}/kanbans/${seq}/columns`, token),
-        ]);
+      const [projectResponse, kanbanResponse] = await Promise.all([
+        requester.get(`/projects/${id}`, token),
+        requester.get(`/projects/${id}/kanbans/${seq}`, token),
+      ]);
 
-      if (
-        projectResponse.status === 200 &&
-        kanbanResponse.status === 200 &&
-        taskColumnsResponse.status === 200
-      ) {
+      if (projectResponse.status === 200 && kanbanResponse.status === 200) {
         return {
           props: {
             project: projectResponse.data,
             kanban: kanbanResponse.data,
-            taskColumns: taskColumnsResponse.data,
           },
         };
       }
