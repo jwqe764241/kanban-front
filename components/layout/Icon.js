@@ -33,18 +33,13 @@ export const RemoveIcon = ({ style }) => {
 };
 
 // eslint-disable-next-line react/prop-types
-const PlusIcon = ({ style }) => {
+export const PlusIcon = ({ style }) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      fill="white"
-      style={style}
-      className="bi bi-plus-lg"
-      viewBox="0 0 16 16"
-    >
-      <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z" />
+    <svg width="16" height="16" viewBox="0 0 16 16" version="1.1" style={style}>
+      <path
+        fillRule="evenodd"
+        d="M7.75 2a.75.75 0 01.75.75V7h4.25a.75.75 0 110 1.5H8.5v4.25a.75.75 0 11-1.5 0V8.5H2.75a.75.75 0 010-1.5H7V2.75A.75.75 0 017.75 2z"
+      />
     </svg>
   );
 };
@@ -80,7 +75,10 @@ export const ProjectMenuIcon = () => {
   return (
     <IconWrap>
       <PlusIcon
-        style={{ marginRight: "5px", display: "flex", alignItems: "center" }}
+        style={{
+          marginRight: "5px",
+          fill: "white",
+        }}
       />
       <CaretIcon />
     </IconWrap>

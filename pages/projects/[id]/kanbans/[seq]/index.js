@@ -16,6 +16,7 @@ import { KanbanData } from "core/kanbanUtils";
 
 import ProjectHeader from "components/project/ProjectHeader";
 import TaskColumn from "components/kanban/TaskColumn";
+import { PlusIcon } from "components/layout/Icon";
 import { NoStyleButton, SuccessButton } from "components/layout/Button";
 import { ModalPortal } from "components/layout/Modal";
 import AddColumnModal from "components/kanban/AddColumnModal";
@@ -38,20 +39,42 @@ const KanbanContainer = styled.div`
   color: #212427;
 `;
 
-const AddColumnButton = styled(NoStyleButton)`
+const DashedButton = styled(NoStyleButton)`
   width: 300px;
-  height: 120px;
+  display: inline-block;
   color: #5f5f5f;
   border: 1px solid #d8dee4;
   border-style: dashed;
   border-radius: 6px;
   font-size: 14px;
   font-weight: 500;
+  padding: 40px 0px;
 
   &:hover {
     text-decoration: underline;
   }
 `;
+
+const AddColumnButton = ({ onClick }) => {
+  return (
+    <div>
+      <DashedButton onClick={onClick}>
+        <PlusIcon
+          style={{
+            marginRight: "5px",
+            fill: "#5f5f5f",
+            verticalAlign: "text-bottom",
+          }}
+        />
+        Add column
+      </DashedButton>
+    </div>
+  );
+};
+
+AddColumnButton.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};
 
 const EmptyColumn = styled.div`
   width: 100%;
@@ -200,9 +223,7 @@ const Kanban = ({ project, kanban }) => {
                     />
                   ))}
                   {provided.placeholder}
-                  <AddColumnButton onClick={openAddColumnModal}>
-                    Add column
-                  </AddColumnButton>
+                  <AddColumnButton onClick={openAddColumnModal} />
                 </div>
               )}
             </Droppable>
