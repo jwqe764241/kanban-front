@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styled from "styled-components";
@@ -8,16 +7,11 @@ import PropTypes from "prop-types";
 import { DropdownMenu, DropdownButton } from "components/layout/Dropdown";
 import { ProjectMenuIcon, UserMenuIcon } from "components/layout/Icon";
 
-const ProjectDropdown = ({ innerRef, children }) => {
-  return (
-    <DropdownMenu icon={<ProjectMenuIcon />} innerRef={innerRef}>
-      {children}
-    </DropdownMenu>
-  );
+const ProjectDropdown = ({ children }) => {
+  return <DropdownMenu icon={<ProjectMenuIcon />}>{children}</DropdownMenu>;
 };
 
 ProjectDropdown.propTypes = {
-  innerRef: PropTypes.object.isRequired,
   children: PropTypes.node,
 };
 
@@ -25,16 +19,11 @@ ProjectDropdown.defaultProps = {
   children: <></>,
 };
 
-const UserDropdown = ({ innerRef, children }) => {
-  return (
-    <DropdownMenu icon={<UserMenuIcon />} innerRef={innerRef}>
-      {children}
-    </DropdownMenu>
-  );
+const UserDropdown = ({ children }) => {
+  return <DropdownMenu icon={<UserMenuIcon />}>{children}</DropdownMenu>;
 };
 
 UserDropdown.propTypes = {
-  innerRef: PropTypes.object.isRequired,
   children: PropTypes.node,
 };
 
@@ -111,7 +100,6 @@ const UserInfo = styled.div`
 `;
 
 function Navbar(props) {
-  const ref = useRef();
   const router = useRouter();
   const { username } = props;
 
@@ -138,12 +126,12 @@ function Navbar(props) {
         </Link>
         <Tools />
         <MenuContainer>
-          <ProjectDropdown innerRef={ref}>
+          <ProjectDropdown>
             <Link href="/new">
               <DropdownButton type="button">New Project</DropdownButton>
             </Link>
           </ProjectDropdown>
-          <UserDropdown innerRef={ref}>
+          <UserDropdown>
             <UserInfo>
               <div>Signed in as</div>
               <div>{username}</div>

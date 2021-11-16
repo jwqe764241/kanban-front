@@ -89,7 +89,6 @@ const EmptyColumn = styled.div`
 `;
 
 const Kanban = ({ project, kanban }) => {
-  const ref = useRef();
   const client = useRef(null);
   const kanbanData = useRef(null);
   const { token } = useSelector((state) => state);
@@ -219,7 +218,6 @@ const Kanban = ({ project, kanban }) => {
                       taskColumn={data}
                       index={index}
                       onDeleteColumn={onDeleteColumn}
-                      innerRef={ref}
                     />
                   ))}
                   {provided.placeholder}

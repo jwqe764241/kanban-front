@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { connect } from "react-redux";
 import { useRouter } from "next/router";
 import styled from "styled-components";
@@ -52,7 +51,6 @@ const EmptyKanban = styled.div`
 const KanbanList = ({ project, kanbanList }) => {
   const router = useRouter();
   const { id } = router.query;
-  const ref = useRef();
 
   return (
     <>
@@ -65,11 +63,7 @@ const KanbanList = ({ project, kanbanList }) => {
               <NewKanbanButton projectId={id} />
             </ButtonContainer>
             {kanbanList.map((kanban) => (
-              <KanbanListItem
-                key={kanban.sequenceId}
-                kanban={kanban}
-                innerRef={ref}
-              />
+              <KanbanListItem key={kanban.sequenceId} kanban={kanban} />
             ))}
           </>
         ) : (

@@ -37,7 +37,7 @@ const DropdownWrap = styled.span`
   float: right;
 `;
 
-const TaskColumn = ({ taskColumn, index, tasks, onDeleteColumn, innerRef }) => {
+const TaskColumn = ({ taskColumn, index, tasks, onDeleteColumn }) => {
   const count = tasks.length;
   const [isDeleteColumnOpen, setDeleteColumnOpen] = useState(false);
 
@@ -54,7 +54,7 @@ const TaskColumn = ({ taskColumn, index, tasks, onDeleteColumn, innerRef }) => {
               <Count>{count}</Count>
               <Title>{taskColumn.name}</Title>
               <DropdownWrap>
-                <DropdownMenu icon={<DropdownIcon />} innerRef={innerRef}>
+                <DropdownMenu icon={<DropdownIcon />}>
                   <DropdownButton type="button" onClick={openDeleteColumnModal}>
                     Delete Column
                   </DropdownButton>
@@ -86,7 +86,6 @@ TaskColumn.propTypes = {
   index: PropTypes.number.isRequired,
   tasks: PropTypes.arrayOf(PropTypes.object),
   onDeleteColumn: PropTypes.func.isRequired,
-  innerRef: PropTypes.object.isRequired,
 };
 
 TaskColumn.defaultProps = {

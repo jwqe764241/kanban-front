@@ -51,12 +51,12 @@ const DropdownWrap = styled.span`
   cursor: pointer;
 `;
 
-const KanbanListItem = ({ kanban, innerRef }) => {
+const KanbanListItem = ({ kanban }) => {
   const { projectId, sequenceId, name, description, registerDate } = kanban;
   return (
     <Container>
       <DropdownWrap>
-        <DropdownMenu icon={<DropdownIcon />} innerRef={innerRef}>
+        <DropdownMenu icon={<DropdownIcon />}>
           <Link href={`/projects/${projectId}/kanbans/${sequenceId}/edit`}>
             <DropdownButton type="button">Edit</DropdownButton>
           </Link>
@@ -79,7 +79,6 @@ KanbanListItem.propTypes = {
     description: PropTypes.string.isRequired,
     registerDate: PropTypes.string.isRequired,
   }).isRequired,
-  innerRef: PropTypes.object.isRequired,
 };
 
 export default KanbanListItem;

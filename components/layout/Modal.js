@@ -96,9 +96,9 @@ const ButtonContainer = styled.div`
   justify-content: flex-end;
 `;
 
-const Alert = ({ show, setShow, title, message, innerRef }) => {
+const Alert = ({ show, setShow, title, message }) => {
   return (
-    <Modal show={show} setShow={setShow} innerRef={innerRef}>
+    <Modal show={show} setShow={setShow}>
       <Title>{title}</Title>
       <Message>{message}</Message>
       <ButtonContainer>
@@ -120,18 +120,16 @@ Alert.propTypes = {
   setShow: PropTypes.func.isRequired,
   title: PropTypes.string,
   message: PropTypes.string,
-  innerRef: PropTypes.object,
 };
 
 Alert.defaultProps = {
   title: "",
   message: "",
-  innerRef: null,
 };
 
-const Confirm = ({ show, setShow, title, message, onAccept, innerRef }) => {
+const Confirm = ({ show, setShow, title, message, onAccept }) => {
   return (
-    <Modal show={show} setShow={setShow} innerRef={innerRef}>
+    <Modal show={show} setShow={setShow}>
       <Title>{title}</Title>
       <Message>{message}</Message>
       <ButtonContainer>
@@ -157,13 +155,11 @@ Confirm.propTypes = {
   title: PropTypes.string,
   message: PropTypes.string,
   onAccept: PropTypes.func.isRequired,
-  innerRef: PropTypes.object,
 };
 
 Confirm.defaultProps = {
   title: "",
   message: "",
-  innerRef: null,
 };
 
 export { ModalPortal, Modal, Title, Alert, Confirm };

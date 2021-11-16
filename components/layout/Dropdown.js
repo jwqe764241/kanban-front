@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import styled from "styled-components";
@@ -43,15 +43,15 @@ const DropdownButton = styled.button`
   }
 `;
 
-const DropdownMenu = (props) => {
-  const { innerRef, icon, children } = props;
+const DropdownMenu = ({ icon, children }) => {
+  const ref = useRef();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   // close dropdown menu when user clicked outside
   useEffect(() => {
     const handleClick = (e) => {
-      if (isOpen && innerRef.current && !innerRef.current.contains(e.target)) {
+      if (isOpen && ref.current && !ref.current.contains(e.target)) {
         setIsOpen(false);
       }
     };
@@ -81,13 +81,12 @@ const DropdownMenu = (props) => {
       <NoneStyledButton type="button" onClick={onMenuButtonClick}>
         {icon}
       </NoneStyledButton>
-      {isOpen && <DropdownList ref={innerRef}>{children}</DropdownList>}
+      {isOpen && <DropdownList ref={ref}>{children}</DropdownList>}
     </Container>
   );
 };
 
 DropdownMenu.propTypes = {
-  innerRef: PropTypes.object.isRequired,
   icon: PropTypes.node.isRequired,
   children: PropTypes.node,
 };
