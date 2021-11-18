@@ -192,6 +192,20 @@ const Kanban = ({ project, kanban }) => {
     }
   };
 
+  const onEditColumn = async (taskColumn, data) => {
+    try {
+      const response = await requester.patch(
+        `/projects/${project.id}/kanbans/${kanban.sequenceId}/columns/${taskColumn.id}`,
+        data,
+        token,
+      );
+      return response;
+    } catch (e) {
+      const { response } = e;
+      return response;
+    }
+  };
+
   const onDragEnd = async (result) => {
     const { draggableId, destination, source } = result;
     if (destination && destination.droppableId === "all-columns") {
@@ -250,6 +264,7 @@ const Kanban = ({ project, kanban }) => {
                       taskColumn={data}
                       index={index}
                       onDeleteColumn={onDeleteColumn}
+                      onEditColumn={onEditColumn}
                     />
                   ))}
                   {provided.placeholder}

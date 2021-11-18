@@ -48,6 +48,8 @@ export const KanbanData = (initColumns) => {
       payload.forEach((value) => {
         columns[value.id] = value;
       });
+    } else if (actionType === "Update") {
+      columns[payload.id] = payload;
     }
   };
 

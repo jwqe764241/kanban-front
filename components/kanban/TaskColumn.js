@@ -6,6 +6,7 @@ import { Draggable } from "react-beautiful-dnd";
 import { DropdownMenu, DropdownButton } from "components/layout/Dropdown";
 import { DropdownIcon } from "components/layout/Icon";
 import DeleteColumnModal from "components/kanban/DeleteColumnModal";
+import EditColumnModal from "components/kanban/EditColumnModal";
 import { ModalPortal } from "components/layout/Modal";
 
 const ColumnContainer = styled.div`
@@ -37,12 +38,23 @@ const DropdownWrap = styled.span`
   float: right;
 `;
 
-const TaskColumn = ({ taskColumn, index, tasks, onDeleteColumn }) => {
+const TaskColumn = ({
+  taskColumn,
+  index,
+  tasks,
+  onDeleteColumn,
+  onEditColumn,
+}) => {
   const count = tasks.length;
   const [isDeleteColumnOpen, setDeleteColumnOpen] = useState(false);
+  const [isEditColumnOpen, setEditColumnOpen] = useState(false);
 
   const openDeleteColumnModal = () => {
     setDeleteColumnOpen(true);
+  };
+
+  const openEditColumnModal = () => {
+    setEditColumnOpen(true);
   };
 
   return (
@@ -55,8 +67,11 @@ const TaskColumn = ({ taskColumn, index, tasks, onDeleteColumn }) => {
               <Title>{taskColumn.name}</Title>
               <DropdownWrap>
                 <DropdownMenu icon={<DropdownIcon />}>
+                  <DropdownButton type="button" onClick={openEditColumnModal}>
+                    Edit column
+                  </DropdownButton>
                   <DropdownButton type="button" onClick={openDeleteColumnModal}>
-                    Delete Column
+                    Delete column
                   </DropdownButton>
                 </DropdownMenu>
               </DropdownWrap>
@@ -65,6 +80,12 @@ const TaskColumn = ({ taskColumn, index, tasks, onDeleteColumn }) => {
         )}
       </Draggable>
       <ModalPortal>
+        <EditColumnModal
+          show={isEditColumnOpen}
+          setShow={setEditColumnOpen}
+          taskColumn={taskColumn}
+          onEdit={onEditColumn}
+        />
         <DeleteColumnModal
           show={isDeleteColumnOpen}
           setShow={setDeleteColumnOpen}
@@ -86,6 +107,7 @@ TaskColumn.propTypes = {
   index: PropTypes.number.isRequired,
   tasks: PropTypes.arrayOf(PropTypes.object),
   onDeleteColumn: PropTypes.func.isRequired,
+  onEditColumn: PropTypes.func.isRequired,
 };
 
 TaskColumn.defaultProps = {
