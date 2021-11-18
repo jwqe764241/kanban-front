@@ -44,6 +44,10 @@ export const KanbanData = (initColumns) => {
       if (updatedColumn) {
         columns[updatedColumn.id] = updatedColumn;
       }
+    } else if (actionType === "Reorder") {
+      payload.forEach((value) => {
+        columns[value.id] = value;
+      });
     }
   };
 

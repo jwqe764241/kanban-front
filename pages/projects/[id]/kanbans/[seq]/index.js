@@ -192,6 +192,38 @@ const Kanban = ({ project, kanban }) => {
     }
   };
 
+  const onDragEnd = async (result) => {
+    const { draggableId, destination, source } = result;
+    if (destination && destination.droppableId === "all-columns") {
+      const columnId = parseInt(draggableId, 10);
+      const srcColumn = columns[source.index];
+      const destColumn = columns[destination.index];
+      const reorderData = {
+        columnId,
+        prevColumnId:
+          source.index < destination.index ? destColumn.id : destColumn.prevId,
+      };
+
+      if (srcColumn.prevId !== reorderData.prevColumnId) {
+        const origin = [...columns];
+        const copied = [...origin];
+        const removed = copied.splice(source.index, 1);
+        copied.splice(destination.index, 0, removed[0]);
+        setColumns(copied);
+
+        try {
+          await requester.post(
+            `/projects/${project.id}/kanbans/${kanban.sequenceId}/columns/reorder`,
+            reorderData,
+            token,
+          );
+        } catch (e) {
+          setColumns(origin);
+        }
+      }
+    }
+  };
+
   return (
     <>
       <ProjectHeader project={project} activeMenu="kanbans" />
@@ -200,7 +232,7 @@ const Kanban = ({ project, kanban }) => {
       </KanbanInfo>
       <KanbanContainer>
         {columns && columns.length > 0 ? (
-          <DragDropContext>
+          <DragDropContext onDragEnd={onDragEnd}>
             <Droppable
               droppableId="all-columns"
               direction="horizontal"
