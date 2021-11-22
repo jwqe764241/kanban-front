@@ -5,12 +5,15 @@ import { Draggable } from "react-beautiful-dnd";
 
 import { DropdownMenu, DropdownButton } from "components/layout/Dropdown";
 import { DropdownIcon } from "components/layout/Icon";
+import { ModalPortal } from "components/layout/Modal";
 import DeleteColumnModal from "components/kanban/DeleteColumnModal";
 import EditColumnModal from "components/kanban/EditColumnModal";
-import { ModalPortal } from "components/layout/Modal";
+import TaskList from "components/kanban/TaskList";
+import Task from "components/kanban/Task";
 
 const ColumnContainer = styled.div`
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
   width: 350px;
   border: 1px solid #d8dee4;
   border-radius: 6px;
@@ -19,7 +22,7 @@ const ColumnContainer = styled.div`
 `;
 
 const TitleContainer = styled.div`
-  padding: 15px 10px;
+  padding: 12px 10px;
   font-size: 14px;
   font-weight: 500;
 `;
@@ -38,14 +41,9 @@ const DropdownWrap = styled.span`
   float: right;
 `;
 
-const TaskColumn = ({
-  taskColumn,
-  index,
-  tasks,
-  onDeleteColumn,
-  onEditColumn,
-}) => {
-  const count = tasks.length;
+const TaskColumn = ({ taskColumn, index, onDeleteColumn, onEditColumn }) => {
+  const { tasks } = taskColumn;
+  const taskColumnId = taskColumn.id.toString();
   const [isDeleteColumnOpen, setDeleteColumnOpen] = useState(false);
   const [isEditColumnOpen, setEditColumnOpen] = useState(false);
 
@@ -59,11 +57,11 @@ const TaskColumn = ({
 
   return (
     <>
-      <Draggable draggableId={taskColumn.id.toString()} index={index}>
+      <Draggable draggableId={`COLUMN-${taskColumnId}`} index={index}>
         {(provided) => (
           <ColumnContainer {...provided.draggableProps} ref={provided.innerRef}>
             <TitleContainer {...provided.dragHandleProps}>
-              <Count>{count}</Count>
+              <Count>{tasks.length}</Count>
               <Title>{taskColumn.name}</Title>
               <DropdownWrap>
                 <DropdownMenu icon={<DropdownIcon />}>
@@ -76,6 +74,11 @@ const TaskColumn = ({
                 </DropdownMenu>
               </DropdownWrap>
             </TitleContainer>
+            <TaskList droppableId={taskColumnId}>
+              {tasks.map((task, arrIndex) => (
+                <Task key={task.id} task={task} index={arrIndex} />
+              ))}
+            </TaskList>
           </ColumnContainer>
         )}
       </Draggable>
@@ -103,6 +106,7 @@ TaskColumn.propTypes = {
     name: PropTypes.string,
     prevId: PropTypes.number,
     registerDate: PropTypes.string,
+    tasks: PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
   index: PropTypes.number.isRequired,
   tasks: PropTypes.arrayOf(PropTypes.object),

@@ -1,4 +1,4 @@
-export function getOrderedColumn(columns) {
+export function getOrderedList(columns) {
   if (!Array.isArray(columns) || columns.length === 0) {
     return [];
   }
@@ -29,15 +29,26 @@ export function getOrderedColumn(columns) {
   return ordered;
 }
 
-export const KanbanData = (initColumns) => {
+export const KanbanData = (initColumns, initTasks) => {
   const columns = {};
-  initColumns.forEach((value) => {
-    columns[value.id] = value;
+  const tasks = {};
+  initColumns.forEach((column) => {
+    columns[column.id] = column;
+  });
+
+  Object.keys(initTasks).forEach((columnId) => {
+    const tasksOfColumn = initTasks[columnId];
+    const mapped = {};
+    tasksOfColumn.forEach((task) => {
+      mapped[task.id] = task;
+    });
+    tasks[columnId] = mapped;
   });
 
   const applyColumnAction = (actionType, payload) => {
     if (actionType === "Insert") {
       columns[payload.id] = payload;
+      tasks[payload.id] = {};
     } else if (actionType === "Delete") {
       const { deletedColumnId, updatedColumn } = payload;
       delete columns[deletedColumnId];
@@ -57,7 +68,16 @@ export const KanbanData = (initColumns) => {
 
   return {
     get: () => {
-      return getOrderedColumn(Object.values(columns));
+      const copiedColumns = Object.values(columns);
+      copiedColumns.forEach((column, index) => {
+        if (tasks[column.id]) {
+          const orderedTasks = getOrderedList(Object.values(tasks[column.id]));
+          copiedColumns[index].tasks = orderedTasks;
+        } else {
+          copiedColumns[index].tasks = [];
+        }
+      });
+      return getOrderedList(copiedColumns);
     },
     applyAction: (action) => {
       const { target, actionType, payload } = action;

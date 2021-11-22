@@ -11,6 +11,7 @@ const NoneStyledButton = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
+  display: flex;
 `;
 
 const DropdownList = styled.ul`
@@ -18,12 +19,13 @@ const DropdownList = styled.ul`
   z-index: 100;
   width: 160px;
   right: 0px;
-  top: 30px;
+  top: 20px;
   padding: 4px 0px;
   border: 1px solid #e1e4e8;
   background-color: white;
   border-radius: 6px;
   user-select: none;
+  box-shadow: rgb(140 149 159 / 20%) 0px 8px 24px 0px;
 `;
 
 const DropdownButton = styled.button`

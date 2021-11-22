@@ -7,14 +7,11 @@ import axios, { createRequester } from "core/apiAxios";
 import { useSelector, useDispatch, connect } from "react-redux";
 import wrapper from "core/store";
 import { parseCookie } from "core/utils";
-import {
-  DragDropContext,
-  Droppable,
-  resetServerContext,
-} from "react-beautiful-dnd";
+import { DragDropContext, resetServerContext } from "react-beautiful-dnd";
 import { KanbanData } from "core/kanbanUtils";
 
 import ProjectHeader from "components/project/ProjectHeader";
+import TaskColumnList from "components/kanban/TaskColumnList";
 import TaskColumn from "components/kanban/TaskColumn";
 import { PlusIcon } from "components/layout/Icon";
 import { NoStyleButton, SuccessButton } from "components/layout/Button";
@@ -102,21 +99,30 @@ const Kanban = ({ project, kanban }) => {
   resetServerContext();
 
   useEffect(() => {
-    const getColumns = async () => {
+    const getData = async () => {
       try {
-        const response = await requester.get(
-          `/projects/${project.id}/kanbans/${kanban.sequenceId}/columns`,
-          token,
-        );
-        if (response.status === 200) {
-          kanbanData.current = KanbanData(response.data);
+        const [columnResponse, taskResponse] = await Promise.all([
+          requester.get(
+            `/projects/${project.id}/kanbans/${kanban.sequenceId}/columns`,
+            token,
+          ),
+          requester.get(
+            `/projects/${project.id}/kanbans/${kanban.sequenceId}/columns/tasks`,
+            token,
+          ),
+        ]);
+        if (columnResponse.status === 200 && taskResponse.status === 200) {
+          kanbanData.current = KanbanData(
+            columnResponse.data,
+            taskResponse.data,
+          );
           setColumns(kanbanData.current.get());
         }
       } catch (e) {
-        alert("can't get columns");
+        alert("can't get data");
       }
     };
-    getColumns();
+    getData();
 
     if (!authToken) {
       const getAuthToken = async () => {
@@ -209,7 +215,11 @@ const Kanban = ({ project, kanban }) => {
   const onDragEnd = async (result) => {
     const { draggableId, destination, source } = result;
     if (destination && destination.droppableId === "all-columns") {
-      const columnId = parseInt(draggableId, 10);
+      const splited = draggableId.split("-");
+      if (splited.length !== 2) {
+        return;
+      }
+      const columnId = parseInt(splited[1], 10);
       const srcColumn = columns[source.index];
       const destColumn = columns[destination.index];
       const reorderData = {
@@ -247,31 +257,18 @@ const Kanban = ({ project, kanban }) => {
       <KanbanContainer>
         {columns && columns.length > 0 ? (
           <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable
-              droppableId="all-columns"
-              direction="horizontal"
-              type="column"
-            >
-              {(provided) => (
-                <div
-                  ref={provided.innerRef}
-                  style={{ display: "flex" }}
-                  {...provided.droppableProps}
-                >
-                  {columns.map((data, index) => (
-                    <TaskColumn
-                      key={data.id}
-                      taskColumn={data}
-                      index={index}
-                      onDeleteColumn={onDeleteColumn}
-                      onEditColumn={onEditColumn}
-                    />
-                  ))}
-                  {provided.placeholder}
-                  <AddColumnButton onClick={openAddColumnModal} />
-                </div>
-              )}
-            </Droppable>
+            <TaskColumnList>
+              {columns.map((data, index) => (
+                <TaskColumn
+                  key={data.id}
+                  taskColumn={data}
+                  index={index}
+                  onDeleteColumn={onDeleteColumn}
+                  onEditColumn={onEditColumn}
+                />
+              ))}
+            </TaskColumnList>
+            <AddColumnButton onClick={openAddColumnModal} />
           </DragDropContext>
         ) : (
           <EmptyColumn>
