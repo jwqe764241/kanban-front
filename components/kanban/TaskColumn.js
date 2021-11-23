@@ -69,11 +69,6 @@ const TaskColumn = ({
     setAddTaskOpen(true);
   };
 
-  const onAddTask = async (data) => {
-    const response = await onCreateTask(taskColumn, data);
-    return response;
-  };
-
   return (
     <>
       <Draggable draggableId={`COLUMN-${taskColumnId}`} index={index}>
@@ -100,7 +95,11 @@ const TaskColumn = ({
               </ButtonContainer>
             </HeaderContainer>
             {isAddTaskOpen ? (
-              <AddTaskForm onAddTask={onAddTask} setShow={setAddTaskOpen} />
+              <AddTaskForm
+                taskColumn={taskColumn}
+                onAddTask={onCreateTask}
+                setShow={setAddTaskOpen}
+              />
             ) : (
               <></>
             )}

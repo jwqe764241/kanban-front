@@ -22,7 +22,7 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const AddTaskForm = ({ onAddTask, setShow }) => {
+const AddTaskForm = ({ taskColumn, setShow, onAddTask }) => {
   const [data, setData] = useState({ text: "" });
   const [isCreating, setCreating] = useState(false);
 
@@ -36,7 +36,7 @@ const AddTaskForm = ({ onAddTask, setShow }) => {
 
   const onAddButtonClick = async () => {
     setCreating(true);
-    const response = await onAddTask(data);
+    const response = await onAddTask(taskColumn, data);
     setCreating(false);
 
     if (response.status === 201) {
@@ -73,8 +73,15 @@ const AddTaskForm = ({ onAddTask, setShow }) => {
 };
 
 AddTaskForm.propTypes = {
-  onAddTask: PropTypes.func.isRequired,
+  taskColumn: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    prevId: PropTypes.number,
+    registerDate: PropTypes.string,
+    tasks: PropTypes.arrayOf(PropTypes.object),
+  }).isRequired,
   setShow: PropTypes.func.isRequired,
+  onAddTask: PropTypes.func.isRequired,
 };
 
 export default AddTaskForm;
