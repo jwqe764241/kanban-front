@@ -50,6 +50,7 @@ const TaskColumn = ({
   onDeleteColumn,
   onEditColumn,
   onCreateTask,
+  onDeleteTask,
 }) => {
   const { tasks } = taskColumn;
   const taskColumnId = taskColumn.id.toString();
@@ -105,7 +106,12 @@ const TaskColumn = ({
             )}
             <TaskList droppableId={taskColumnId}>
               {tasks.map((task, arrIndex) => (
-                <Task key={task.id} task={task} index={arrIndex} />
+                <Task
+                  key={task.id}
+                  task={task}
+                  index={arrIndex}
+                  onDelete={onDeleteTask}
+                />
               ))}
             </TaskList>
           </ColumnContainer>
@@ -142,6 +148,7 @@ TaskColumn.propTypes = {
   onDeleteColumn: PropTypes.func.isRequired,
   onEditColumn: PropTypes.func.isRequired,
   onCreateTask: PropTypes.func.isRequired,
+  onDeleteTask: PropTypes.func.isRequired,
 };
 
 TaskColumn.defaultProps = {

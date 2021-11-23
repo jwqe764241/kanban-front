@@ -70,6 +70,12 @@ export const KanbanData = (initColumns, initTasks) => {
         const { taskColumnId } = value;
         tasks[taskColumnId][value.id] = value;
       });
+    } else if (actionType === "Delete") {
+      const { columnId, deletedTaskId, updatedTask } = payload;
+      delete tasks[columnId][deletedTaskId];
+      if (updatedTask) {
+        tasks[columnId][updatedTask.id] = updatedTask;
+      }
     }
   };
 

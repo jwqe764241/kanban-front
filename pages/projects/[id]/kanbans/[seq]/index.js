@@ -226,6 +226,19 @@ const Kanban = ({ project, kanban }) => {
     }
   };
 
+  const onDeleteTask = async (task) => {
+    try {
+      const response = await requester.delete(
+        `/projects/${project.id}/kanbans/${kanban.sequenceId}/columns/${task.taskColumnId}/tasks/${task.id}`,
+        token,
+      );
+      return response;
+    } catch (e) {
+      const { response } = e;
+      return response;
+    }
+  };
+
   const onDragEnd = async (result) => {
     const { draggableId, destination, source } = result;
     if (destination && destination.droppableId === "all-columns") {
@@ -280,6 +293,7 @@ const Kanban = ({ project, kanban }) => {
                   onDeleteColumn={onDeleteColumn}
                   onEditColumn={onEditColumn}
                   onCreateTask={onCreateTask}
+                  onDeleteTask={onDeleteTask}
                 />
               ))}
             </TaskColumnList>

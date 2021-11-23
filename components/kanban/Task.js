@@ -48,8 +48,13 @@ const Text = styled.div`
   line-height: 1.2;
 `;
 
-const Task = ({ task, index }) => {
+const Task = ({ task, index, onDelete }) => {
   const taskId = task.id.toString();
+
+  const onDeleteButtonClick = () => {
+    if (!window.confirm("Are you sure you want to delete this task?")) return;
+    onDelete(task);
+  };
 
   return (
     <Draggable draggableId={`task-${taskId}`} index={index}>
@@ -64,7 +69,9 @@ const Task = ({ task, index }) => {
           </Icon>
           <DropdownWrap>
             <DropdownMenu icon={<DropdownIcon />}>
-              <DropdownButton type="button">Delete task</DropdownButton>
+              <DropdownButton type="button" onClick={onDeleteButtonClick}>
+                Delete task
+              </DropdownButton>
             </DropdownMenu>
           </DropdownWrap>
           <TextContainer>
@@ -84,6 +91,7 @@ Task.propTypes = {
     text: PropTypes.string,
   }).isRequired,
   index: PropTypes.number.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default Task;
