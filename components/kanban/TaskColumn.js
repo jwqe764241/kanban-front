@@ -4,12 +4,14 @@ import PropTypes from "prop-types";
 import { Draggable } from "react-beautiful-dnd";
 
 import { DropdownMenu, DropdownButton } from "components/layout/Dropdown";
-import { DropdownIcon } from "components/layout/Icon";
+import { DropdownIcon, PlusIcon } from "components/layout/Icon";
 import { ModalPortal } from "components/layout/Modal";
+import { NoStyleButton } from "components/layout/Button";
 import DeleteColumnModal from "components/kanban/DeleteColumnModal";
 import EditColumnModal from "components/kanban/EditColumnModal";
 import TaskList from "components/kanban/TaskList";
 import Task from "components/kanban/Task";
+import AddTaskForm from "components/kanban/AddTaskForm";
 
 const ColumnContainer = styled.div`
   display: flex;
@@ -21,7 +23,7 @@ const ColumnContainer = styled.div`
   margin-right: 20px;
 `;
 
-const TitleContainer = styled.div`
+const HeaderContainer = styled.div`
   padding: 12px 10px;
   font-size: 14px;
   font-weight: 500;
@@ -36,16 +38,24 @@ const Title = styled.div`
   display: inline-block;
 `;
 
-const DropdownWrap = styled.span`
+const ButtonContainer = styled.span`
+  display: flex;
   cursor: pointer;
   float: right;
 `;
 
-const TaskColumn = ({ taskColumn, index, onDeleteColumn, onEditColumn }) => {
+const TaskColumn = ({
+  taskColumn,
+  index,
+  onDeleteColumn,
+  onEditColumn,
+  onCreateTask,
+}) => {
   const { tasks } = taskColumn;
   const taskColumnId = taskColumn.id.toString();
   const [isDeleteColumnOpen, setDeleteColumnOpen] = useState(false);
   const [isEditColumnOpen, setEditColumnOpen] = useState(false);
+  const [isAddTaskOpen, setAddTaskOpen] = useState(false);
 
   const openDeleteColumnModal = () => {
     setDeleteColumnOpen(true);
@@ -55,15 +65,30 @@ const TaskColumn = ({ taskColumn, index, onDeleteColumn, onEditColumn }) => {
     setEditColumnOpen(true);
   };
 
+  const openAddTaskForm = () => {
+    setAddTaskOpen(true);
+  };
+
+  const onAddTask = async (data) => {
+    const response = await onCreateTask(taskColumn, data);
+    return response;
+  };
+
   return (
     <>
       <Draggable draggableId={`COLUMN-${taskColumnId}`} index={index}>
         {(provided) => (
           <ColumnContainer {...provided.draggableProps} ref={provided.innerRef}>
-            <TitleContainer {...provided.dragHandleProps}>
+            <HeaderContainer {...provided.dragHandleProps}>
               <Count>{tasks.length}</Count>
               <Title>{taskColumn.name}</Title>
-              <DropdownWrap>
+              <ButtonContainer>
+                <NoStyleButton
+                  style={{ display: "flex" }}
+                  onClick={openAddTaskForm}
+                >
+                  <PlusIcon />
+                </NoStyleButton>
                 <DropdownMenu icon={<DropdownIcon />}>
                   <DropdownButton type="button" onClick={openEditColumnModal}>
                     Edit column
@@ -72,8 +97,13 @@ const TaskColumn = ({ taskColumn, index, onDeleteColumn, onEditColumn }) => {
                     Delete column
                   </DropdownButton>
                 </DropdownMenu>
-              </DropdownWrap>
-            </TitleContainer>
+              </ButtonContainer>
+            </HeaderContainer>
+            {isAddTaskOpen ? (
+              <AddTaskForm onAddTask={onAddTask} setShow={setAddTaskOpen} />
+            ) : (
+              <></>
+            )}
             <TaskList droppableId={taskColumnId}>
               {tasks.map((task, arrIndex) => (
                 <Task key={task.id} task={task} index={arrIndex} />
@@ -112,6 +142,7 @@ TaskColumn.propTypes = {
   tasks: PropTypes.arrayOf(PropTypes.object),
   onDeleteColumn: PropTypes.func.isRequired,
   onEditColumn: PropTypes.func.isRequired,
+  onCreateTask: PropTypes.func.isRequired,
 };
 
 TaskColumn.defaultProps = {

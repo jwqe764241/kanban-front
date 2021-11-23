@@ -64,7 +64,14 @@ export const KanbanData = (initColumns, initTasks) => {
     }
   };
 
-  const applyTaskAction = (actionType, payload) => {};
+  const applyTaskAction = (actionType, payload) => {
+    if (actionType === "Insert") {
+      payload.forEach((value) => {
+        const { taskColumnId } = value;
+        tasks[taskColumnId][value.id] = value;
+      });
+    }
+  };
 
   return {
     get: () => {

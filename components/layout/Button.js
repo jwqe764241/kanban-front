@@ -71,6 +71,22 @@ const DangerButton = styled(Button)`
 
 const WarningButton = undefined;
 
+const CancelButton = styled(Button)`
+  color: #24292f;
+  background-color: #f6f8fa;
+  border: 1px solid #1b1f2426;
+  font-weight: 500;
+
+  &:hover {
+    background-color: #f3f4f6;
+  }
+
+  &:disabled {
+    background-color: #eaebeb;
+    cursor: default;
+  }
+`;
+
 const NoStyleButton = styled.button`
   border: none;
   background-color: transparent;
@@ -83,5 +99,6 @@ export {
   SuccessButton,
   DangerButton,
   WarningButton,
+  CancelButton,
   NoStyleButton,
 };
