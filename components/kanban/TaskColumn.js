@@ -72,7 +72,7 @@ const TaskColumn = ({
 
   return (
     <>
-      <Draggable draggableId={`COLUMN-${taskColumnId}`} index={index}>
+      <Draggable draggableId={`column-${taskColumnId}`} index={index}>
         {(provided) => (
           <ColumnContainer {...provided.draggableProps} ref={provided.innerRef}>
             <HeaderContainer {...provided.dragHandleProps}>

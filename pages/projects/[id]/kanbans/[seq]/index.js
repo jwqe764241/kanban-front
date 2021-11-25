@@ -119,6 +119,7 @@ const Kanban = ({ project, kanban }) => {
           setColumns(kanbanData.current.get());
         }
       } catch (e) {
+        console.log(e);
         alert("can't get data");
       }
     };
@@ -240,37 +241,88 @@ const Kanban = ({ project, kanban }) => {
   };
 
   const onDragEnd = async (result) => {
-    const { draggableId, destination, source } = result;
-    if (destination && destination.droppableId === "all-columns") {
-      const splited = draggableId.split("-");
-      if (splited.length !== 2) {
-        return;
-      }
-      const columnId = parseInt(splited[1], 10);
-      const srcColumn = columns[source.index];
+    const { destination, source, draggableId, type } = result;
+
+    if (!destination) {
+      return;
+    }
+
+    // drop at same position
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    if (type === "column") {
+      // update client state first
+      const state = [...columns];
+      const newState = [...state];
+      const removed = newState.splice(source.index, 1);
+      newState.splice(destination.index, 0, removed[0]);
+      setColumns(newState);
+
+      // send reorder reqeust to server
+      const columnId = parseInt(draggableId.split("-")[1], 10);
       const destColumn = columns[destination.index];
       const reorderData = {
         columnId,
         prevColumnId:
           source.index < destination.index ? destColumn.id : destColumn.prevId,
       };
+      try {
+        await requester.post(
+          `/projects/${project.id}/kanbans/${kanban.sequenceId}/columns/reorder`,
+          reorderData,
+          token,
+        );
+      } catch (e) {
+        setColumns(state);
+      }
+    } else if (type === "task") {
+      const destColumn = columns.find(
+        (e) => e.id === parseInt(destination.droppableId, 10),
+      );
+      const taskId = parseInt(draggableId.split("-")[1], 10);
 
-      if (srcColumn.prevId !== reorderData.prevColumnId) {
-        const origin = [...columns];
-        const copied = [...origin];
-        const removed = copied.splice(source.index, 1);
-        copied.splice(destination.index, 0, removed[0]);
-        setColumns(copied);
+      if (!destColumn || !taskId) {
+        return;
+      }
 
-        try {
-          await requester.post(
-            `/projects/${project.id}/kanbans/${kanban.sequenceId}/columns/reorder`,
-            reorderData,
-            token,
-          );
-        } catch (e) {
-          setColumns(origin);
-        }
+      const reorderData = {
+        taskId,
+      };
+
+      // reorder in same column
+      if (destination.droppableId === source.droppableId) {
+        const destTask = destColumn.tasks[destination.index];
+        reorderData.prevTaskId =
+          source.index < destination.index ? destTask.id : destTask.prevId;
+      }
+      // move to other column, but there's no tasks. so move to other column as first element
+      else if (destColumn.tasks.length < 1) {
+        reorderData.prevTaskId = null;
+      }
+      // move to other column as last element
+      else if (destColumn.tasks.length === destination.index) {
+        const destTask = destColumn.tasks[destColumn.tasks.length - 1];
+        reorderData.prevTaskId = destTask.id;
+      }
+      // move to other column
+      else {
+        const destTask = destColumn.tasks[destination.index];
+        reorderData.prevTaskId = destTask.prevId;
+      }
+
+      try {
+        await requester.post(
+          `/projects/${project.id}/kanbans/${kanban.sequenceId}/columns/${destColumn.id}/reorder`,
+          reorderData,
+          token,
+        );
+      } catch (e) {
+        console.log(e);
       }
     }
   };

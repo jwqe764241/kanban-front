@@ -11,7 +11,7 @@ const ListContainer = styled.div`
 
 const TaskList = ({ droppableId, children }) => {
   return (
-    <Droppable droppableId={droppableId} direction="vertical" type="TASK">
+    <Droppable droppableId={droppableId} direction="vertical" type="task">
       {(provided) => (
         <ListContainer ref={provided.innerRef} {...provided.droppableProps}>
           {children}

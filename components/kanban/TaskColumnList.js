@@ -8,7 +8,7 @@ const ListContainer = styled.div`
 
 const TaskColumnList = ({ children }) => {
   return (
-    <Droppable droppableId="all-columns" direction="horizontal" type="COLUMN">
+    <Droppable droppableId="all-columns" direction="horizontal" type="column">
       {(provided) => (
         <ListContainer ref={provided.innerRef} {...provided.droppableProps}>
           {children}

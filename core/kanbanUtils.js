@@ -29,6 +29,26 @@ export function getOrderedList(columns) {
   return ordered;
 }
 
+export function group(arr, key) {
+  // eslint-disable-next-line func-names
+  return arr.reduce((acc, current) => {
+    const kv = current[key];
+    if (acc[kv] === undefined) {
+      acc[kv] = [];
+    }
+    acc[kv].push(current);
+    return acc;
+  }, {});
+}
+
+export function objMap(obj, func) {
+  return Object.fromEntries(
+    Object.entries(obj).map(([k, v]) => {
+      return [k, func(v)];
+    }),
+  );
+}
+
 export const KanbanData = (initColumns, initTasks) => {
   const columns = {};
   const tasks = {};
@@ -36,13 +56,8 @@ export const KanbanData = (initColumns, initTasks) => {
     columns[column.id] = column;
   });
 
-  Object.keys(initTasks).forEach((columnId) => {
-    const tasksOfColumn = initTasks[columnId];
-    const mapped = {};
-    tasksOfColumn.forEach((task) => {
-      mapped[task.id] = task;
-    });
-    tasks[columnId] = mapped;
+  initTasks.forEach((task) => {
+    tasks[task.id] = task;
   });
 
   const applyColumnAction = (actionType, payload) => {
@@ -67,30 +82,35 @@ export const KanbanData = (initColumns, initTasks) => {
   const applyTaskAction = (actionType, payload) => {
     if (actionType === "Insert") {
       payload.forEach((value) => {
-        const { taskColumnId } = value;
-        tasks[taskColumnId][value.id] = value;
+        tasks[value.id] = value;
       });
     } else if (actionType === "Delete") {
-      const { columnId, deletedTaskId, updatedTask } = payload;
-      delete tasks[columnId][deletedTaskId];
+      const { deletedTaskId, updatedTask } = payload;
+      delete tasks[deletedTaskId];
       if (updatedTask) {
-        tasks[columnId][updatedTask.id] = updatedTask;
+        tasks[updatedTask.id] = updatedTask;
       }
+    } else if (actionType === "Reorder") {
+      payload.forEach((value) => {
+        if (tasks[value.id] !== undefined) {
+          tasks[value.id] = value;
+        }
+      });
     }
   };
 
   return {
     get: () => {
-      const copiedColumns = Object.values(columns);
-      copiedColumns.forEach((column, index) => {
-        if (tasks[column.id]) {
-          const orderedTasks = getOrderedList(Object.values(tasks[column.id]));
-          copiedColumns[index].tasks = orderedTasks;
-        } else {
-          copiedColumns[index].tasks = [];
-        }
+      const groupedTasks = group(Object.values(tasks), "taskColumnId");
+      const orderedTasks = objMap(groupedTasks, getOrderedList);
+      const mappedColumns = objMap(columns, (v) => {
+        const column = {
+          ...v,
+          tasks: orderedTasks[v.id] === undefined ? [] : orderedTasks[v.id],
+        };
+        return column;
       });
-      return getOrderedList(copiedColumns);
+      return getOrderedList(Object.values(mappedColumns));
     },
     applyAction: (action) => {
       const { target, actionType, payload } = action;
