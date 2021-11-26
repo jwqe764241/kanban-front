@@ -312,6 +312,17 @@ const Kanban = ({ project, kanban }) => {
         reorderData.prevTaskId = destTask.prevId;
       }
 
+      // update client state
+      const state = [...columns];
+      const newState = [...state];
+      const removed = newState
+        .find((column) => column.id === parseInt(source.droppableId, 10))
+        .tasks.splice(source.index, 1);
+      newState
+        .find((column) => column.id === parseInt(destination.droppableId, 10))
+        .tasks.splice(destination.index, 0, removed[0]);
+      setColumns(newState);
+
       try {
         await requester.post(
           `/projects/${project.id}/kanbans/${kanban.sequenceId}/columns/${destColumn.id}/reorder`,
@@ -319,7 +330,7 @@ const Kanban = ({ project, kanban }) => {
           token,
         );
       } catch (e) {
-        console.log(e);
+        setColumns(state);
       }
     }
   };
