@@ -1,3 +1,4 @@
+/* eslint no-param-reassign: ["error", { "props": true, "ignorePropertyModificationsFor": ["columns", "tasks"] }] */
 import { toObject, group, objMap } from "core/utils";
 
 // get ordered array using prevId
@@ -39,72 +40,86 @@ function getOrderedArray(arr) {
   return ordered;
 }
 
+const ColumnAction = {
+  Insert: (columns, payload) => {
+    columns[payload.id] = payload;
+  },
+  Delete: (columns, payload) => {
+    const { deletedColumnId, updatedColumn } = payload;
+    delete columns[deletedColumnId];
+    if (updatedColumn) {
+      columns[updatedColumn.id] = updatedColumn;
+    }
+  },
+  Update: (columns, payload) => {
+    columns[payload.id] = payload;
+  },
+  Reorder: (columns, payload) => {
+    payload.forEach((value) => {
+      if (columns[value.id] !== undefined) {
+        columns[value.id] = value;
+      }
+    });
+  },
+};
+
+const TaskAction = {
+  Insert: (tasks, payload) => {
+    payload.forEach((value) => {
+      tasks[value.id] = value;
+    });
+  },
+  Delete: (tasks, payload) => {
+    const { deletedTaskId, updatedTask } = payload;
+    delete tasks[deletedTaskId];
+    if (updatedTask) {
+      tasks[updatedTask.id] = updatedTask;
+    }
+  },
+  Reorder: (tasks, payload) => {
+    payload.forEach((value) => {
+      if (tasks[value.id] !== undefined) {
+        tasks[value.id] = value;
+      }
+    });
+  },
+};
+
 // store kanban data and apply kanban action to data
-const KanbanDataStorage = (initColumns, initTasks) => {
+function KanbanDataStorage(initColumns, initTasks) {
   const columns = toObject(initColumns, "id");
   const tasks = toObject(initTasks, "id");
 
-  const applyColumnAction = (actionType, payload) => {
-    if (actionType === "Insert") {
-      columns[payload.id] = payload;
-      tasks[payload.id] = {};
-    } else if (actionType === "Delete") {
-      const { deletedColumnId, updatedColumn } = payload;
-      delete columns[deletedColumnId];
-      if (updatedColumn) {
-        columns[updatedColumn.id] = updatedColumn;
+  function applyAction(action) {
+    const { target, actionType, payload } = action;
+    if (target === "Column") {
+      if (ColumnAction[actionType] !== undefined) {
+        ColumnAction[actionType](columns, payload);
       }
-    } else if (actionType === "Reorder") {
-      payload.forEach((value) => {
-        columns[value.id] = value;
-      });
-    } else if (actionType === "Update") {
-      columns[payload.id] = payload;
+    } else if (target === "Task") {
+      if (TaskAction[actionType] !== undefined) {
+        TaskAction[actionType](tasks, payload);
+      }
     }
-  };
+  }
 
-  const applyTaskAction = (actionType, payload) => {
-    if (actionType === "Insert") {
-      payload.forEach((value) => {
-        tasks[value.id] = value;
-      });
-    } else if (actionType === "Delete") {
-      const { deletedTaskId, updatedTask } = payload;
-      delete tasks[deletedTaskId];
-      if (updatedTask) {
-        tasks[updatedTask.id] = updatedTask;
-      }
-    } else if (actionType === "Reorder") {
-      payload.forEach((value) => {
-        if (tasks[value.id] !== undefined) {
-          tasks[value.id] = value;
-        }
-      });
-    }
-  };
+  function get() {
+    const groupedTasks = group(Object.values(tasks), "taskColumnId");
+    const orderedTasks = objMap(groupedTasks, getOrderedArray);
+    const mappedColumns = objMap(columns, (v) => {
+      const column = {
+        ...v,
+        tasks: orderedTasks[v.id] === undefined ? [] : orderedTasks[v.id],
+      };
+      return column;
+    });
+    return getOrderedArray(Object.values(mappedColumns));
+  }
 
-  return {
-    get: () => {
-      const groupedTasks = group(Object.values(tasks), "taskColumnId");
-      const orderedTasks = objMap(groupedTasks, getOrderedArray);
-      const mappedColumns = objMap(columns, (v) => {
-        const column = {
-          ...v,
-          tasks: orderedTasks[v.id] === undefined ? [] : orderedTasks[v.id],
-        };
-        return column;
-      });
-      return getOrderedArray(Object.values(mappedColumns));
-    },
-    applyAction: (action) => {
-      const { target, actionType, payload } = action;
-      if (target === "Column") {
-        applyColumnAction(actionType, payload);
-      } else if (target === "Task") {
-        applyTaskAction(actionType, payload);
-      }
-    },
-  };
-};
+  return Object.freeze({
+    get,
+    applyAction,
+  });
+}
 
 export default KanbanDataStorage;
