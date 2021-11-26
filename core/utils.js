@@ -72,6 +72,41 @@ function getIndexOfId(arr, id) {
   return -1;
 }
 
+// convert array to object
+export function toObject(arr, key) {
+  if (!Array.isArray(arr)) {
+    return {};
+  }
+  return arr.reduce((acc, current) => {
+    if (current[key] !== undefined) {
+      acc[current[key]] = current;
+    }
+    return acc;
+  }, {});
+}
+
+// map values in obj
+export function objMap(obj, func) {
+  return Object.fromEntries(
+    Object.entries(obj).map(([k, v]) => {
+      return [k, func(v)];
+    }),
+  );
+}
+
+// group elements by key
+export function group(arr, key) {
+  // eslint-disable-next-line func-names
+  return arr.reduce((acc, current) => {
+    const kv = current[key];
+    if (acc[kv] === undefined) {
+      acc[kv] = [];
+    }
+    acc[kv].push(current);
+    return acc;
+  }, {});
+}
+
 export {
   parseCookie,
   parseJwtClaims,

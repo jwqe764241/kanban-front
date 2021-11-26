@@ -1,16 +1,15 @@
-export function getOrderedList(columns) {
-  if (!Array.isArray(columns) || columns.length === 0) {
-    return [];
+import { toObject, group, objMap } from "core/utils";
+
+// get ordered array using prevId
+function getOrderedArray(arr) {
+  if (!Array.isArray(arr) || arr.length < 2) {
+    return [...arr];
   }
 
-  if (columns.length === 1) {
-    return [columns[0]];
-  }
-
-  const copiedColumns = [...columns];
+  const copied = [...arr];
   const cached = {};
   let first = null;
-  copiedColumns.forEach((element) => {
+  copied.forEach((element) => {
     if (!element.prevId) {
       first = element;
     } else {
@@ -18,47 +17,32 @@ export function getOrderedList(columns) {
     }
   });
 
+  // first element not found
+  if (first === null) {
+    return [];
+  }
+
   const ordered = [first];
-  let temp = first;
-  while (cached[temp.id]) {
-    const next = cached[temp.id];
+  let current = first;
+  while (cached[current.id]) {
+    const next = cached[current.id];
     ordered.push(next);
-    temp = next;
+    current = next;
+  }
+
+  // if this is true, there is something wrong state in array
+  // ex) has element that not in same linked list
+  if (ordered.length !== arr.length) {
+    // throw error or return empty array?
   }
 
   return ordered;
 }
 
-export function group(arr, key) {
-  // eslint-disable-next-line func-names
-  return arr.reduce((acc, current) => {
-    const kv = current[key];
-    if (acc[kv] === undefined) {
-      acc[kv] = [];
-    }
-    acc[kv].push(current);
-    return acc;
-  }, {});
-}
-
-export function objMap(obj, func) {
-  return Object.fromEntries(
-    Object.entries(obj).map(([k, v]) => {
-      return [k, func(v)];
-    }),
-  );
-}
-
-export const KanbanData = (initColumns, initTasks) => {
-  const columns = {};
-  const tasks = {};
-  initColumns.forEach((column) => {
-    columns[column.id] = column;
-  });
-
-  initTasks.forEach((task) => {
-    tasks[task.id] = task;
-  });
+// store kanban data and apply kanban action to data
+const KanbanDataStorage = (initColumns, initTasks) => {
+  const columns = toObject(initColumns, "id");
+  const tasks = toObject(initTasks, "id");
 
   const applyColumnAction = (actionType, payload) => {
     if (actionType === "Insert") {
@@ -102,7 +86,7 @@ export const KanbanData = (initColumns, initTasks) => {
   return {
     get: () => {
       const groupedTasks = group(Object.values(tasks), "taskColumnId");
-      const orderedTasks = objMap(groupedTasks, getOrderedList);
+      const orderedTasks = objMap(groupedTasks, getOrderedArray);
       const mappedColumns = objMap(columns, (v) => {
         const column = {
           ...v,
@@ -110,7 +94,7 @@ export const KanbanData = (initColumns, initTasks) => {
         };
         return column;
       });
-      return getOrderedList(Object.values(mappedColumns));
+      return getOrderedArray(Object.values(mappedColumns));
     },
     applyAction: (action) => {
       const { target, actionType, payload } = action;
@@ -122,3 +106,5 @@ export const KanbanData = (initColumns, initTasks) => {
     },
   };
 };
+
+export default KanbanDataStorage;
