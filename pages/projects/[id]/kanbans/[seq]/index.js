@@ -8,7 +8,7 @@ import { useSelector, useDispatch, connect } from "react-redux";
 import wrapper from "core/store";
 import { parseCookie } from "core/utils";
 import { DragDropContext, resetServerContext } from "react-beautiful-dnd";
-import { KanbanData } from "core/kanbanUtils";
+import KanbanDataStorage from "core/kanban-data-storage";
 
 import ProjectHeader from "components/project/ProjectHeader";
 import TaskColumnList from "components/kanban/TaskColumnList";
@@ -87,7 +87,7 @@ const EmptyColumn = styled.div`
 
 const Kanban = ({ project, kanban }) => {
   const client = useRef(null);
-  const kanbanData = useRef(null);
+  const dataStorage = useRef(null);
   const { token } = useSelector((state) => state);
   const dispatch = useDispatch();
   const requester = createRequester(axios, dispatch);
@@ -112,14 +112,13 @@ const Kanban = ({ project, kanban }) => {
           ),
         ]);
         if (columnResponse.status === 200 && taskResponse.status === 200) {
-          kanbanData.current = KanbanData(
+          dataStorage.current = KanbanDataStorage(
             columnResponse.data,
             taskResponse.data,
           );
-          setColumns(kanbanData.current.get());
+          setColumns(dataStorage.current.get());
         }
       } catch (e) {
-        console.log(e);
         alert("can't get data");
       }
     };
@@ -156,8 +155,8 @@ const Kanban = ({ project, kanban }) => {
           `/topic/project/${project.id}/kanban/${kanban.sequenceId}`,
           (message) => {
             const action = JSON.parse(message.body);
-            kanbanData.current.applyAction(action);
-            setColumns(kanbanData.current.get());
+            dataStorage.current.applyAction(action);
+            setColumns(dataStorage.current.get());
           },
         );
       },
@@ -242,7 +241,6 @@ const Kanban = ({ project, kanban }) => {
 
   const onDragEnd = async (result) => {
     const { destination, source, draggableId, type } = result;
-
     if (!destination) {
       return;
     }
@@ -293,7 +291,6 @@ const Kanban = ({ project, kanban }) => {
       const reorderData = {
         taskId,
       };
-
       // reorder in same column
       if (destination.droppableId === source.droppableId) {
         const destTask = destColumn.tasks[destination.index];
