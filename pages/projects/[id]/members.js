@@ -3,7 +3,7 @@ import { connect, useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import wrapper from "core/store";
-import { parseCookie, getIndexOfId } from "core/utils";
+import { parseCookie } from "core/utils";
 import axios, { createRequester } from "core/apiAxios";
 
 import { ContainerXL } from "components/layout/Container";
@@ -78,7 +78,7 @@ const Members = ({ project, memberList, invitedUserList }) => {
         token,
       );
       if (response.status === 200) {
-        const index = getIndexOfId(members, userId);
+        const index = members.findIndex((member) => member.id === userId);
         if (index !== -1) {
           members.splice(index, 1);
           setMembers([...members]);
@@ -103,7 +103,9 @@ const Members = ({ project, memberList, invitedUserList }) => {
         token,
       );
       if (response.status === 200) {
-        const index = getIndexOfId(invitedUsers, userId);
+        const index = invitedUsers.findIndex(
+          (invitedUser) => invitedUser.id === userId,
+        );
         if (index !== -1) {
           invitedUsers.splice(index, 1);
           setInvitedUsers([...invitedUsers]);
