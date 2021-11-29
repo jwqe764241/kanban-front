@@ -148,7 +148,7 @@ const Kanban = ({ project, kanban }) => {
       },
       reconnectDelay: 0,
       webSocketFactory: () => {
-        return new SockJS("http://localhost:8080/kanban-event");
+        return new SockJS(`${process.env.API_BASE_URL}kanban-event`);
       },
       onConnect: () => {
         client.current.subscribe(
