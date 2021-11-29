@@ -51,6 +51,7 @@ const TaskColumn = ({
   onEditColumn,
   onCreateTask,
   onDeleteTask,
+  onEditTask,
 }) => {
   const { tasks } = taskColumn;
   const taskColumnId = taskColumn.id.toString();
@@ -111,6 +112,7 @@ const TaskColumn = ({
                   task={task}
                   index={arrIndex}
                   onDelete={onDeleteTask}
+                  onEdit={onEditTask}
                 />
               ))}
             </TaskList>
@@ -149,6 +151,7 @@ TaskColumn.propTypes = {
   onEditColumn: PropTypes.func.isRequired,
   onCreateTask: PropTypes.func.isRequired,
   onDeleteTask: PropTypes.func.isRequired,
+  onEditTask: PropTypes.func.isRequired,
 };
 
 TaskColumn.defaultProps = {

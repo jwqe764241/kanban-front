@@ -1,9 +1,12 @@
+import { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Draggable } from "react-beautiful-dnd";
 
 import { CardIcon, DropdownIcon } from "components/layout/Icon";
 import { DropdownMenu, DropdownButton } from "components/layout/Dropdown";
+import { ModalPortal } from "components/layout/Modal";
+import EditTaskModal from "components/kanban/EditTaskModal";
 
 const Container = styled.div`
   position: relative;
@@ -48,38 +51,56 @@ const Text = styled.div`
   line-height: 1.2;
 `;
 
-const Task = ({ task, index, onDelete }) => {
+const Task = ({ task, index, onDelete, onEdit }) => {
   const taskId = task.id.toString();
+  const [isEditTaskOpen, setEditTaskOpen] = useState(false);
 
   const onDeleteButtonClick = () => {
     if (!window.confirm("Are you sure you want to delete this task?")) return;
     onDelete(task);
   };
 
+  const onEditButtonClick = () => {
+    setEditTaskOpen(true);
+  };
+
   return (
-    <Draggable draggableId={`task-${taskId}`} index={index}>
-      {(provided) => (
-        <Container
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-        >
-          <Icon>
-            <CardIcon />
-          </Icon>
-          <DropdownWrap>
-            <DropdownMenu icon={<DropdownIcon />}>
-              <DropdownButton type="button" onClick={onDeleteButtonClick}>
-                Delete task
-              </DropdownButton>
-            </DropdownMenu>
-          </DropdownWrap>
-          <TextContainer>
-            <Text>{task.text}</Text>
-          </TextContainer>
-        </Container>
-      )}
-    </Draggable>
+    <>
+      <Draggable draggableId={`task-${taskId}`} index={index}>
+        {(provided) => (
+          <Container
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+          >
+            <Icon>
+              <CardIcon />
+            </Icon>
+            <DropdownWrap>
+              <DropdownMenu icon={<DropdownIcon />}>
+                <DropdownButton type="button" onClick={onEditButtonClick}>
+                  Edit task
+                </DropdownButton>
+                <DropdownButton type="button" onClick={onDeleteButtonClick}>
+                  Delete task
+                </DropdownButton>
+              </DropdownMenu>
+            </DropdownWrap>
+            <TextContainer>
+              <Text>{task.text}</Text>
+            </TextContainer>
+          </Container>
+        )}
+      </Draggable>
+      <ModalPortal>
+        <EditTaskModal
+          show={isEditTaskOpen}
+          setShow={setEditTaskOpen}
+          task={task}
+          onEdit={onEdit}
+        />
+      </ModalPortal>
+    </>
   );
 };
 
@@ -92,6 +113,7 @@ Task.propTypes = {
   }).isRequired,
   index: PropTypes.number.isRequired,
   onDelete: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
 };
 
 export default Task;

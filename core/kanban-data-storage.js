@@ -83,6 +83,9 @@ const TaskAction = {
       }
     });
   },
+  Update: (tasks, payload) => {
+    tasks[payload.id] = payload;
+  },
 };
 
 // store kanban data and apply kanban action to data

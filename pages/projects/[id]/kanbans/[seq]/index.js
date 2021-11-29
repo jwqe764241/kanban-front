@@ -239,6 +239,20 @@ const Kanban = ({ project, kanban }) => {
     }
   };
 
+  const onEditTask = async (task, data) => {
+    try {
+      const response = await requester.patch(
+        `/projects/${project.id}/kanbans/${kanban.sequenceId}/columns/${task.taskColumnId}/tasks/${task.id}`,
+        data,
+        token,
+      );
+      return response;
+    } catch (e) {
+      const { response } = e;
+      return response;
+    }
+  };
+
   const onDragEnd = async (result) => {
     const { destination, source, draggableId, type } = result;
     if (!destination) {
@@ -354,6 +368,7 @@ const Kanban = ({ project, kanban }) => {
                   onEditColumn={onEditColumn}
                   onCreateTask={onCreateTask}
                   onDeleteTask={onDeleteTask}
+                  onEditTask={onEditTask}
                 />
               ))}
             </TaskColumnList>
