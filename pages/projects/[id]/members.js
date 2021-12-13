@@ -171,7 +171,7 @@ Members.propTypes = {
     name: PropTypes.string,
     description: PropTypes.string,
     registerUsername: PropTypes.string,
-    registerDate: PropTypes.string,
+    createdAt: PropTypes.string,
   }).isRequired,
   memberList: PropTypes.arrayOf(PropTypes.object),
   invitedUserList: PropTypes.arrayOf(PropTypes.object),

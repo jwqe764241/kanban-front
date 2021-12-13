@@ -84,7 +84,7 @@ KanbanList.propTypes = {
     name: PropTypes.string,
     description: PropTypes.string,
     registerUsername: PropTypes.string,
-    registerDate: PropTypes.string,
+    createdAt: PropTypes.string,
   }).isRequired,
   kanbanList: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

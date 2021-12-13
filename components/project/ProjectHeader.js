@@ -33,12 +33,12 @@ const Description = styled.span`
 `;
 
 const ProjectHeader = ({ project, activeMenu }) => {
-  const { id, name, description, registerDate } = project;
+  const { id, name, description, createdAt } = project;
   return (
     <ProjectInfo>
       <NameWrap>
         <Name>{name}</Name>
-        <CreatedDate>{getDateString(registerDate)}</CreatedDate>
+        <CreatedDate>{getDateString(createdAt)}</CreatedDate>
       </NameWrap>
       <Description>{description}</Description>
       <ProjectMenu id={id} activeMenu={activeMenu} />
@@ -52,7 +52,7 @@ ProjectHeader.propTypes = {
     name: PropTypes.string,
     description: PropTypes.string,
     registerUsername: PropTypes.string,
-    registerDate: PropTypes.string,
+    createdAt: PropTypes.string,
   }).isRequired,
   activeMenu: PropTypes.string.isRequired,
 };

@@ -93,7 +93,7 @@ DeleteColumnModal.propTypes = {
     id: PropTypes.number,
     name: PropTypes.string,
     prevId: PropTypes.number,
-    registerDate: PropTypes.string,
+    createdAt: PropTypes.string,
   }).isRequired,
   onDelete: PropTypes.func.isRequired,
 };

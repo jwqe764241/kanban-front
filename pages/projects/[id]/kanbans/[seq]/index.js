@@ -403,14 +403,14 @@ Kanban.propTypes = {
     name: PropTypes.string,
     description: PropTypes.string,
     registerUsername: PropTypes.string,
-    registerDate: PropTypes.string,
+    createdAt: PropTypes.string,
   }).isRequired,
   kanban: PropTypes.shape({
     projectId: PropTypes.number,
     sequenceId: PropTypes.number,
     name: PropTypes.string,
     description: PropTypes.string,
-    registerDate: PropTypes.string,
+    createdAt: PropTypes.string,
   }).isRequired,
 };
 

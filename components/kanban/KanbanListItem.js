@@ -37,7 +37,7 @@ const Description = styled.div`
   color: #484848;
 `;
 
-const RegisterDate = styled.div`
+const CreatedDate = styled.div`
   font-size: 12px;
   font-weight: 300;
   margin-top: 10px;
@@ -52,7 +52,7 @@ const DropdownWrap = styled.span`
 `;
 
 const KanbanListItem = ({ kanban }) => {
-  const { projectId, sequenceId, name, description, registerDate } = kanban;
+  const { projectId, sequenceId, name, description, createdAt } = kanban;
   return (
     <Container>
       <DropdownWrap>
@@ -66,7 +66,7 @@ const KanbanListItem = ({ kanban }) => {
         <Name>{name}</Name>
       </Link>
       <Description>{description}</Description>
-      <RegisterDate>{getDateString(registerDate)}</RegisterDate>
+      <CreatedDate>{getDateString(createdAt)}</CreatedDate>
     </Container>
   );
 };
@@ -77,7 +77,7 @@ KanbanListItem.propTypes = {
     sequenceId: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    registerDate: PropTypes.string.isRequired,
+    createdAt: PropTypes.string.isRequired,
   }).isRequired,
 };
 

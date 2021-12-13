@@ -142,7 +142,7 @@ TaskColumn.propTypes = {
     id: PropTypes.number,
     name: PropTypes.string,
     prevId: PropTypes.number,
-    registerDate: PropTypes.string,
+    createdAt: PropTypes.string,
     tasks: PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
   index: PropTypes.number.isRequired,
