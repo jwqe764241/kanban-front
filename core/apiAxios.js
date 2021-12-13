@@ -29,7 +29,7 @@ const getAccessToken = async (inst, refreshToken) => {
 // if refreshToken was given, update access token with given token
 const updateAccessToken = async (inst, dispatch, refreshToken) => {
   const token = await getAccessToken(inst, refreshToken);
-  const tokenWithBearer = `Bearer ${token}`;
+  const tokenWithBearer = token ? `Bearer ${token}` : null;
   dispatch({
     type: "UPDATE_TOKEN",
     payload: tokenWithBearer,
