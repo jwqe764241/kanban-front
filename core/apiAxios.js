@@ -29,11 +29,12 @@ const getAccessToken = async (inst, refreshToken) => {
 // if refreshToken was given, update access token with given token
 const updateAccessToken = async (inst, dispatch, refreshToken) => {
   const token = await getAccessToken(inst, refreshToken);
+  const tokenWithBearer = `Bearer ${token}`;
   dispatch({
     type: "UPDATE_TOKEN",
-    payload: token,
+    payload: tokenWithBearer,
   });
-  return token;
+  return tokenWithBearer;
 };
 
 // create server requester
