@@ -144,7 +144,7 @@ const Kanban = ({ project, kanban }) => {
   if (!client.current && authToken) {
     client.current = new Client({
       connectHeaders: {
-        Authorization: authToken,
+        Authorization: `Bearer ${authToken}`,
       },
       reconnectDelay: 0,
       webSocketFactory: () => {
