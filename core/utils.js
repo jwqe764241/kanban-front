@@ -76,9 +76,13 @@ function pad(num, size) {
 // return formatted datetime string "YYYY-MM-DD HH-mm-ss"
 export function getDateTimeString(str) {
   const date = new Date(str);
-  const m = pad(date.getMonth() + 1, 2);
-  const d = pad(date.getDate(), 2);
-  return `${date.getFullYear()}-${m}-${d} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+  const year = date.getFullYear();
+  const month = pad(date.getMonth() + 1, 2);
+  const day = pad(date.getDate(), 2);
+  const hour = pad(date.getHours(), 2);
+  const min = pad(date.getMinutes(), 2);
+  const sec = pad(date.getSeconds(), 2);
+  return `${year}-${month}-${day} ${hour}:${min}:${sec}`;
 }
 
 // convert array to object
