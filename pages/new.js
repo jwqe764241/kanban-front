@@ -8,7 +8,7 @@ import { Header, Body } from "components/layout/Page";
 import { ContainerMd } from "components/layout/Container";
 import { SuccessButton } from "components/layout/Button";
 
-function New() {
+const New = () => {
   const router = useRouter();
   const { token } = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -94,10 +94,6 @@ function New() {
       </Body>
     </ContainerMd>
   );
-}
-
-export async function getServerSideProps() {
-  return { props: {} };
-}
+};
 
 export default New;

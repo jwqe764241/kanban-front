@@ -83,9 +83,7 @@ const Tasks = styled.div`
   padding: 0px 20px;
 `;
 
-function Home(props) {
-  const { projects } = props;
-
+const Home = ({ projects }) => {
   return (
     <ContainerLg>
       <Sections>
@@ -100,7 +98,7 @@ function Home(props) {
       </Sections>
     </ContainerLg>
   );
-}
+};
 
 Home.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.object),

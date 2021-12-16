@@ -99,9 +99,8 @@ const UserInfo = styled.div`
   }
 `;
 
-function Navbar(props) {
+const Navbar = ({ username }) => {
   const router = useRouter();
-  const { username } = props;
 
   const onLogoutClick = async () => {
     try {
@@ -144,7 +143,7 @@ function Navbar(props) {
       </InnerContainer>
     </Container>
   );
-}
+};
 
 Navbar.propTypes = {
   username: PropTypes.string,
