@@ -46,7 +46,8 @@ const EditTaskModal = ({ show, setShow, task, onEdit }) => {
   const [data, setData] = useState({ text: task.text });
   const [errors, setErrors] = useState();
 
-  const closeModal = () => {
+  const close = () => {
+    setData({ text: task.text });
     setShow(false);
   };
 
@@ -78,10 +79,10 @@ const EditTaskModal = ({ show, setShow, task, onEdit }) => {
   };
 
   return (
-    <Modal show={show} setShow={setShow}>
+    <Modal show={show} onClose={close}>
       <TitleContainer>
         <Title>Edit task</Title>
-        <RemoveButton onClick={closeModal} />
+        <RemoveButton onClick={close} />
       </TitleContainer>
       <Container>
         <div style={{ margin: "15px 0px" }}>

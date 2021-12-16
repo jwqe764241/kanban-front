@@ -47,7 +47,7 @@ RemoveButton.propTypes = {
 const DeleteColumnModal = ({ show, setShow, taskColumn, onDelete }) => {
   const [isDeleting, setDeleting] = useState(false);
 
-  const closeModal = () => {
+  const close = () => {
     setShow(false);
   };
 
@@ -57,10 +57,10 @@ const DeleteColumnModal = ({ show, setShow, taskColumn, onDelete }) => {
   };
 
   return (
-    <Modal show={show} setShow={setShow}>
+    <Modal show={show} onClose={close}>
       <TitleContainer>
         <Title>Delete {taskColumn.name}</Title>
-        <RemoveButton onClick={closeModal} />
+        <RemoveButton onClick={close} />
       </TitleContainer>
       <Container>
         <div style={{ margin: "15px 0px" }}>
@@ -77,7 +77,7 @@ const DeleteColumnModal = ({ show, setShow, taskColumn, onDelete }) => {
         </DangerButton>
         <SecondaryButton
           style={{ width: "80px", marginBottom: "15px" }}
-          onClick={closeModal}
+          onClick={close}
         >
           Cancel
         </SecondaryButton>

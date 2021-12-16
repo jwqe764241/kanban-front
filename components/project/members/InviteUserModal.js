@@ -30,6 +30,12 @@ const InviteUserModal = ({ show, setShow, onSuggest, onInvite }) => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isInviting, setInviting] = useState(false);
 
+  const close = () => {
+    setSuggestionUsers(null);
+    setSelectedUser(null);
+    setShow(false);
+  };
+
   const onSuggestionSelect = (user) => {
     setSelectedUser(user);
   };
@@ -57,7 +63,7 @@ const InviteUserModal = ({ show, setShow, onSuggest, onInvite }) => {
   };
 
   return (
-    <Modal show={show} setShow={setShow}>
+    <Modal show={show} onClose={close}>
       <Title>Invite a member</Title>
       <Container>
         {selectedUser ? (

@@ -39,13 +39,13 @@ const Container = styled.div`
   border-radius: 6px;
 `;
 
-const Modal = ({ show, setShow, children }) => {
+const Modal = ({ show, onClose, children }) => {
   const ref = useRef();
 
   useEffect(() => {
     const handleClick = (e) => {
       if (show && ref.current && !ref.current.contains(e.target)) {
-        setShow(false);
+        onClose();
       }
     };
     document.addEventListener("mousedown", handleClick);
@@ -67,7 +67,7 @@ const Modal = ({ show, setShow, children }) => {
 
 Modal.propTypes = {
   show: PropTypes.bool.isRequired,
-  setShow: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
   children: PropTypes.node,
 };
 
@@ -97,16 +97,17 @@ const ButtonContainer = styled.div`
 `;
 
 const Alert = ({ show, setShow, title, message }) => {
+  const close = () => {
+    setShow(false);
+  };
   return (
-    <Modal show={show} setShow={setShow}>
+    <Modal show={show} onClose={close}>
       <Title>{title}</Title>
       <Message>{message}</Message>
       <ButtonContainer>
         <SecondaryButton
           style={{ width: "70px", marginRight: "10px" }}
-          onClick={() => {
-            setShow(false);
-          }}
+          onClick={close}
         >
           OK
         </SecondaryButton>
@@ -128,16 +129,17 @@ Alert.defaultProps = {
 };
 
 const Confirm = ({ show, setShow, title, message, onAccept }) => {
+  const close = () => {
+    setShow(false);
+  };
   return (
-    <Modal show={show} setShow={setShow}>
+    <Modal show={show} onClose={close}>
       <Title>{title}</Title>
       <Message>{message}</Message>
       <ButtonContainer>
         <SecondaryButton
           style={{ width: "80px", marginRight: "5px" }}
-          onClick={() => {
-            setShow(false);
-          }}
+          onClick={close}
         >
           Cancel
         </SecondaryButton>

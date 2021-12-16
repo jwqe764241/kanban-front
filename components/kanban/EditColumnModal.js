@@ -43,10 +43,11 @@ RemoveButton.propTypes = {
 
 const EditColumnModal = ({ show, setShow, taskColumn, onEdit }) => {
   const [isEditing, setEditing] = useState(false);
-  const [data, setData] = useState({ name: "" });
+  const [data, setData] = useState({ name: taskColumn.name });
   const [errors, setErrors] = useState();
 
-  const closeModal = () => {
+  const close = () => {
+    setData({ name: taskColumn.name });
     setShow(false);
   };
 
@@ -78,10 +79,10 @@ const EditColumnModal = ({ show, setShow, taskColumn, onEdit }) => {
   };
 
   return (
-    <Modal show={show} setShow={setShow}>
+    <Modal show={show} onClose={close}>
       <TitleContainer>
         <Title>Edit {taskColumn.name}</Title>
-        <RemoveButton onClick={closeModal} />
+        <RemoveButton onClick={close} />
       </TitleContainer>
       <Container>
         <div style={{ margin: "15px 0px" }}>

@@ -46,7 +46,8 @@ const AddColumnModal = ({ show, setShow, onCreate }) => {
   const [data, setData] = useState({ name: "" });
   const [errors, setErrors] = useState();
 
-  const closeModal = () => {
+  const close = () => {
+    setData({ name: "" });
     setShow(false);
   };
 
@@ -65,7 +66,7 @@ const AddColumnModal = ({ show, setShow, onCreate }) => {
 
     const { status } = response;
     if (status === 201) {
-      setShow(false);
+      close();
     } else if (status === 409) {
       setErrors({
         name: {
@@ -78,10 +79,10 @@ const AddColumnModal = ({ show, setShow, onCreate }) => {
   };
 
   return (
-    <Modal show={show} setShow={setShow}>
+    <Modal show={show} onClose={close}>
       <TitleContainer>
         <Title>Add column</Title>
-        <RemoveButton onClick={closeModal} />
+        <RemoveButton onClick={close} />
       </TitleContainer>
       <Container>
         <div style={{ margin: "15px 0px" }}>
