@@ -126,7 +126,7 @@ const Navbar = ({ username }) => {
         <Tools />
         <MenuContainer>
           <ProjectDropdown>
-            <Link href="/new">
+            <Link href="/projects/new">
               <DropdownButton type="button">New Project</DropdownButton>
             </Link>
           </ProjectDropdown>
