@@ -11,6 +11,7 @@ import {
   Input,
   TextArea,
   Label,
+  Optional,
   InputWrap,
   HorizontalRule,
 } from "components/layout/Form";
@@ -86,7 +87,9 @@ const EditKanban = ({ kanban }) => {
           />
         </InputWrap>
         <InputWrap>
-          <Label block>Description</Label>
+          <Label block>
+            Description <Optional>(optional)</Optional>
+          </Label>
           <TextArea
             id="description"
             name="description"

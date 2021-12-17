@@ -17,6 +17,11 @@ const Label = styled.label`
   margin-bottom: 12px;
 `;
 
+const Optional = styled.span`
+  color: #57606a;
+  font-size: 12px;
+`;
+
 const InputWrap = styled.div`
   margin-bottom: 25px;
 `;
@@ -107,4 +112,4 @@ TextArea.defaultProps = {
   name: undefined,
 };
 
-export { HorizontalRule, InputWrap, Label, Input, TextArea };
+export { HorizontalRule, InputWrap, Label, Optional, Input, TextArea };

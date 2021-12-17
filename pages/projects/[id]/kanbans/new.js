@@ -3,7 +3,13 @@ import { useRouter } from "next/router";
 import axios, { createRequester } from "core/apiAxios";
 import { useSelector, useDispatch } from "react-redux";
 
-import { Input, TextArea, Label, InputWrap } from "components/layout/Form";
+import {
+  Input,
+  TextArea,
+  Label,
+  Optional,
+  InputWrap,
+} from "components/layout/Form";
 import { Header, Body } from "components/layout/Page";
 import { ContainerMd } from "components/layout/Container";
 import { SuccessButton } from "components/layout/Button";
@@ -74,7 +80,9 @@ const NewKanban = () => {
           />
         </InputWrap>
         <InputWrap>
-          <Label block>Description</Label>
+          <Label block>
+            Description <Optional>(optional)</Optional>
+          </Label>
           <TextArea
             id="description"
             name="description"
