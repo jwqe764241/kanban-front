@@ -11,10 +11,6 @@ const ProjectInfo = styled.div`
   background-color: #fafbfc;
 `;
 
-const NameWrap = styled.div`
-  padding-bottom: 15px;
-`;
-
 const Name = styled.span`
   font-size: 20px;
   font-weight: 500;
@@ -27,20 +23,21 @@ const CreatedDate = styled.span`
   color: #4f4f4f;
 `;
 
-const Description = styled.span`
+const Description = styled.div`
+  padding-top: 15px;
   font-size: 14px;
   font-weight: 300;
 `;
 
-const ProjectHeader = ({ project, activeMenu }) => {
+const ProjectHeader = ({ project, activeMenu, showDescription }) => {
   const { id, name, description, createdAt } = project;
   return (
     <ProjectInfo>
-      <NameWrap>
+      <div>
         <Name>{name}</Name>
         <CreatedDate>{getDateString(createdAt)}</CreatedDate>
-      </NameWrap>
-      <Description>{description}</Description>
+      </div>
+      {showDescription ? <Description>{description}</Description> : <></>}
       <ProjectMenu id={id} activeMenu={activeMenu} />
     </ProjectInfo>
   );
@@ -55,6 +52,11 @@ ProjectHeader.propTypes = {
     createdAt: PropTypes.string,
   }).isRequired,
   activeMenu: PropTypes.string.isRequired,
+  showDescription: PropTypes.bool,
+};
+
+ProjectHeader.defaultProps = {
+  showDescription: true,
 };
 
 export default ProjectHeader;
