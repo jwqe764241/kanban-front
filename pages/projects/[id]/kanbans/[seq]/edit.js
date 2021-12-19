@@ -6,6 +6,7 @@ import axios, { createRequester } from "core/apiAxios";
 import wrapper from "core/store";
 import { parseCookie } from "core/utils";
 
+import ProjectHeader from "components/project/ProjectHeader";
 import DeleteKanbanForm from "components/kanban/DeleteKanbanForm";
 import {
   Input,
@@ -19,7 +20,7 @@ import { Header, Body } from "components/layout/Page";
 import { ContainerMd } from "components/layout/Container";
 import { SuccessButton } from "components/layout/Button";
 
-const EditKanban = ({ kanban }) => {
+const EditKanban = ({ project, kanban }) => {
   const router = useRouter();
   const { id, seq } = router.query;
   const { token } = useSelector((state) => state);
@@ -71,55 +72,65 @@ const EditKanban = ({ kanban }) => {
   };
 
   return (
-    <ContainerMd>
-      <Header title={`Edit ${kanban.name}`} />
-      <Body>
-        <InputWrap>
-          <Label block>Name</Label>
-          <Input
-            id="name"
-            type="text"
-            name="name"
-            style={{ width: "300px" }}
-            value={data.name}
-            onChange={onChange}
-            errors={errors}
-          />
-        </InputWrap>
-        <InputWrap>
-          <Label block>
-            Description <Optional>(optional)</Optional>
-          </Label>
-          <TextArea
-            id="description"
-            name="description"
-            style={{ height: "100px" }}
-            value={data.description}
-            onChange={onChange}
-            errors={errors}
-          />
-        </InputWrap>
-        {isProgressed ? (
-          <SuccessButton type="button" style={{ width: "120px" }} disabled>
-            Saving...
-          </SuccessButton>
-        ) : (
-          <SuccessButton
-            type="button"
-            style={{ width: "120px" }}
-            onClick={handleUpdate}
-          >
-            Save kanban
-          </SuccessButton>
-        )}
-        <HorizontalRule />
-        <DeleteKanbanForm name={kanban.name} onDelete={handleDelete} />
-      </Body>
-    </ContainerMd>
+    <>
+      <ProjectHeader project={project} activeMenu="kanbans" />
+      <ContainerMd>
+        <Header title={`Edit ${kanban.name}`} />
+        <Body>
+          <InputWrap>
+            <Label block>Name</Label>
+            <Input
+              id="name"
+              type="text"
+              name="name"
+              style={{ width: "300px" }}
+              value={data.name}
+              onChange={onChange}
+              errors={errors}
+            />
+          </InputWrap>
+          <InputWrap>
+            <Label block>
+              Description <Optional>(optional)</Optional>
+            </Label>
+            <TextArea
+              id="description"
+              name="description"
+              style={{ height: "100px" }}
+              value={data.description}
+              onChange={onChange}
+              errors={errors}
+            />
+          </InputWrap>
+          {isProgressed ? (
+            <SuccessButton type="button" style={{ width: "120px" }} disabled>
+              Saving...
+            </SuccessButton>
+          ) : (
+            <SuccessButton
+              type="button"
+              style={{ width: "120px" }}
+              onClick={handleUpdate}
+            >
+              Save kanban
+            </SuccessButton>
+          )}
+          <HorizontalRule />
+          <DeleteKanbanForm name={kanban.name} onDelete={handleDelete} />
+        </Body>
+      </ContainerMd>
+    </>
   );
 };
 
 EditKanban.propTypes = {
+  project: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string,
+    description: PropTypes.string,
+    registerUsername: PropTypes.string,
+    createdAt: PropTypes.string,
+  }).isRequired,
   kanban: PropTypes.shape({
     projectId: PropTypes.number.isRequired,
     sequenceId: PropTypes.number.isRequired,
@@ -141,12 +152,14 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
     const { token } = store.getState();
     try {
+      const projectResponse = await requester.get(`/projects/${id}`, token);
       const kanbanResponse = await requester.get(
         `/projects/${id}/kanbans/${seq}`,
         token,
       );
       return {
         props: {
+          project: projectResponse.data,
           kanban: kanbanResponse.data,
         },
       };
