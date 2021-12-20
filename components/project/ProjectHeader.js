@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Link from "next/link";
 import PropTypes from "prop-types";
 import { getDateString } from "core/utils";
 
@@ -15,6 +16,13 @@ const Name = styled.span`
   font-size: 20px;
   font-weight: 500;
   margin-right: 10px;
+  color: #2455e7;
+  cursor: pointer;
+  display: inline-block;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const CreatedDate = styled.span`
@@ -28,7 +36,9 @@ const ProjectHeader = ({ project, activeMenu }) => {
   return (
     <ProjectInfo>
       <div>
-        <Name>{name}</Name>
+        <Link href={`/projects/${id}/kanbans`}>
+          <Name>{name}</Name>
+        </Link>
         <CreatedDate>{getDateString(createdAt)}</CreatedDate>
       </div>
       <ProjectMenu id={id} activeMenu={activeMenu} />
