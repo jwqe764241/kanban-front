@@ -73,11 +73,7 @@ const EditKanban = ({ project, kanban }) => {
 
   return (
     <>
-      <ProjectHeader
-        project={project}
-        activeMenu="kanbans"
-        showDescription={false}
-      />
+      <ProjectHeader project={project} activeMenu="kanbans" />
       <ContainerMd>
         <Header title={`Edit ${kanban.name}`} />
         <Body>
