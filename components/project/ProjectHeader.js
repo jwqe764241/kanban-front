@@ -23,21 +23,14 @@ const CreatedDate = styled.span`
   color: #4f4f4f;
 `;
 
-const Description = styled.div`
-  padding-top: 15px;
-  font-size: 14px;
-  font-weight: 300;
-`;
-
-const ProjectHeader = ({ project, activeMenu, showDescription }) => {
-  const { id, name, description, createdAt } = project;
+const ProjectHeader = ({ project, activeMenu }) => {
+  const { id, name, createdAt } = project;
   return (
     <ProjectInfo>
       <div>
         <Name>{name}</Name>
         <CreatedDate>{getDateString(createdAt)}</CreatedDate>
       </div>
-      {showDescription ? <Description>{description}</Description> : <></>}
       <ProjectMenu id={id} activeMenu={activeMenu} />
     </ProjectInfo>
   );
@@ -52,11 +45,6 @@ ProjectHeader.propTypes = {
     createdAt: PropTypes.string,
   }).isRequired,
   activeMenu: PropTypes.string.isRequired,
-  showDescription: PropTypes.bool,
-};
-
-ProjectHeader.defaultProps = {
-  showDescription: true,
 };
 
 export default ProjectHeader;
