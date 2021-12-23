@@ -75,10 +75,10 @@ const StyledTextArea = styled.textarea`
 const Input = ({ errors, name, ...otherProps }) => {
   const error = errors ? errors[name] : null;
   return (
-    <div>
+    <span>
       <StyledInput name={name} error={!!error} {...otherProps} />
       {error ? <ErrorMessage>{error.message}</ErrorMessage> : <></>}
-    </div>
+    </span>
   );
 };
 

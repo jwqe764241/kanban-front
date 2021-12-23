@@ -32,6 +32,11 @@ const ProjectMenu = ({ id, activeMenu }) => {
       name: "Members",
       href: `/projects/${id}/members`,
     },
+    {
+      id: "settings",
+      name: "Settings",
+      href: `/projects/${id}/settings`,
+    },
   ];
 
   return (
