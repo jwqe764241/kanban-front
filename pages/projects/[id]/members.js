@@ -1,15 +1,16 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { connect, useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import wrapper from "core/store";
-import { parseCookie, getIndexOfId } from "core/utils";
+import { parseCookie } from "core/utils";
 import axios, { createRequester } from "core/apiAxios";
 
 import { ContainerXL } from "components/layout/Container";
 import { SuccessButton } from "components/layout/Button";
 import ProjectHeader from "components/project/ProjectHeader";
 import UserList from "components/project/members/UserList";
+import { ModalPortal } from "components/layout/Modal";
 import InviteUserModal from "components/project/members/InviteUserModal";
 
 const Container = styled.div`
@@ -28,7 +29,6 @@ const ListWrap = styled.div`
 `;
 
 const Members = ({ project, memberList, invitedUserList }) => {
-  const ref = useRef();
   const { token } = useSelector((state) => state);
   const dispatch = useDispatch();
   const requester = createRequester(axios, dispatch);
@@ -57,7 +57,7 @@ const Members = ({ project, memberList, invitedUserList }) => {
         token,
       );
       if (response.status === 200) {
-        setInviteUserOpen(false);
+        setInvitedUsers((oldArray) => [...oldArray, response.data]);
       }
     } catch (e) {
       const { response } = e;
@@ -65,6 +65,8 @@ const Members = ({ project, memberList, invitedUserList }) => {
         alert("User was already invited");
       }
     }
+
+    setInviteUserOpen(false);
   };
 
   const onRemoveMemberClick = async (userId) => {
@@ -76,7 +78,7 @@ const Members = ({ project, memberList, invitedUserList }) => {
         token,
       );
       if (response.status === 200) {
-        const index = getIndexOfId(members, userId);
+        const index = members.findIndex((member) => member.id === userId);
         if (index !== -1) {
           members.splice(index, 1);
           setMembers([...members]);
@@ -101,7 +103,9 @@ const Members = ({ project, memberList, invitedUserList }) => {
         token,
       );
       if (response.status === 200) {
-        const index = getIndexOfId(invitedUsers, userId);
+        const index = invitedUsers.findIndex(
+          (invitedUser) => invitedUser.id === userId,
+        );
         if (index !== -1) {
           invitedUsers.splice(index, 1);
           setInvitedUsers([...invitedUsers]);
@@ -149,17 +153,14 @@ const Members = ({ project, memberList, invitedUserList }) => {
           </ListWrap>
         </ListContainer>
       </ContainerXL>
-      {isInviteUserOpen ? (
+      <ModalPortal>
         <InviteUserModal
-          innerRef={ref}
-          show
+          show={isInviteUserOpen}
           setShow={setInviteUserOpen}
           onSuggest={onSuggest}
           onInvite={onInvite}
         />
-      ) : (
-        <></>
-      )}
+      </ModalPortal>
     </>
   );
 };
@@ -170,7 +171,7 @@ Members.propTypes = {
     name: PropTypes.string,
     description: PropTypes.string,
     registerUsername: PropTypes.string,
-    registerDate: PropTypes.string,
+    createdAt: PropTypes.string,
   }).isRequired,
   memberList: PropTypes.arrayOf(PropTypes.object),
   invitedUserList: PropTypes.arrayOf(PropTypes.object),

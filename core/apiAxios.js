@@ -15,9 +15,10 @@ const getAccessToken = async (inst, refreshToken) => {
   };
 
   try {
-    const response = await inst.post("auth/refresh-access-token", null, option);
+    const response = await inst.get("/auth/access-token", option);
     if (response.status === 200) {
-      return response.data;
+      const { token } = response.data;
+      return token;
     }
   } catch (e) {}
 
@@ -28,11 +29,12 @@ const getAccessToken = async (inst, refreshToken) => {
 // if refreshToken was given, update access token with given token
 const updateAccessToken = async (inst, dispatch, refreshToken) => {
   const token = await getAccessToken(inst, refreshToken);
+  const tokenWithBearer = token ? `Bearer ${token}` : null;
   dispatch({
     type: "UPDATE_TOKEN",
-    payload: token,
+    payload: tokenWithBearer,
   });
-  return token;
+  return tokenWithBearer;
 };
 
 // create server requester
@@ -121,6 +123,35 @@ const createRequester = (inst, dispatch, refreshToken) => {
 
       // retry with updated access token
       const res = await inst.delete(url, {
+        ...option,
+        headers: { Authorization: updatedToken },
+      });
+      return res;
+    },
+    patch: async (url, data, token, option) => {
+      let err;
+      // try request.
+      try {
+        const res = await inst.patch(url, data, {
+          ...option,
+          headers: { Authorization: token },
+        });
+        return res;
+      } catch (e) {
+        err = e;
+      }
+
+      // if err status is 401, update access token
+      let updatedToken;
+      const errRes = err.response;
+      if (errRes && errRes.status === 401) {
+        updatedToken = await updateAccessToken(inst, dispatch, refreshToken);
+      } else {
+        throw err;
+      }
+
+      // retry with updated access token
+      const res = await inst.patch(url, data, {
         ...option,
         headers: { Authorization: updatedToken },
       });

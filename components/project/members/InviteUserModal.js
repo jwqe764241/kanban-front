@@ -2,7 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-import { Modal, Buttons } from "components/layout/Modal";
+import { Modal } from "components/layout/Modal";
 import { SuccessButton } from "components/layout/Button";
 import { Input } from "components/layout/Form";
 import SuggestionSelect from "components/project/members/SuggestionSelect";
@@ -19,10 +19,22 @@ const Container = styled.div`
   padding: 20px;
 `;
 
-const InviteUserModal = ({ show, setShow, onSuggest, onInvite, innerRef }) => {
+const ButtonContainer = styled.div`
+  padding: 0px 20px 15px 20px;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const InviteUserModal = ({ show, setShow, onSuggest, onInvite }) => {
   const [suggestionUsers, setSuggestionUsers] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isInviting, setInviting] = useState(false);
+
+  const close = () => {
+    setSuggestionUsers(null);
+    setSelectedUser(null);
+    setShow(false);
+  };
 
   const onSuggestionSelect = (user) => {
     setSelectedUser(user);
@@ -51,7 +63,7 @@ const InviteUserModal = ({ show, setShow, onSuggest, onInvite, innerRef }) => {
   };
 
   return (
-    <Modal show={show} setShow={setShow} innerRef={innerRef}>
+    <Modal show={show} onClose={close}>
       <Title>Invite a member</Title>
       <Container>
         {selectedUser ? (
@@ -75,7 +87,7 @@ const InviteUserModal = ({ show, setShow, onSuggest, onInvite, innerRef }) => {
           </>
         )}
       </Container>
-      <Buttons>
+      <ButtonContainer>
         <SuccessButton
           onClick={onInviteClick}
           disabled={!!(selectedUser == null || isInviting)}
@@ -86,7 +98,7 @@ const InviteUserModal = ({ show, setShow, onSuggest, onInvite, innerRef }) => {
               : "Invite a member to project"
             : "Select a member to invite"}
         </SuccessButton>
-      </Buttons>
+      </ButtonContainer>
     </Modal>
   );
 };
@@ -96,7 +108,6 @@ InviteUserModal.propTypes = {
   setShow: PropTypes.func.isRequired,
   onSuggest: PropTypes.func.isRequired,
   onInvite: PropTypes.func.isRequired,
-  innerRef: PropTypes.object.isRequired,
 };
 
 export default InviteUserModal;

@@ -3,13 +3,20 @@ import { useRouter } from "next/router";
 import axios, { createRequester } from "core/apiAxios";
 import { useSelector, useDispatch } from "react-redux";
 
-import { Input, TextArea, Label, InputWrap } from "components/layout/Form";
+import {
+  Input,
+  TextArea,
+  Label,
+  Optional,
+  InputWrap,
+} from "components/layout/Form";
 import { Header, Body } from "components/layout/Page";
 import { ContainerMd } from "components/layout/Container";
 import { SuccessButton } from "components/layout/Button";
 
-function New() {
+const NewKanban = () => {
   const router = useRouter();
+  const { id } = router.query;
   const { token } = useSelector((state) => state);
   const dispatch = useDispatch();
   const requester = createRequester(axios, dispatch);
@@ -33,16 +40,21 @@ function New() {
     setIsProgressed(true);
 
     try {
-      const response = await requester.post("/projects", data, token);
+      const response = await requester.post(
+        `/projects/${id}/kanbans`,
+        data,
+        token,
+      );
       if (response.status === 201) {
-        router.push("/");
+        const { projectId, sequenceId } = response.data;
+        router.push(`/projects/${projectId}/kanbans/${sequenceId}`);
       }
     } catch (e) {
       const errorResponse = e.response;
       if (errorResponse.status === 400) {
         setErrors(errorResponse.data.data);
-      } else if (errorResponse.status === 409) {
-        alert("Project name already exist, please use another name");
+      } else if (errorResponse.status === 403) {
+        alert("Use hanve no permission to do this.");
       } else {
         alert("Unknown error.");
       }
@@ -53,7 +65,7 @@ function New() {
 
   return (
     <ContainerMd>
-      <Header title="New Project" description="Create new project." />
+      <Header title="New Kanban" description="Create new kanban." />
       <Body>
         <InputWrap>
           <Label block>Name</Label>
@@ -68,7 +80,9 @@ function New() {
           />
         </InputWrap>
         <InputWrap>
-          <Label block>Description</Label>
+          <Label block>
+            Description <Optional>(optional)</Optional>
+          </Label>
           <TextArea
             id="description"
             name="description"
@@ -88,16 +102,12 @@ function New() {
             style={{ width: "140px" }}
             onClick={handleCreate}
           >
-            Create project
+            Create kanban
           </SuccessButton>
         )}
       </Body>
     </ContainerMd>
   );
-}
+};
 
-export async function getServerSideProps() {
-  return { props: {} };
-}
-
-export default New;
+export default NewKanban;

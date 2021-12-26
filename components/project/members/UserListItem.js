@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import { getDateTimeString } from "core/utils";
 
 import { ListItem } from "components/layout/List";
-import { RemoveButton } from "components/layout/Button";
+import { NoStyleButton } from "components/layout/Button";
+import { RemoveIcon } from "components/layout/Icon";
 
 const Column = styled.div`
   display: inline-block;
@@ -29,6 +30,18 @@ const Date = styled.div`
 const RemoveButtonWrap = styled(Column)`
   text-align: end;
 `;
+
+const RemoveButton = ({ onClick }) => {
+  return (
+    <NoStyleButton type="button" onClick={onClick}>
+      <RemoveIcon />
+    </NoStyleButton>
+  );
+};
+
+RemoveButton.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};
 
 const UserListItem = ({ user, onRemoveItemClick }) => {
   return (

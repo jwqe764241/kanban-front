@@ -54,7 +54,7 @@ const AlertPanel = styled.div`
   margin: 15px 0px;
 `;
 
-function Login() {
+const Login = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -82,7 +82,8 @@ function Login() {
       });
 
       if (response.status === 200) {
-        dispatch({ type: "UPDATE_TOKEN", payload: `${response.data}` });
+        const { token } = response.data;
+        dispatch({ type: "UPDATE_TOKEN", payload: `${token}` });
         router.push("/");
       }
     } catch (e) {
@@ -152,9 +153,9 @@ function Login() {
       </Form>
     </Panel>
   );
-}
+};
 
-export async function getServerSideProps(context) {
+export const getServerSideProps = async (context) => {
   const cookies = parseCookie(context.req.headers.cookie);
   const refreshCookie = cookies.REFRESH_TOKEN;
   if (!refreshCookie) {
@@ -169,6 +170,6 @@ export async function getServerSideProps(context) {
       permanent: false,
     },
   };
-}
+};
 
 export default Login;

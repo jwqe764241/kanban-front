@@ -1,12 +1,28 @@
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
+import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import { SuccessButton, SecondaryButton } from "components/layout/Button";
 
+const ModalPortal = ({ children }) => {
+  const [isBrowser, setIsBrowser] = useState(false);
+
+  useEffect(() => {
+    setIsBrowser(true);
+  }, []);
+
+  if (isBrowser) {
+    const modalRoot = document.getElementById("modal-root");
+    return ReactDOM.createPortal(children, modalRoot);
+  }
+
+  return null;
+};
+
 const Background = styled.div`
   position: fixed;
-  z-index: 1;
+  z-index: 9999;
   left: 0;
   top: 0;
   width: 100%;
@@ -17,17 +33,19 @@ const Background = styled.div`
 
 const Container = styled.div`
   width: 500px;
-  margin: 10% auto;
+  margin: 10vh auto;
   background-color: #ffffff;
   border: 1px solid #d0d7de;
   border-radius: 6px;
 `;
 
-const Modal = ({ show, setShow, children, innerRef }) => {
+const Modal = ({ show, onClose, children }) => {
+  const ref = useRef();
+
   useEffect(() => {
     const handleClick = (e) => {
-      if (show && innerRef.current && !innerRef.current.contains(e.target)) {
-        setShow(false);
+      if (show && ref.current && !ref.current.contains(e.target)) {
+        onClose();
       }
     };
     document.addEventListener("mousedown", handleClick);
@@ -42,21 +60,19 @@ const Modal = ({ show, setShow, children, innerRef }) => {
 
   return (
     <Background>
-      <Container ref={innerRef}>{children}</Container>
+      <Container ref={ref}>{children}</Container>
     </Background>
   );
 };
 
 Modal.propTypes = {
   show: PropTypes.bool.isRequired,
-  setShow: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
   children: PropTypes.node,
-  innerRef: PropTypes.object,
 };
 
 Modal.defaultProps = {
   children: <></>,
-  innerRef: null,
 };
 
 const Title = styled.div`
@@ -74,27 +90,28 @@ const Message = styled.div`
   font-weight: 400;
 `;
 
-const Buttons = styled.div`
+const ButtonContainer = styled.div`
   padding: 0px 20px 15px 20px;
   display: flex;
   justify-content: flex-end;
 `;
 
-const Alert = ({ show, setShow, title, message, innerRef }) => {
+const Alert = ({ show, setShow, title, message }) => {
+  const close = () => {
+    setShow(false);
+  };
   return (
-    <Modal show={show} setShow={setShow} innerRef={innerRef}>
+    <Modal show={show} onClose={close}>
       <Title>{title}</Title>
       <Message>{message}</Message>
-      <Buttons>
+      <ButtonContainer>
         <SecondaryButton
           style={{ width: "70px", marginRight: "10px" }}
-          onClick={() => {
-            setShow(false);
-          }}
+          onClick={close}
         >
           OK
         </SecondaryButton>
-      </Buttons>
+      </ButtonContainer>
     </Modal>
   );
 };
@@ -104,33 +121,32 @@ Alert.propTypes = {
   setShow: PropTypes.func.isRequired,
   title: PropTypes.string,
   message: PropTypes.string,
-  innerRef: PropTypes.object,
 };
 
 Alert.defaultProps = {
   title: "",
   message: "",
-  innerRef: null,
 };
 
-const Confirm = ({ show, setShow, title, message, onAccept, innerRef }) => {
+const Confirm = ({ show, setShow, title, message, onAccept }) => {
+  const close = () => {
+    setShow(false);
+  };
   return (
-    <Modal show={show} setShow={setShow} innerRef={innerRef}>
+    <Modal show={show} onClose={close}>
       <Title>{title}</Title>
       <Message>{message}</Message>
-      <Buttons>
+      <ButtonContainer>
         <SecondaryButton
           style={{ width: "80px", marginRight: "5px" }}
-          onClick={() => {
-            setShow(false);
-          }}
+          onClick={close}
         >
           Cancel
         </SecondaryButton>
         <SuccessButton style={{ width: "70px" }} onClick={onAccept}>
           OK
         </SuccessButton>
-      </Buttons>
+      </ButtonContainer>
     </Modal>
   );
 };
@@ -141,13 +157,11 @@ Confirm.propTypes = {
   title: PropTypes.string,
   message: PropTypes.string,
   onAccept: PropTypes.func.isRequired,
-  innerRef: PropTypes.object,
 };
 
 Confirm.defaultProps = {
   title: "",
   message: "",
-  innerRef: null,
 };
 
-export { Modal, Title, Buttons, Alert, Confirm };
+export { ModalPortal, Modal, Title, Alert, Confirm };

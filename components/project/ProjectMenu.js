@@ -3,7 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 const MenuContainer = styled.div`
-  margin-top: 40px;
+  margin-top: 25px;
 `;
 
 const MenuItem = styled.span`
@@ -31,6 +31,11 @@ const ProjectMenu = ({ id, activeMenu }) => {
       id: "members",
       name: "Members",
       href: `/projects/${id}/members`,
+    },
+    {
+      id: "settings",
+      name: "Settings",
+      href: `/projects/${id}/settings`,
     },
   ];
 

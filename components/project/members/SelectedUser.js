@@ -1,7 +1,24 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-import { RemoveButton } from "components/layout/Button";
+import { RemoveIcon } from "components/layout/Icon";
+import { NoStyleButton } from "components/layout/Button";
+
+const RemoveButton = ({ onClick }) => {
+  return (
+    <NoStyleButton
+      style={{ float: "right", padding: 0 }}
+      type="button"
+      onClick={onClick}
+    >
+      <RemoveIcon style={{ verticalAlign: "baseline" }} />
+    </NoStyleButton>
+  );
+};
+
+RemoveButton.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};
 
 const Container = styled.div`
   padding: 10px;

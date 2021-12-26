@@ -1,15 +1,35 @@
-import { useRef } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styled from "styled-components";
 import axios from "core/apiAxios";
 import PropTypes from "prop-types";
 
-import {
-  DropdownButton,
-  ProjectDropdown,
-  UserDropdown,
-} from "components/layout/Dropdown";
+import { DropdownMenu, DropdownButton } from "components/layout/Dropdown";
+import { ProjectMenuIcon, UserMenuIcon } from "components/layout/Icon";
+
+const ProjectDropdown = ({ children }) => {
+  return <DropdownMenu icon={<ProjectMenuIcon />}>{children}</DropdownMenu>;
+};
+
+ProjectDropdown.propTypes = {
+  children: PropTypes.node,
+};
+
+ProjectDropdown.defaultProps = {
+  children: <></>,
+};
+
+const UserDropdown = ({ children }) => {
+  return <DropdownMenu icon={<UserMenuIcon />}>{children}</DropdownMenu>;
+};
+
+UserDropdown.propTypes = {
+  children: PropTypes.node,
+};
+
+UserDropdown.defaultProps = {
+  children: <></>,
+};
 
 const Container = styled.div`
   padding: 16px 32px;
@@ -79,10 +99,8 @@ const UserInfo = styled.div`
   }
 `;
 
-function Navbar(props) {
-  const ref = useRef();
+const Navbar = ({ username }) => {
   const router = useRouter();
-  const { username } = props;
 
   const onLogoutClick = async () => {
     try {
@@ -107,12 +125,12 @@ function Navbar(props) {
         </Link>
         <Tools />
         <MenuContainer>
-          <ProjectDropdown innerRef={ref}>
-            <Link href="/new">
+          <ProjectDropdown>
+            <Link href="/projects/new">
               <DropdownButton type="button">New Project</DropdownButton>
             </Link>
           </ProjectDropdown>
-          <UserDropdown innerRef={ref}>
+          <UserDropdown>
             <UserInfo>
               <div>Signed in as</div>
               <div>{username}</div>
@@ -125,7 +143,7 @@ function Navbar(props) {
       </InnerContainer>
     </Container>
   );
-}
+};
 
 Navbar.propTypes = {
   username: PropTypes.string,

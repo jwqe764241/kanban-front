@@ -43,7 +43,7 @@ const Info = styled.div`
 `;
 
 const Project = ({ project }) => {
-  const { id, name, description, registerUsername, registerDate } = project;
+  const { id, name, description, registerUsername, createdAt } = project;
 
   return (
     <Wrap>
@@ -53,7 +53,7 @@ const Project = ({ project }) => {
       <Description>{description}</Description>
       <Info>
         <span style={{ marginRight: "10px" }}>{registerUsername}</span>
-        <span>{getDateString(registerDate)}</span>
+        <span>{getDateString(createdAt)}</span>
       </Info>
     </Wrap>
   );
@@ -65,7 +65,7 @@ Project.propTypes = {
     name: PropTypes.string,
     description: PropTypes.string,
     registerUsername: PropTypes.string,
-    registerDate: PropTypes.string,
+    createdAt: PropTypes.string,
   }).isRequired,
 };
 
@@ -83,9 +83,7 @@ const Tasks = styled.div`
   padding: 0px 20px;
 `;
 
-function Home(props) {
-  const { projects } = props;
-
+const Home = ({ projects }) => {
   return (
     <ContainerLg>
       <Sections>
@@ -100,7 +98,7 @@ function Home(props) {
       </Sections>
     </ContainerLg>
   );
-}
+};
 
 Home.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.object),

@@ -1,11 +1,25 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
+const HorizontalRule = styled.hr`
+  height: 0;
+  margin: 15px 0;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #e1e4e8; ;
+`;
+
 const Label = styled.label`
   display: ${(props) => (props.block ? "block" : "inline-block")};
   font-size: 14px;
   font-weight: 500;
   margin-bottom: 12px;
+`;
+
+const Optional = styled.span`
+  color: #57606a;
+  font-size: 12px;
 `;
 
 const InputWrap = styled.div`
@@ -61,10 +75,10 @@ const StyledTextArea = styled.textarea`
 const Input = ({ errors, name, ...otherProps }) => {
   const error = errors ? errors[name] : null;
   return (
-    <div>
+    <span>
       <StyledInput name={name} error={!!error} {...otherProps} />
       {error ? <ErrorMessage>{error.message}</ErrorMessage> : <></>}
-    </div>
+    </span>
   );
 };
 
@@ -98,4 +112,4 @@ TextArea.defaultProps = {
   name: undefined,
 };
 
-export { InputWrap, Label, Input, TextArea };
+export { HorizontalRule, InputWrap, Label, Optional, Input, TextArea };
