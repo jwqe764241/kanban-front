@@ -52,7 +52,7 @@ const Members = ({ project, memberList, invitedUserList }) => {
   const onInvite = async (user) => {
     try {
       const response = await requester.post(
-        `/projects/${project.id}/members/`,
+        `/projects/${project.id}/invitations`,
         { userId: user.id },
         token,
       );
