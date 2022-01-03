@@ -65,8 +65,6 @@ const Members = ({ project, memberList, invitedUserList }) => {
         alert("User was already invited");
       }
     }
-
-    setInviteUserOpen(false);
   };
 
   const onRemoveMemberClick = async (userId) => {

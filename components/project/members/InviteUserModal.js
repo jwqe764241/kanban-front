@@ -33,6 +33,7 @@ const InviteUserModal = ({ show, setShow, onSuggest, onInvite }) => {
   const close = () => {
     setSuggestionUsers(null);
     setSelectedUser(null);
+    setInviting(false);
     setShow(false);
   };
 
@@ -60,6 +61,7 @@ const InviteUserModal = ({ show, setShow, onSuggest, onInvite }) => {
       onInvite(selectedUser);
       setInviting(() => !isInviting);
     }
+    close();
   };
 
   return (
