@@ -49,6 +49,11 @@ const Sidebar = ({ id, activeMenu }) => {
       name: "Members",
       href: `/projects/${id}/settings/members`,
     },
+    {
+      id: "invitations",
+      name: "Invitations",
+      href: `/projects/${id}/settings/invitations`,
+    },
   ];
 
   return (
