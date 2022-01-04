@@ -2,9 +2,9 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { getDateTimeString } from "core/utils";
 
-import { ListItem } from "components/layout/List";
 import { NoStyleButton } from "components/layout/Button";
 import { RemoveIcon } from "components/layout/Icon";
+import { ListItem } from "components/layout/List";
 
 const Column = styled.div`
   display: inline-block;
@@ -43,15 +43,19 @@ RemoveButton.propTypes = {
   onClick: PropTypes.func.isRequired,
 };
 
-const UserListItem = ({ user, onRemoveItemClick }) => {
+const UserListItem = ({ user, remove, onRemove }) => {
   return (
     <ListItem>
       <div>
         <Username>{user.name}</Username>
         <Email>{user.email}</Email>
-        <RemoveButtonWrap>
-          <RemoveButton onClick={() => onRemoveItemClick(user.id)} />
-        </RemoveButtonWrap>
+        {remove ? (
+          <RemoveButtonWrap>
+            <RemoveButton onClick={() => onRemove(user.id)} />
+          </RemoveButtonWrap>
+        ) : (
+          <></>
+        )}
       </div>
       <Date>{getDateTimeString(user.date)}</Date>
     </ListItem>
@@ -65,11 +69,13 @@ UserListItem.propTypes = {
     email: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
   }).isRequired,
-  onRemoveItemClick: PropTypes.func,
+  remove: PropTypes.bool,
+  onRemove: PropTypes.func,
 };
 
 UserListItem.defaultProps = {
-  onRemoveItemClick: () => {},
+  remove: false,
+  onRemove: null,
 };
 
 export default UserListItem;

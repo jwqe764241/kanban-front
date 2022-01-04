@@ -3,7 +3,8 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import { SuccessButton } from "components/layout/Button";
-import UserList from "components/project/members/UserList";
+import { List, ListHeader, EmptyList } from "components/layout/List";
+import UserListItem from "components/layout/UserListItem";
 import { ModalPortal } from "components/layout/Modal";
 import InviteUserModal from "components/project/members/InviteUserModal";
 
@@ -56,12 +57,16 @@ const InviteMemberForm = ({ invitations, onSuggest, onInvite, onRemove }) => {
           Invite a member
         </SuccessButton>
       </ButtonContainer>
-      <UserList
-        list={invitationList}
-        headerText="Invited Users"
-        emptyText="You haven't invited any users yet"
-        onRemoveItemClick={or}
-      />
+      {invitationList && invitationList.length > 0 ? (
+        <List>
+          <ListHeader>{`${invitationList.length} Invited Users`}</ListHeader>
+          {invitationList.map((member) => (
+            <UserListItem key={member.id} user={member} remove onRemove={or} />
+          ))}
+        </List>
+      ) : (
+        <EmptyList>You haven&apos;t invited any users yet</EmptyList>
+      )}
       <ModalPortal>
         <InviteUserModal
           show={isInviteUserOpen}

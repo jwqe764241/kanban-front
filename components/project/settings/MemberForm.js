@@ -1,7 +1,8 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-import UserList from "components/project/members/UserList";
+import { List, ListHeader, EmptyList } from "components/layout/List";
+import UserListItem from "components/layout/UserListItem";
 
 const MemberForm = ({ members, onRemove }) => {
   const [memberList, setMemberList] = useState([...members]);
@@ -24,13 +25,15 @@ const MemberForm = ({ members, onRemove }) => {
     }
   };
 
-  return (
-    <UserList
-      list={memberList}
-      headerText="Members"
-      emptyText="No members in this project"
-      onRemoveItemClick={or}
-    />
+  return memberList && memberList.length > 0 ? (
+    <List>
+      <ListHeader>{`${memberList.length} Members`}</ListHeader>
+      {memberList.map((member) => (
+        <UserListItem key={member.id} user={member} remove onRemove={or} />
+      ))}
+    </List>
+  ) : (
+    <EmptyList>No members in this project</EmptyList>
   );
 };
 

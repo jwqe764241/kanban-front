@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
-const List = styled.div`
+export const List = styled.div`
   border: 1px solid #e1e4e8;
   border-radius: 6px;
   color: #24292e;
 `;
 
-const ListHeader = styled.div`
+export const ListHeader = styled.div`
   padding: 16px;
   margin: -1px -1px 0;
   background-color: #f6f8fa;
@@ -17,7 +17,7 @@ const ListHeader = styled.div`
   border-top-right-radius: 6px;
 `;
 
-const ListItem = styled.div`
+export const ListItem = styled.div`
   padding: 16px;
   margin-top: -1px;
   border-top-style: solid;
@@ -25,4 +25,11 @@ const ListItem = styled.div`
   border-top-color: #e1e4e8;
 `;
 
-export { List, ListHeader, ListItem };
+export const EmptyList = styled.div`
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  text-align: center;
+  padding: 60px 0px;
+  font-size: 18px;
+  font-weight: 500;
+`;

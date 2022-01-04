@@ -6,18 +6,24 @@ import axios, { createRequester } from "core/apiAxios";
 
 import { ContainerXL } from "components/layout/Container";
 import ProjectHeader from "components/project/ProjectHeader";
-import UserList from "components/project/members/UserList";
+import { List, ListHeader, EmptyList } from "components/layout/List";
+import UserListItem from "components/layout/UserListItem";
 
 const Members = ({ project, members }) => {
   return (
     <>
       <ProjectHeader project={project} activeMenu="members" />
       <ContainerXL>
-        <UserList
-          list={members}
-          headerText="Members"
-          emptyText="No members in this project"
-        />
+        {members && members.length > 0 ? (
+          <List>
+            <ListHeader>{`${members.length} Members`}</ListHeader>
+            {members.map((member) => (
+              <UserListItem key={member.id} user={member} />
+            ))}
+          </List>
+        ) : (
+          <EmptyList>No members in this project</EmptyList>
+        )}
       </ContainerXL>
     </>
   );
