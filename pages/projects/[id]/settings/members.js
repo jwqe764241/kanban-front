@@ -1,29 +1,50 @@
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import axios, { createRequester } from "core/apiAxios";
+import { connect, useSelector, useDispatch } from "react-redux";
 import wrapper from "core/store";
 import { parseCookie } from "core/utils";
-import axios, { createRequester } from "core/apiAxios";
 
-import { ContainerXL } from "components/layout/Container";
 import ProjectHeader from "components/project/ProjectHeader";
-import UserList from "components/project/members/UserList";
+import { ContainerXL } from "components/layout/Container";
+import { Layout, Body, Title } from "components/project/settings/Layout";
+import Sidebar from "components/project/settings/Sidebar";
+import MemberForm from "components/project/settings/MemberForm";
 
-const Members = ({ project, members }) => {
+const MemberSettings = ({ project, members }) => {
+  const { token } = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const requester = createRequester(axios, dispatch);
+
+  const onRemove = async (userId) => {
+    let response;
+    try {
+      response = requester.delete(
+        `/projects/${project.id}/members/${userId}`,
+        token,
+      );
+    } catch (e) {
+      response = e.response;
+    }
+    return response;
+  };
+
   return (
     <>
-      <ProjectHeader project={project} activeMenu="members" />
+      <ProjectHeader project={project} activeMenu="settings" />
       <ContainerXL>
-        <UserList
-          list={members}
-          headerText="Members"
-          emptyText="No members in this project"
-        />
+        <Layout>
+          <Sidebar id={project.id} activeMenu="members" />
+          <Body>
+            <Title>Members</Title>
+            <MemberForm members={members} onRemove={onRemove} />
+          </Body>
+        </Layout>
       </ContainerXL>
     </>
   );
 };
 
-Members.propTypes = {
+MemberSettings.propTypes = {
   project: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string,
@@ -34,7 +55,7 @@ Members.propTypes = {
   members: PropTypes.arrayOf(PropTypes.object),
 };
 
-Members.defaultProps = {
+MemberSettings.defaultProps = {
   members: [],
 };
 
@@ -68,4 +89,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
   },
 );
 
-export default connect((state) => state)(Members);
+export default connect((state) => state)(MemberSettings);
