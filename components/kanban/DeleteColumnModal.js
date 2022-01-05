@@ -6,9 +6,8 @@ import { Modal } from "components/layout/Modal";
 import {
   DangerButton,
   SecondaryButton,
-  NoStyleButton,
+  RemoveButton,
 } from "components/layout/Button";
-import { RemoveIcon } from "components/layout/Icon";
 
 const TitleContainer = styled.div`
   padding: 20px 15px;
@@ -28,22 +27,6 @@ const Container = styled.div`
   padding: 0px 15px;
 `;
 
-const RemoveButton = ({ onClick }) => {
-  return (
-    <NoStyleButton
-      style={{ float: "right", padding: 0 }}
-      type="button"
-      onClick={onClick}
-    >
-      <RemoveIcon style={{ verticalAlign: "baseline" }} />
-    </NoStyleButton>
-  );
-};
-
-RemoveButton.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
-
 const DeleteColumnModal = ({ show, setShow, taskColumn, onDelete }) => {
   const [isDeleting, setDeleting] = useState(false);
 
@@ -60,7 +43,7 @@ const DeleteColumnModal = ({ show, setShow, taskColumn, onDelete }) => {
     <Modal show={show} onClose={close}>
       <TitleContainer>
         <Title>Delete {taskColumn.name}</Title>
-        <RemoveButton onClick={close} />
+        <RemoveButton style={{ float: "right", padding: 0 }} onClick={close} />
       </TitleContainer>
       <Container>
         <div style={{ margin: "15px 0px" }}>

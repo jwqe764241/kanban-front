@@ -1,24 +1,7 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-import { RemoveIcon } from "components/layout/Icon";
-import { NoStyleButton } from "components/layout/Button";
-
-const RemoveButton = ({ onClick }) => {
-  return (
-    <NoStyleButton
-      style={{ float: "right", padding: 0 }}
-      type="button"
-      onClick={onClick}
-    >
-      <RemoveIcon style={{ verticalAlign: "baseline" }} />
-    </NoStyleButton>
-  );
-};
-
-RemoveButton.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
+import { RemoveButton } from "components/layout/Button";
 
 const Container = styled.div`
   padding: 10px;
@@ -51,7 +34,10 @@ const SelectedUser = ({ user, onCancel }) => {
           <Login>{user.login}</Login>
         </div>
         <div style={{ width: "5%" }}>
-          <RemoveButton style={{ marginTop: "5px" }} onClick={onCancel} />
+          <RemoveButton
+            style={{ float: "right", padding: 0 }}
+            onClick={onCancel}
+          />
         </div>
       </FlexContainer>
     </Container>

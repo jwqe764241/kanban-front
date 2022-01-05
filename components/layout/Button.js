@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import { RemoveIcon } from "components/layout/Icon";
+
 const Button = styled.button`
   width: 100%;
   padding: 8px 0px;
@@ -10,7 +12,7 @@ const Button = styled.button`
   user-select: none;
 `;
 
-const PrimaryButton = styled(Button)`
+export const PrimaryButton = styled(Button)`
   color: #fff;
   background-color: #2852a7;
 
@@ -25,7 +27,7 @@ const PrimaryButton = styled(Button)`
   }
 `;
 
-const SecondaryButton = styled(Button)`
+export const SecondaryButton = styled(Button)`
   color: #fff;
   background-color: #6c757d;
 
@@ -40,7 +42,7 @@ const SecondaryButton = styled(Button)`
   }
 `;
 
-const SuccessButton = styled(Button)`
+export const SuccessButton = styled(Button)`
   color: #fff;
   background-color: #28a745;
 
@@ -55,7 +57,7 @@ const SuccessButton = styled(Button)`
   }
 `;
 
-const DangerButton = styled(Button)`
+export const DangerButton = styled(Button)`
   color: #fff;
   background-color: #dc3545;
 
@@ -70,9 +72,7 @@ const DangerButton = styled(Button)`
   }
 `;
 
-const WarningButton = undefined;
-
-const CancelButton = styled(Button)`
+export const CancelButton = styled(Button)`
   color: #24292f;
   background-color: #f6f8fa;
   border: 1px solid #1b1f2426;
@@ -88,18 +88,16 @@ const CancelButton = styled(Button)`
   }
 `;
 
-const NoStyleButton = styled.button`
+export const NoStyleButton = styled.button`
   border: none;
   background-color: transparent;
   cursor: pointer;
 `;
 
-export {
-  PrimaryButton,
-  SecondaryButton,
-  SuccessButton,
-  DangerButton,
-  WarningButton,
-  CancelButton,
-  NoStyleButton,
+export const RemoveButton = ({ ...otherProps }) => {
+  return (
+    <NoStyleButton type="button" {...otherProps}>
+      <RemoveIcon style={{ verticalAlign: "baseline" }} />
+    </NoStyleButton>
+  );
 };

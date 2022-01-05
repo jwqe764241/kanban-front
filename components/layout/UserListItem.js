@@ -2,7 +2,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { getDateTimeString } from "core/utils";
 
-import { NoStyleButton } from "components/layout/Button";
+import { RemoveButton } from "components/layout/Button";
 import { RemoveIcon } from "components/layout/Icon";
 import { ListItem } from "components/layout/List";
 
@@ -27,21 +27,9 @@ const Date = styled.div`
   color: #6a737d;
 `;
 
-const RemoveButtonWrap = styled(Column)`
+const ButtonWrap = styled(Column)`
   text-align: end;
 `;
-
-const RemoveButton = ({ onClick }) => {
-  return (
-    <NoStyleButton type="button" onClick={onClick}>
-      <RemoveIcon />
-    </NoStyleButton>
-  );
-};
-
-RemoveButton.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
 
 const UserListItem = ({ user, remove, onRemove }) => {
   return (
@@ -50,9 +38,9 @@ const UserListItem = ({ user, remove, onRemove }) => {
         <Username>{user.name}</Username>
         <Email>{user.email}</Email>
         {remove ? (
-          <RemoveButtonWrap>
+          <ButtonWrap>
             <RemoveButton onClick={() => onRemove(user.id)} />
-          </RemoveButtonWrap>
+          </ButtonWrap>
         ) : (
           <></>
         )}
