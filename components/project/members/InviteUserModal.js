@@ -79,7 +79,7 @@ const InviteUserModal = ({ show, setShow, onSuggest, onInvite }) => {
           <>
             <Input
               type="text"
-              placeholder="Search by login"
+              placeholder="Search by username"
               onChange={onStartDelay}
             />
             <SuggestionSelect

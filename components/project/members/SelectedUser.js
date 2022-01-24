@@ -18,7 +18,7 @@ const Name = styled.div`
   font-weight: 400;
 `;
 
-const Login = styled.div`
+const Username = styled.div`
   font-size: 12px;
   font-weight: 300;
   color: #6a737d;
@@ -31,7 +31,7 @@ const SelectedUser = ({ user, onCancel }) => {
       <FlexContainer>
         <div style={{ width: "95%" }}>
           <Name>{user.name}</Name>
-          <Login>{user.login}</Login>
+          <Username>{user.username}</Username>
         </div>
         <div style={{ width: "5%" }}>
           <RemoveButton
@@ -48,7 +48,7 @@ SelectedUser.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
-    login: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
   }).isRequired,
   onCancel: PropTypes.func.isRequired,
 };

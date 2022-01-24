@@ -29,7 +29,7 @@ function MyApp({ Component, pageProps }) {
   ) : (
     <>
       <Layout>
-        <Navbar username={auth?.username}/>
+        <Navbar name={auth?.name}/>
         <Component {...pageProps} />
       </Layout>
       <div id="modal-root" />
@@ -47,8 +47,8 @@ MyApp.getInitialProps = async (appContext) => {
   if (refreshToken) {
     const payload = parseJwtClaims(refreshToken);
     pageProps.auth = {
-      login: payload.login,
-      username: payload.name,
+      username: payload.username,
+      name: payload.name,
     };
   }
 

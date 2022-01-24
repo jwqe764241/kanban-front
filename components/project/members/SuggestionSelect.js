@@ -34,7 +34,7 @@ const Name = styled.div`
   font-weight: 400;
 `;
 
-const Login = styled.div`
+const Username = styled.div`
   font-size: 12px;
   font-weight: 300;
   color: #6a737d;
@@ -69,7 +69,7 @@ const SuggestionSelect = ({ list, onSelect }) => {
             list.map((user, index) => (
               <Item key={user.id} data-index={index} onClick={onItemClick}>
                 <Name>{user.name}</Name>
-                <Login>{user.login}</Login>
+                <Username>{user.username}</Username>
               </Item>
             ))
           ) : (

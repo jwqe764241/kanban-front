@@ -58,7 +58,7 @@ const Login = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const [data, setData] = useState({ login: "", password: "" });
+  const [data, setData] = useState({ username: "", password: "" });
   const [isLoginFailed, setIsLoginFailed] = useState({
     status: false,
     message: "",
@@ -77,7 +77,7 @@ const Login = () => {
     setIsLoginProgressed(true);
 
     try {
-      const response = await axios.post("/auth/login", data, {
+      const response = await axios.post("/auth/sign-in", data, {
         withCredentials: true,
       });
 
@@ -103,7 +103,7 @@ const Login = () => {
     setIsLoginProgressed(false);
   };
 
-  const { login, password } = data;
+  const { username, password } = data;
 
   return (
     <Panel>
@@ -121,12 +121,12 @@ const Login = () => {
         )}
         <FormBody>
           <InputWrap style={{ marginBottom: "15px" }}>
-            <Label htmlFor="login">Username</Label>
+            <Label htmlFor="username">Username</Label>
             <Input
-              id="login"
+              id="username"
               type="text"
-              name="login"
-              value={login}
+              name="username"
+              value={username}
               onChange={onChange}
             />
           </InputWrap>

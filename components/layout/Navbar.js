@@ -99,12 +99,12 @@ const UserInfo = styled.div`
   }
 `;
 
-const Navbar = ({ username }) => {
+const Navbar = ({ name }) => {
   const router = useRouter();
 
   const onLogoutClick = async () => {
     try {
-      const response = await axios.post("/auth/logout", null, {
+      const response = await axios.post("/auth/sign-out", null, {
         withCredentials: true,
       });
 
@@ -133,7 +133,7 @@ const Navbar = ({ username }) => {
           <UserDropdown>
             <UserInfo>
               <div>Signed in as</div>
-              <div>{username}</div>
+              <div>{name}</div>
             </UserInfo>
             <DropdownButton type="button" onClick={onLogoutClick}>
               Logout
@@ -146,11 +146,11 @@ const Navbar = ({ username }) => {
 };
 
 Navbar.propTypes = {
-  username: PropTypes.string,
+  name: PropTypes.string,
 };
 
 Navbar.defaultProps = {
-  username: "",
+  name: "",
 };
 
 export default Navbar;
