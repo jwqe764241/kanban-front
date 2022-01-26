@@ -10,6 +10,7 @@ import { ContainerXL } from "components/layout/Container";
 import { Layout, Body, Title } from "components/project/settings/Layout";
 import Sidebar from "components/project/settings/Sidebar";
 import RenameForm from "components/project/settings/RenameForm";
+import DeleteForm from "components/project/settings/DeleteForm";
 
 const Settings = ({ project }) => {
   const router = useRouter();
@@ -30,6 +31,19 @@ const Settings = ({ project }) => {
     }
   };
 
+  const onDelete = async () => {
+    if (!window.confirm("Sure you want to delete this project?")) return;
+
+    try {
+      const response = await requester.delete(`/projects/${id}`, token);
+      if (response.status === 200) {
+        router.push(`/`);
+      }
+    } catch (e) {
+      alert("Failed to delete project");
+    }
+  };
+
   return (
     <>
       <ProjectHeader project={project} activeMenu="settings" />
@@ -39,6 +53,7 @@ const Settings = ({ project }) => {
           <Body>
             <Title>Settings</Title>
             <RenameForm name={project.name} onRename={onRename} />
+            <DeleteForm onDelete={onDelete} />
           </Body>
         </Layout>
       </ContainerXL>
