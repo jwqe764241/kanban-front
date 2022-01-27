@@ -10,6 +10,7 @@ import { ContainerXL } from "components/layout/Container";
 import { Layout, Body, Title } from "components/project/settings/Layout";
 import Sidebar from "components/project/settings/Sidebar";
 import RenameForm from "components/project/settings/RenameForm";
+import UpdateDescriptionForm from "components/project/settings/UpdateDescriptionForm";
 import DeleteForm from "components/project/settings/DeleteForm";
 
 const Settings = ({ project }) => {
@@ -21,10 +22,27 @@ const Settings = ({ project }) => {
 
   const onRename = async (data) => {
     try {
-      const response = await requester.patch(`/projects/${id}`, data, token);
+      const response = await requester.patch(
+        `/projects/${id}/name`,
+        data,
+        token,
+      );
       if (response.status === 200) {
         router.push(`/projects/${id}/kanbans`);
       }
+      return response;
+    } catch (e) {
+      return e;
+    }
+  };
+
+  const onUpdateDescription = async (data) => {
+    try {
+      const response = await requester.patch(
+        `/projects/${id}/description`,
+        data,
+        token,
+      );
       return response;
     } catch (e) {
       return e;
@@ -53,6 +71,10 @@ const Settings = ({ project }) => {
           <Body>
             <Title>Settings</Title>
             <RenameForm name={project.name} onRename={onRename} />
+            <UpdateDescriptionForm
+              description={project.description}
+              onUpdate={onUpdateDescription}
+            />
             <DeleteForm onDelete={onDelete} />
           </Body>
         </Layout>

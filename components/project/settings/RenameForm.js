@@ -26,7 +26,7 @@ const RenameForm = ({ name, onRename }) => {
 
   return (
     <InputWrap>
-      <Label block>Project name</Label>
+      <Label block>Name</Label>
       <Input
         id="name"
         type="text"
