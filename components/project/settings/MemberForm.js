@@ -19,7 +19,7 @@ const MemberForm = ({ members, onRemove }) => {
         setMemberList([...memberList]);
       }
     } else if (response.status === 400) {
-      alert("You can't remove project owner");
+      alert("You can't remove admin");
     } else if (response.status === 403) {
       alert("You have no permission to do this");
     }
