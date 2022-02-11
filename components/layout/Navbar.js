@@ -7,55 +7,25 @@ import PropTypes from "prop-types";
 import { DropdownMenu, DropdownButton } from "components/layout/Dropdown";
 import { ProjectMenuIcon, UserMenuIcon } from "components/layout/Icon";
 
-const ProjectDropdown = ({ children }) => {
-  return <DropdownMenu icon={<ProjectMenuIcon />}>{children}</DropdownMenu>;
-};
-
-ProjectDropdown.propTypes = {
-  children: PropTypes.node,
-};
-
-ProjectDropdown.defaultProps = {
-  children: <></>,
-};
-
-const UserDropdown = ({ children }) => {
-  return <DropdownMenu icon={<UserMenuIcon />}>{children}</DropdownMenu>;
-};
-
-UserDropdown.propTypes = {
-  children: PropTypes.node,
-};
-
-UserDropdown.defaultProps = {
-  children: <></>,
-};
-
 const Container = styled.div`
+  display: flex;
   padding: 16px 32px;
   background-color: #24292e;
 `;
 
-const InnerContainer = styled.div`
-  height: 30px;
-  display: flex;
-`;
-
 const Brand = styled.a`
-  padding-right: 30px;
   display: flex;
-  -webkit-flex-align: center;
-  -ms-flex-align: center;
-  -webkit-align-items: center;
+  height: 30px;
   align-items: center;
   justify-content: center;
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 800;
   color: white;
   cursor: pointer;
+  padding-right: 30px;
+  text-decoration: none;
 
   :hover {
-    text-decoration: none;
     color: lightgrey;
   }
 `;
@@ -63,46 +33,34 @@ const Brand = styled.a`
 const Tools = styled.div`
   display: flex;
   flex-grow: 1;
-  padding-left: 25px;
-`;
-
-const MenuContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: auto;
-
-  & > * {
-    margin-right: 5px;
-
-    &:last-child {
-      margin-right: 0px;
-    }
-  }
 `;
 
 const UserInfo = styled.div`
-  padding: 5px 10px 8px 20px;
+  padding: 8px 16px;
   border-bottom: 1px solid #e1e4e8;
 
   div {
+    font-size: 14px;
+
     &:nth-child(1) {
       font-weight: 400;
-      font-size: 14px;
       padding-bottom: 8px;
     }
 
     &:nth-child(2) {
       font-weight: 600;
-      font-size: 14px;
     }
   }
+`;
+
+const DropdownWrap = styled.div`
+  align-self: center;
 `;
 
 const Navbar = ({ name }) => {
   const router = useRouter();
 
-  const onLogoutClick = async () => {
+  const onSignout = async () => {
     try {
       const response = await axios.post("/auth/sign-out", null, {
         withCredentials: true,
@@ -119,28 +77,30 @@ const Navbar = ({ name }) => {
 
   return (
     <Container>
-      <InnerContainer>
-        <Link href="/">
-          <Brand>Kanban</Brand>
-        </Link>
-        <Tools />
-        <MenuContainer>
-          <ProjectDropdown>
-            <Link href="/projects/new">
-              <DropdownButton type="button">New Project</DropdownButton>
-            </Link>
-          </ProjectDropdown>
-          <UserDropdown>
-            <UserInfo>
-              <div>Signed in as</div>
-              <div>{name}</div>
-            </UserInfo>
-            <DropdownButton type="button" onClick={onLogoutClick}>
-              Logout
-            </DropdownButton>
-          </UserDropdown>
-        </MenuContainer>
-      </InnerContainer>
+      <Link href="/">
+        <Brand>Kanban</Brand>
+      </Link>
+      <Tools />
+      {/* Project Menu */}
+      <DropdownWrap>
+        <DropdownMenu icon={<ProjectMenuIcon />}>
+          <Link href="/projects/new">
+            <DropdownButton type="button">New Project</DropdownButton>
+          </Link>
+        </DropdownMenu>
+      </DropdownWrap>
+      {/* User Menu */}
+      <DropdownWrap>
+        <DropdownMenu icon={<UserMenuIcon />}>
+          <UserInfo>
+            <div>Signed in as</div>
+            <div>{name}</div>
+          </UserInfo>
+          <DropdownButton type="button" onClick={onSignout}>
+            Sign out
+          </DropdownButton>
+        </DropdownMenu>
+      </DropdownWrap>
     </Container>
   );
 };
