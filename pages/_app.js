@@ -1,17 +1,10 @@
 /* eslint-disable */
 import "styles/reset.css";
 import "styles/global.css";
-import styled from "styled-components";
 import wrapper from "core/store";
 import { getCookie, parseJwtClaims } from "core/utils";
 
 import Navbar from "components/layout/Navbar";
-
-const Layout = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-`;
 
 const excludePath = new Set([
   "/login",
@@ -28,10 +21,8 @@ function MyApp({ Component, pageProps }) {
     </>
   ) : (
     <>
-      <Layout>
-        <Navbar name={auth?.name}/>
-        <Component {...pageProps} />
-      </Layout>
+      <Navbar name={auth?.name}/>
+      <Component {...pageProps} />
       <div id="modal-root" />
     </>
   )
