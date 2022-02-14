@@ -1,11 +1,12 @@
 /* eslint-disable */
 import GlobalStyle from "components/GlobalStyle";
 import { ThemeProvider } from "styled-components";
-import Theme from "components/Theme";
+import theme from "components/theme";
 import wrapper from "core/store";
 import { getCookie, parseJwtClaims } from "core/utils";
 
-import Navbar from "components/layout/Navbar";
+import Main from "components/Main";
+import Sidebar from "components/layout/Sidebar";
 
 const excludePath = new Set(["/login", "/_error"]);
 
@@ -15,7 +16,7 @@ function MyApp({ Component, pageProps }) {
   return excludePath.has(pathname) ? (
     <>
       <GlobalStyle />
-      <ThemeProvider theme={Theme}>
+      <ThemeProvider theme={theme}>
         <Component {...pageProps} />
         <div id="modal-root" />
       </ThemeProvider>
@@ -23,9 +24,11 @@ function MyApp({ Component, pageProps }) {
   ) : (
     <>
       <GlobalStyle />
-      <ThemeProvider theme={Theme}>
-        <Navbar name={auth?.name} />
-        <Component {...pageProps} />
+      <ThemeProvider theme={theme}>
+        <Main>
+          <Sidebar/>
+          <Component {...pageProps} />
+        </Main>
         <div id="modal-root" />
       </ThemeProvider>
     </>
