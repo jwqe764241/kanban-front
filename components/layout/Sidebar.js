@@ -3,9 +3,9 @@ import styled from "styled-components";
 import Link from "next/link";
 import axios from "core/apiAxios";
 
-import { DropdownMenu, DropdownButton } from "components/layout/Dropdown";
+import Dropdown from "components/layout/Dropdown";
 import HomeIcon from "public/icons/home.svg";
-import ProjectIcon from "public/icons/project.svg";
+import SignoutIcon from "public/icons/signout.svg";
 
 const Container = styled.nav`
   display: flex;
@@ -30,6 +30,12 @@ const Item = styled.li`
   text-align: center;
   cursor: pointer;
   transition: background-color 0.1s ease;
+`;
+
+const ButtonItem = styled(Item)`
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.unitedNationsBlue};
+  }
 
   & > * {
     width: 1em;
@@ -38,33 +44,55 @@ const Item = styled.li`
   }
 `;
 
-const ButtonItem = styled(Item)`
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.unitedNationsBlue};
-  }
-`;
-
-const UserItem = styled(Item)`
-  & > img {
-    background-color: ${({ theme }) => theme.colors.white};
-    border-radius: 50% !important;
-  }
+const UserIcon = styled.img`
+  background-color: ${({ theme }) => theme.colors.white};
+  border-radius: 50% !important;
 `;
 
 const Sidebar = () => {
+  const router = useRouter();
+
+  const onSignout = async () => {
+    try {
+      const response = await axios.post("/auth/sign-out", null, {
+        withCredentials: true,
+      });
+
+      if (response.status === 200) {
+        router.push("/login");
+      }
+    } catch (e) {
+      // TODO: replace alert to modal
+      alert("Failed to logout!");
+    }
+  };
+
   return (
     <Container>
       <ItemContainer>
-        <ButtonItem>
-          <Link href="/">
+        <Link href="/">
+          <ButtonItem>
             <HomeIcon />
-          </Link>
-        </ButtonItem>
+          </ButtonItem>
+        </Link>
       </ItemContainer>
       <ItemContainer>
-        <UserItem>
-          <img alt="" />
-        </UserItem>
+        <Item>
+          <Dropdown>
+            <Dropdown.Toggle>
+              <UserIcon />
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item>Edit</Dropdown.Item>
+              <Dropdown.Item>Download</Dropdown.Item>
+              <Dropdown.Item>Priority</Dropdown.Item>
+              <Dropdown.Item>
+                <SignoutIcon />
+                Sign out
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </Item>
       </ItemContainer>
     </Container>
   );

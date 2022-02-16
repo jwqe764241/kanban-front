@@ -3,6 +3,8 @@ const colors = {
   unitedNationsBlue: "#5b92e5",
   white: "#ffffff",
   lightGray: "#F5F6F8",
+  platinum: "#E5E4E2",
+  cadetBlueCrayola: "#a9b2c3",
 };
 
 const margins = {
