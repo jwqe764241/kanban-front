@@ -3,8 +3,8 @@ import styled from "styled-components";
 import Link from "next/link";
 import { getDateString } from "core/utils";
 
-import { DropdownMenu, DropdownButton } from "components/layout/Dropdown";
-import { DropdownIcon } from "components/layout/Icon";
+import Dropdown from "components/layout/Dropdown";
+import DropdownIcon from "public/icons/dropdown.svg";
 
 const Container = styled.div`
   padding: 24px 0px;
@@ -56,11 +56,16 @@ const KanbanListItem = ({ kanban }) => {
   return (
     <Container>
       <DropdownWrap>
-        <DropdownMenu icon={<DropdownIcon />}>
-          <Link href={`/projects/${projectId}/kanbans/${sequenceId}/edit`}>
-            <DropdownButton type="button">Edit</DropdownButton>
-          </Link>
-        </DropdownMenu>
+        <Dropdown>
+          <Dropdown.Toggle>
+            <DropdownIcon style={{ width: "1rem" }} />
+          </Dropdown.Toggle>
+          <Dropdown.Menu position={{ right: "0" }}>
+            <Link href={`/projects/${projectId}/kanbans/${sequenceId}/edit`}>
+              <Dropdown.Item>Edit</Dropdown.Item>
+            </Link>
+          </Dropdown.Menu>
+        </Dropdown>
       </DropdownWrap>
       <Link href={`/projects/${projectId}/kanbans/${sequenceId}`}>
         <Name>{name}</Name>

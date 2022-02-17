@@ -3,8 +3,9 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Draggable } from "react-beautiful-dnd";
 
-import { DropdownMenu, DropdownButton } from "components/layout/Dropdown";
-import { DropdownIcon, PlusIcon } from "components/layout/Icon";
+import Dropdown from "components/layout/Dropdown";
+import DropdownIcon from "public/icons/dropdown.svg";
+import { PlusIcon } from "components/layout/Icon";
 import { ModalPortal } from "components/layout/Modal";
 import { NoStyleButton } from "components/layout/Button";
 import DeleteColumnModal from "components/kanban/DeleteColumnModal";
@@ -86,14 +87,19 @@ const TaskColumn = ({
                 >
                   <PlusIcon />
                 </NoStyleButton>
-                <DropdownMenu icon={<DropdownIcon />}>
-                  <DropdownButton type="button" onClick={openEditColumnModal}>
-                    Edit column
-                  </DropdownButton>
-                  <DropdownButton type="button" onClick={openDeleteColumnModal}>
-                    Delete column
-                  </DropdownButton>
-                </DropdownMenu>
+                <Dropdown>
+                  <Dropdown.Toggle>
+                    <DropdownIcon style={{ width: "1rem" }} />
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu position={{ right: "0" }}>
+                    <Dropdown.Item onClick={openEditColumnModal}>
+                      Edit column
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={openDeleteColumnModal}>
+                      Delete column
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </ButtonContainer>
             </HeaderContainer>
             {isAddTaskOpen ? (

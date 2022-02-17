@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { getDateTimeString } from "core/utils";
 
 import { RemoveButton } from "components/layout/Button";
-import { RemoveIcon } from "components/layout/Icon";
 import { ListItem } from "components/layout/List";
 
 const Column = styled.div`

@@ -3,8 +3,9 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Draggable } from "react-beautiful-dnd";
 
-import { CardIcon, DropdownIcon } from "components/layout/Icon";
-import { DropdownMenu, DropdownButton } from "components/layout/Dropdown";
+import Dropdown from "components/layout/Dropdown";
+import DropdownIcon from "public/icons/dropdown.svg";
+import { CardIcon } from "components/layout/Icon";
 import { ModalPortal } from "components/layout/Modal";
 import EditTaskModal from "components/kanban/EditTaskModal";
 
@@ -77,14 +78,19 @@ const Task = ({ task, index, onDelete, onEdit }) => {
               <CardIcon />
             </Icon>
             <DropdownWrap>
-              <DropdownMenu icon={<DropdownIcon />}>
-                <DropdownButton type="button" onClick={onEditButtonClick}>
-                  Edit task
-                </DropdownButton>
-                <DropdownButton type="button" onClick={onDeleteButtonClick}>
-                  Delete task
-                </DropdownButton>
-              </DropdownMenu>
+              <Dropdown>
+                <Dropdown.Toggle>
+                  <DropdownIcon style={{ width: "1rem" }} />
+                </Dropdown.Toggle>
+                <Dropdown.Menu position={{ right: "0" }}>
+                  <Dropdown.Item onClick={onEditButtonClick}>
+                    Edit task
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={onDeleteButtonClick}>
+                    Delete task
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </DropdownWrap>
             <TextContainer>
               <Text>{task.text}</Text>
