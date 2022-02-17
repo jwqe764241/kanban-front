@@ -4,34 +4,49 @@ import styled from "styled-components";
 
 import DropdownContext from "./DropdownContext";
 
+function buildPositionCss(position) {
+  const avaliable = new Set(["top", "right", "bottom", "left"]);
+  let css = "";
+  Object.entries(position).forEach(([key, value]) => {
+    if (avaliable.has(key) && value != null) {
+      css += `${key}: ${value};\n`;
+    }
+  });
+  return css;
+}
+
 const Container = styled.div`
-  ${({ open }) => (!open ? "display: none" : "")};
+  ${({ show }) => (!show ? "display: none" : "")};
   position: absolute;
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: 4px;
-  box-shadow: #dcdcdc 0px 0px 20px 5px;
+  box-shadow: rgb(100 100 111 / 25%) 0px 0px 20px 5px;
   width: 200px;
-
   z-index: 100;
-
-  top: -170px;
-  left: 50px;
+  ${({ position }) => (position ? buildPositionCss(position) : "")}
 `;
 
-const DropdownMenu = ({ children }) => {
+const DropdownMenu = ({ position, children }) => {
   const { isOpen, ref } = useContext(DropdownContext);
   return (
-    <Container open={isOpen} ref={ref}>
+    <Container show={isOpen} position={position} ref={ref}>
       {children}
     </Container>
   );
 };
 
 DropdownMenu.propTypes = {
+  position: PropTypes.shape({
+    top: PropTypes.string,
+    right: PropTypes.string,
+    bottom: PropTypes.string,
+    left: PropTypes.string,
+  }),
   children: PropTypes.node,
 };
 
 DropdownMenu.defaultProps = {
+  position: null,
   children: <></>,
 };
 

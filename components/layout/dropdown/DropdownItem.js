@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 const DropdownItem = styled.button`
   width: 100%;
+  display: block;
   padding: 1em 1.5em;
   border: none;
   color: ${({ theme }) => theme.colors.cadetBlueCrayola};
@@ -18,11 +19,13 @@ const DropdownItem = styled.button`
   }
 
   &:first-child {
-    border-radius: 4px 4px 0px 0px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
   }
 
   &:last-child {
-    border-radius: 0px 0px 4px 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
   }
 
   & > svg {

@@ -47,6 +47,8 @@ const ButtonItem = styled(Item)`
 const UserIcon = styled.img`
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: 50% !important;
+  width: 100%;
+  height: 100%;
 `;
 
 const Sidebar = () => {
@@ -82,11 +84,8 @@ const Sidebar = () => {
             <Dropdown.Toggle>
               <UserIcon />
             </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item>Edit</Dropdown.Item>
-              <Dropdown.Item>Download</Dropdown.Item>
-              <Dropdown.Item>Priority</Dropdown.Item>
-              <Dropdown.Item>
+            <Dropdown.Menu position={{ top: "-0.5rem", left: "3.5rem" }}>
+              <Dropdown.Item onClick={onSignout}>
                 <SignoutIcon />
                 Sign out
               </Dropdown.Item>

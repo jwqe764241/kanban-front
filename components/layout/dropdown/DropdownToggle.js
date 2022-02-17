@@ -5,6 +5,9 @@ import styled from "styled-components";
 import DropdownContext from "./DropdownContext";
 
 const ToggleButton = styled.button`
+  width: 100%;
+  height: 100%;
+  padding: 0;
   border: none;
   background-color: transparent;
   cursor: pointer;
