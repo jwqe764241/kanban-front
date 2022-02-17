@@ -5,6 +5,7 @@ import { getDateString } from "core/utils";
 
 import Dropdown from "components/layout/Dropdown";
 import DropdownIcon from "public/icons/dropdown.svg";
+import EditIcon from "public/icons/edit.svg";
 
 const Container = styled.div`
   padding: 24px 0px;
@@ -62,7 +63,10 @@ const KanbanListItem = ({ kanban }) => {
           </Dropdown.Toggle>
           <Dropdown.Menu position={{ right: "0" }}>
             <Link href={`/projects/${projectId}/kanbans/${sequenceId}/edit`}>
-              <Dropdown.Item>Edit</Dropdown.Item>
+              <Dropdown.Item>
+                <EditIcon />
+                Edit
+              </Dropdown.Item>
             </Link>
           </Dropdown.Menu>
         </Dropdown>

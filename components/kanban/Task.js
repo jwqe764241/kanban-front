@@ -5,6 +5,8 @@ import { Draggable } from "react-beautiful-dnd";
 
 import Dropdown from "components/layout/Dropdown";
 import DropdownIcon from "public/icons/dropdown.svg";
+import EditIcon from "public/icons/edit.svg";
+import DeleteIcon from "public/icons/delete.svg";
 import { CardIcon } from "components/layout/Icon";
 import { ModalPortal } from "components/layout/Modal";
 import EditTaskModal from "components/kanban/EditTaskModal";
@@ -84,10 +86,12 @@ const Task = ({ task, index, onDelete, onEdit }) => {
                 </Dropdown.Toggle>
                 <Dropdown.Menu position={{ right: "0" }}>
                   <Dropdown.Item onClick={onEditButtonClick}>
-                    Edit task
+                    <EditIcon />
+                    Edit
                   </Dropdown.Item>
                   <Dropdown.Item onClick={onDeleteButtonClick}>
-                    Delete task
+                    <DeleteIcon />
+                    Delete
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>

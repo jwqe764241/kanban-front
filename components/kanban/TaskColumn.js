@@ -5,6 +5,8 @@ import { Draggable } from "react-beautiful-dnd";
 
 import Dropdown from "components/layout/Dropdown";
 import DropdownIcon from "public/icons/dropdown.svg";
+import EditIcon from "public/icons/edit.svg";
+import DeleteIcon from "public/icons/delete.svg";
 import { PlusIcon } from "components/layout/Icon";
 import { ModalPortal } from "components/layout/Modal";
 import { NoStyleButton } from "components/layout/Button";
@@ -93,10 +95,12 @@ const TaskColumn = ({
                   </Dropdown.Toggle>
                   <Dropdown.Menu position={{ right: "0" }}>
                     <Dropdown.Item onClick={openEditColumnModal}>
-                      Edit column
+                      <EditIcon />
+                      Edit
                     </Dropdown.Item>
                     <Dropdown.Item onClick={openDeleteColumnModal}>
-                      Delete column
+                      <DeleteIcon />
+                      Delete
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
