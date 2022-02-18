@@ -2,9 +2,10 @@ const colors = {
   spaceCadet: "#1d2951",
   unitedNationsBlue: "#5b92e5",
   white: "#ffffff",
-  lightGray: "#F5F6F8",
+  cultured: "#f6f4f5",
   platinum: "#E5E4E2",
   cadetBlueCrayola: "#a9b2c3",
+  darkGray: "#212427",
 };
 
 const margins = {
