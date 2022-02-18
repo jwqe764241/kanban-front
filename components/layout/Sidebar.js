@@ -84,7 +84,7 @@ const Sidebar = () => {
             <Dropdown.Toggle>
               <UserIcon />
             </Dropdown.Toggle>
-            <Dropdown.Menu position={{ top: "-0.5rem", left: "3.5rem" }}>
+            <Dropdown.Menu position={{ top: "-0.25rem", left: "3.5rem" }}>
               <Dropdown.Item onClick={onSignout}>
                 <SignoutIcon />
                 Sign out
