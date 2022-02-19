@@ -6,6 +6,8 @@ const colors = {
   platinum: "#E5E4E2",
   cadetBlueCrayola: "#a9b2c3",
   darkGray: "#212427",
+  gray: "#4c4c4c",
+  lightGray: "#8d8d8d",
 };
 
 const margins = {
