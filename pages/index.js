@@ -20,16 +20,19 @@ const Title = styled.div`
   padding-bottom: 1.75rem;
 `;
 
-const ProjectCardContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  column-gap: 1.25rem;
-  row-gap: 1.25rem;
+const ProjectContainer = styled.div`
   padding: 1.5rem;
   background-color: #ffffff;
   border: 1px solid #dadada;
   border-radius: 4px;
   box-shadow: rgb(100 100 111 / 25%) 0px 0px 10px 0px;
+`;
+
+const ProjectCardContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  column-gap: 1.25rem;
+  row-gap: 1.25rem;
 `;
 
 const ProjectCardBox = styled.div`
@@ -94,12 +97,14 @@ ProjectCard.propTypes = {
 const Home = ({ projects }) => {
   return (
     <Container>
-      <Title>Your Projects</Title>
-      <ProjectCardContainer>
-        {projects.map((project) => (
-          <ProjectCard key={project.id} project={project} />
-        ))}
-      </ProjectCardContainer>
+      <ProjectContainer>
+        <Title>Your Projects</Title>
+        <ProjectCardContainer>
+          {projects.map((project) => (
+            <ProjectCard key={project.id} project={project} />
+          ))}
+        </ProjectCardContainer>
+      </ProjectContainer>
     </Container>
   );
 };
