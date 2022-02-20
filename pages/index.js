@@ -15,27 +15,33 @@ const Container = styled.div`
 
 const Title = styled.div`
   color: ${({ theme }) => theme.colors.darkGray};
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
-  padding-bottom: 1.5rem;
+  padding-bottom: 1.75rem;
 `;
 
 const ProjectCardContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  column-gap: 1rem;
-  row-gap: 1rem;
+  column-gap: 1.25rem;
+  row-gap: 1.25rem;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border: 1px solid #dadada;
+  border-radius: 4px;
+  box-shadow: rgb(100 100 111 / 25%) 0px 0px 10px 0px;
 `;
 
 const ProjectCardBox = styled.div`
-  padding: 1rem 1.5rem;
+  background-color: ${({ theme }) => theme.colors.white};
+  padding: 1.5rem 1.5rem;
   border: 1px solid #dadada;
   border-radius: 4px;
 `;
 
 const ProjectName = styled.div`
   color: ${({ theme }) => theme.colors.darkGray};
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
@@ -44,12 +50,14 @@ const ProjectName = styled.div`
 const ProjectDescription = styled.div`
   color: ${({ theme }) => theme.colors.gray};
   margin-bottom: 1rem;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 300;
-  height: 1em;
+  height: 2em;
   text-overflow: ellipsis;
-  white-space: nowrap;
   overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 `;
 
 const Date = styled.div`
@@ -84,20 +92,11 @@ ProjectCard.propTypes = {
 };
 
 const Home = ({ projects }) => {
-  const copy = [];
-  projects.forEach((element) => {
-    copy.push(element);
-    copy.push(element);
-    copy.push(element);
-    copy.push(element);
-    copy.push(element);
-  });
-
   return (
     <Container>
-      <Title>Projects</Title>
+      <Title>Your Projects</Title>
       <ProjectCardContainer>
-        {copy.map((project) => (
+        {projects.map((project) => (
           <ProjectCard key={project.id} project={project} />
         ))}
       </ProjectCardContainer>
