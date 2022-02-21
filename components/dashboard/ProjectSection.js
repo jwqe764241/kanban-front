@@ -21,7 +21,6 @@ const ProjectSection = styled.div`
   background-color: #ffffff;
   border: 1px solid #dadada;
   border-radius: 4px;
-  box-shadow: rgb(100 100 111 / 25%) 0px 0px 10px 0px;
 `;
 
 ProjectSection.Title = Title;
