@@ -14,7 +14,7 @@ const Container = styled.div`
   padding: 2.5rem;
 `;
 
-const Home = ({ projects }) => {
+const Dashboard = ({ projects }) => {
   return (
     <Container>
       <ProjectSection>
@@ -29,11 +29,11 @@ const Home = ({ projects }) => {
   );
 };
 
-Home.propTypes = {
+Dashboard.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.object),
 };
 
-Home.defaultProps = {
+Dashboard.defaultProps = {
   projects: [],
 };
 
@@ -64,4 +64,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
   },
 );
 
-export default connect((state) => state)(Home);
+export default connect((state) => state)(Dashboard);

@@ -3,46 +3,69 @@ import Link from "next/link";
 import PropTypes from "prop-types";
 import { getDateString } from "core/utils";
 
-import ProjectMenu from "components/project/ProjectMenu";
+import SettingIcon from "public/icons/setting.svg";
 
-const ProjectInfo = styled.div`
-  padding: 25px 32px 20px 32px;
-  border-bottom: 1px solid #e1e4e8;
-  color: #212427;
-  background-color: #fafbfc;
+const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem 3rem;
+  background-color: ${({ theme }) => theme.colors.white};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.platinum};
 `;
 
 const Name = styled.span`
-  font-size: 20px;
-  font-weight: 500;
-  margin-right: 10px;
-  color: #2455e7;
-  cursor: pointer;
   display: inline-block;
+  margin-right: 10px;
+  color: ${({ theme }) => theme.colors.darkGray};
+  font-size: 1.25rem;
+  font-weight: 500;
+  cursor: pointer;
 
   &:hover {
     text-decoration: underline;
   }
 `;
 
-const CreatedDate = styled.span`
-  font-size: 12px;
+const Date = styled.span`
+  color: ${({ theme }) => theme.colors.gray};
+  font-size: 0.75rem;
   font-weight: 400;
-  color: #4f4f4f;
 `;
 
-const ProjectHeader = ({ project, activeMenu }) => {
+const SettingLink = styled.a`
+  color: ${({ theme }) => theme.colors.darkGray};
+  cursor: pointer;
+
+  & > svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    vertical-align: middle;
+    transition: transform 0.5s ease;
+  }
+
+  &:hover > svg {
+    transform: rotate(180deg);
+  }
+`;
+
+const ProjectHeader = ({ project }) => {
   const { id, name, createdAt } = project;
   return (
-    <ProjectInfo>
+    <Container>
       <div>
         <Link href={`/projects/${id}/kanbans`}>
           <Name>{name}</Name>
         </Link>
-        <CreatedDate>{getDateString(createdAt)}</CreatedDate>
+        <Date>{getDateString(createdAt)}</Date>
       </div>
-      <ProjectMenu id={id} activeMenu={activeMenu} />
-    </ProjectInfo>
+      <div>
+        <Link href={`/projects/${id}/settings`}>
+          <SettingLink>
+            <SettingIcon />
+          </SettingLink>
+        </Link>
+      </div>
+    </Container>
   );
 };
 
@@ -54,7 +77,6 @@ ProjectHeader.propTypes = {
     registerUsername: PropTypes.string,
     createdAt: PropTypes.string,
   }).isRequired,
-  activeMenu: PropTypes.string.isRequired,
 };
 
 export default ProjectHeader;

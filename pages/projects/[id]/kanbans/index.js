@@ -48,14 +48,19 @@ const EmptyKanban = styled.div`
   }
 `;
 
+const Container = styled.div`
+  flex: 1;
+  background-color: ${({ theme }) => theme.colors.cultured};
+`;
+
 const KanbanList = ({ project, kanbanList }) => {
   const router = useRouter();
   const { id } = router.query;
 
   return (
-    <>
+    <Container>
       <ProjectHeader project={project} activeMenu="kanbans" />
-      <ContainerXL>
+      <div>
         {kanbanList && kanbanList.length > 0 ? (
           <>
             <ButtonContainer>
@@ -73,8 +78,8 @@ const KanbanList = ({ project, kanbanList }) => {
             <NewKanbanButton projectId={id} />
           </EmptyKanban>
         )}
-      </ContainerXL>
-    </>
+      </div>
+    </Container>
   );
 };
 
