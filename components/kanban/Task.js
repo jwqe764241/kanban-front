@@ -8,7 +8,7 @@ import DropdownIcon from "public/icons/dropdown.svg";
 import EditIcon from "public/icons/edit.svg";
 import DeleteIcon from "public/icons/delete.svg";
 import { CardIcon } from "components/layout/Icon";
-import { ModalPortal } from "components/layout/Modal";
+import Modal from "components/layout/Modal";
 import EditTaskModal from "components/kanban/EditTaskModal";
 
 const Container = styled.div`
@@ -102,14 +102,14 @@ const Task = ({ task, index, onDelete, onEdit }) => {
           </Container>
         )}
       </Draggable>
-      <ModalPortal>
+      <Modal.Portal>
         <EditTaskModal
           show={isEditTaskOpen}
           setShow={setEditTaskOpen}
           task={task}
           onEdit={onEdit}
         />
-      </ModalPortal>
+      </Modal.Portal>
     </>
   );
 };

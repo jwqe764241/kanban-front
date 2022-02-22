@@ -1,31 +1,8 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import styled from "styled-components";
 
-import { Modal } from "components/layout/Modal";
-import {
-  DangerButton,
-  SecondaryButton,
-  RemoveButton,
-} from "components/layout/Button";
-
-const TitleContainer = styled.div`
-  padding: 20px 15px;
-  background-color: #f6f8fa;
-  border-bottom: 1px solid #d0d7de;
-  border-radius: 6px 6px 0px 0px;
-`;
-
-const Title = styled.div`
-  display: inline-block;
-  font-size: 14px;
-  font-weight: 600;
-  color: #24292f;
-`;
-
-const Container = styled.div`
-  padding: 0px 15px;
-`;
+import Modal from "components/layout/Modal";
+import { DangerButton, SecondaryButton } from "components/layout/Button";
 
 const DeleteColumnModal = ({ show, setShow, taskColumn, onDelete }) => {
   const [isDeleting, setDeleting] = useState(false);
@@ -41,11 +18,11 @@ const DeleteColumnModal = ({ show, setShow, taskColumn, onDelete }) => {
 
   return (
     <Modal show={show} onClose={close}>
-      <TitleContainer>
-        <Title>Delete {taskColumn.name}</Title>
-        <RemoveButton style={{ float: "right", padding: 0 }} onClick={close} />
-      </TitleContainer>
-      <Container>
+      <Modal.Header>
+        <Modal.Title>Delete {taskColumn.name}</Modal.Title>
+        <Modal.CloseButton onClick={close} />
+      </Modal.Header>
+      <Modal.Body>
         <div style={{ margin: "15px 0px" }}>
           <div style={{ fontSize: "14px", fontWeight: "300" }}>
             Are you sure you want to delete to delete this column?
@@ -64,7 +41,7 @@ const DeleteColumnModal = ({ show, setShow, taskColumn, onDelete }) => {
         >
           Cancel
         </SecondaryButton>
-      </Container>
+      </Modal.Body>
     </Modal>
   );
 };

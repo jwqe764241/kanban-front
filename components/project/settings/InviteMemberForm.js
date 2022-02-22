@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { SuccessButton } from "components/layout/Button";
 import { List, ListHeader, EmptyList } from "components/layout/List";
 import UserListItem from "components/layout/UserListItem";
-import { ModalPortal } from "components/layout/Modal";
+import Modal from "components/layout/Modal";
 import InviteUserModal from "components/project/members/InviteUserModal";
 
 const ButtonContainer = styled.div`
@@ -67,14 +67,14 @@ const InviteMemberForm = ({ invitations, onSuggest, onInvite, onRemove }) => {
       ) : (
         <EmptyList>You haven&apos;t invited any users yet</EmptyList>
       )}
-      <ModalPortal>
+      <Modal.Portal>
         <InviteUserModal
           show={isInviteUserOpen}
           setShow={setInviteUserOpen}
           onSuggest={onSuggest}
           onInvite={oi}
         />
-      </ModalPortal>
+      </Modal.Portal>
     </>
   );
 };

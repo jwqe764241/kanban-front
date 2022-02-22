@@ -8,7 +8,7 @@ import DropdownIcon from "public/icons/dropdown.svg";
 import EditIcon from "public/icons/edit.svg";
 import DeleteIcon from "public/icons/delete.svg";
 import { PlusIcon } from "components/layout/Icon";
-import { ModalPortal } from "components/layout/Modal";
+import Modal from "components/layout/Modal";
 import { NoStyleButton } from "components/layout/Button";
 import DeleteColumnModal from "components/kanban/DeleteColumnModal";
 import EditColumnModal from "components/kanban/EditColumnModal";
@@ -129,7 +129,7 @@ const TaskColumn = ({
           </ColumnContainer>
         )}
       </Draggable>
-      <ModalPortal>
+      <Modal.Portal>
         <EditColumnModal
           show={isEditColumnOpen}
           setShow={setEditColumnOpen}
@@ -142,7 +142,7 @@ const TaskColumn = ({
           taskColumn={taskColumn}
           onDelete={onDeleteColumn}
         />
-      </ModalPortal>
+      </Modal.Portal>
     </>
   );
 };

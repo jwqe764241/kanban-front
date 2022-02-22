@@ -1,28 +1,9 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import styled from "styled-components";
 
-import { Modal } from "components/layout/Modal";
-import { SuccessButton, RemoveButton } from "components/layout/Button";
+import Modal from "components/layout/Modal";
+import { SuccessButton } from "components/layout/Button";
 import { Input, Label } from "components/layout/Form";
-
-const TitleContainer = styled.div`
-  padding: 20px 15px;
-  background-color: #f6f8fa;
-  border-bottom: 1px solid #d0d7de;
-  border-radius: 6px 6px 0px 0px;
-`;
-
-const Title = styled.div`
-  display: inline-block;
-  font-size: 14px;
-  font-weight: 600;
-  color: #24292f;
-`;
-
-const Container = styled.div`
-  padding: 0px 15px;
-`;
 
 const AddColumnModal = ({ show, setShow, onCreate }) => {
   const [isCreating, setCreating] = useState(false);
@@ -63,11 +44,11 @@ const AddColumnModal = ({ show, setShow, onCreate }) => {
 
   return (
     <Modal show={show} onClose={close}>
-      <TitleContainer>
-        <Title>Add column</Title>
-        <RemoveButton style={{ float: "right", padding: 0 }} onClick={close} />
-      </TitleContainer>
-      <Container>
+      <Modal.Header>
+        <Modal.Title>Add column</Modal.Title>
+        <Modal.CloseButton onClick={close} />
+      </Modal.Header>
+      <Modal.Body>
         <div style={{ margin: "15px 0px" }}>
           <Label htmlFor="name">Column name</Label>
           <Input
@@ -88,7 +69,7 @@ const AddColumnModal = ({ show, setShow, onCreate }) => {
         >
           Add column
         </SuccessButton>
-      </Container>
+      </Modal.Body>
     </Modal>
   );
 };

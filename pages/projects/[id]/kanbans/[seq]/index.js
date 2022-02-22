@@ -15,7 +15,7 @@ import TaskColumnList from "components/kanban/TaskColumnList";
 import TaskColumn from "components/kanban/TaskColumn";
 import { PlusIcon } from "components/layout/Icon";
 import { NoStyleButton, SuccessButton } from "components/layout/Button";
-import { ModalPortal } from "components/layout/Modal";
+import Modal from "components/layout/Modal";
 import AddColumnModal from "components/kanban/AddColumnModal";
 
 const KanbanInfo = styled.div`
@@ -386,13 +386,13 @@ const Kanban = ({ project, kanban }) => {
           </EmptyColumn>
         )}
       </KanbanContainer>
-      <ModalPortal>
+      <Modal.Portal>
         <AddColumnModal
           show={isAddColumnOpen}
           setShow={setAddColumnOpen}
           onCreate={onColumnCreate}
         />
-      </ModalPortal>
+      </Modal.Portal>
     </>
   );
 };
