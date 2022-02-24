@@ -22,11 +22,12 @@ const Name = styled.div`
 `;
 
 const Description = styled.div`
-  color: ${({ theme }) => theme.colors.gray};
+  height: 2.5rem;
   margin-bottom: 1.5rem;
+  color: ${({ theme }) => theme.colors.gray};
+  line-height: 1.25rem;
   font-size: 0.8rem;
   font-weight: 300;
-  height: 2em;
   text-overflow: ellipsis;
   overflow: hidden;
   display: -webkit-box;

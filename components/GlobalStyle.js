@@ -83,7 +83,6 @@ const GlobalStyle = createGlobalStyle`
   
   html * {
     font-family: "NotoSansKR";
-    line-height: 1.5em;
   }
   
   html,
