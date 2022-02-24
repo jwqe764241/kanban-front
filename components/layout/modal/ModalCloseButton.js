@@ -13,7 +13,7 @@ const Button = styled.button`
   cursor: pointer;
 
   & > svg {
-    vertical-align: super;
+    display: block;
   }
 `;
 
