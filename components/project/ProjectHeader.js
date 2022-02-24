@@ -1,9 +1,12 @@
+import { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import PropTypes from "prop-types";
-import { getDateString } from "core/utils";
 
+import InfoIcon from "public/icons/info.svg";
 import SettingIcon from "public/icons/setting.svg";
+import Modal from "components/layout/Modal";
+import ProjectInfoModal from "./ProjectInfoModal";
 
 const Container = styled.div`
   display: flex;
@@ -11,6 +14,20 @@ const Container = styled.div`
   padding: 1.5rem 3rem;
   background-color: ${({ theme }) => theme.colors.white};
   border-bottom: 1px solid ${({ theme }) => theme.colors.platinum};
+`;
+
+const InfoButton = styled.button`
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  vertical-align: bottom;
+
+  & > svg {
+    fill: ${({ theme }) => theme.colors.unitedNationsBlue};
+  }
 `;
 
 const Name = styled.span`
@@ -24,12 +41,6 @@ const Name = styled.span`
   &:hover {
     text-decoration: underline;
   }
-`;
-
-const Date = styled.span`
-  color: ${({ theme }) => theme.colors.gray};
-  font-size: 0.75rem;
-  font-weight: 400;
 `;
 
 const SettingLink = styled.a`
@@ -49,23 +60,36 @@ const SettingLink = styled.a`
 `;
 
 const ProjectHeader = ({ project }) => {
-  const { id, name, createdAt } = project;
+  const { id, name } = project;
+  const [isInfoOpen, setInfoOpen] = useState(false);
+
   return (
-    <Container>
-      <div>
-        <Link href={`/projects/${id}/kanbans`}>
-          <Name>{name}</Name>
-        </Link>
-        <Date>{getDateString(createdAt)}</Date>
-      </div>
-      <div>
-        <Link href={`/projects/${id}/settings`}>
-          <SettingLink>
-            <SettingIcon />
-          </SettingLink>
-        </Link>
-      </div>
-    </Container>
+    <>
+      <Container>
+        <div>
+          <Link href={`/projects/${id}/kanbans`}>
+            <Name>{name}</Name>
+          </Link>
+          <InfoButton onClick={() => setInfoOpen(true)}>
+            <InfoIcon />
+          </InfoButton>
+        </div>
+        <div>
+          <Link href={`/projects/${id}/settings`}>
+            <SettingLink>
+              <SettingIcon />
+            </SettingLink>
+          </Link>
+        </div>
+      </Container>
+      <Modal.Portal>
+        <ProjectInfoModal
+          show={isInfoOpen}
+          setShow={setInfoOpen}
+          project={project}
+        />
+      </Modal.Portal>
+    </>
   );
 };
 
