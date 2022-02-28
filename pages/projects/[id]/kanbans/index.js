@@ -34,7 +34,7 @@ const KanbanList = ({ project, kanbans }) => {
         <Title>Kanbans</Title>
         <KanbanCards.Grid>
           {kanbans.map((kanban) => (
-            <KanbanCards.Card key={kanban.id} kanban={kanban} />
+            <KanbanCards.Card key={kanban.sequenceId} kanban={kanban} />
           ))}
         </KanbanCards.Grid>
       </Body>
@@ -50,7 +50,11 @@ KanbanList.propTypes = {
     registerUsername: PropTypes.string,
     createdAt: PropTypes.string,
   }).isRequired,
-  kanbans: PropTypes.arrayOf(PropTypes.object).isRequired,
+  kanbans: PropTypes.arrayOf(PropTypes.object),
+};
+
+KanbanList.defaultProps = {
+  kanbans: [],
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
