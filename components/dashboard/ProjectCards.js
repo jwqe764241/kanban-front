@@ -3,7 +3,14 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { getDateString } from "core/utils";
 
-const Container = styled.div`
+const CardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  column-gap: 1.25rem;
+  row-gap: 1.25rem;
+`;
+
+const CardContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
   padding: 1.5rem 1.5rem;
   border: 1px solid #dadada;
@@ -42,21 +49,21 @@ const Date = styled.div`
   text-align: right;
 `;
 
-const ProjectCard = ({ project }) => {
+const Card = ({ project }) => {
   const { id, name, description, createdAt } = project;
 
   return (
-    <Container>
+    <CardContainer>
       <Link href={`/projects/${id}/kanbans`}>
         <Name>{name}</Name>
       </Link>
       <Description>{description}</Description>
       <Date>{getDateString(createdAt)}</Date>
-    </Container>
+    </CardContainer>
   );
 };
 
-ProjectCard.propTypes = {
+Card.propTypes = {
   project: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string,
@@ -66,4 +73,8 @@ ProjectCard.propTypes = {
   }).isRequired,
 };
 
-export default ProjectCard;
+const ProjectCards = {};
+ProjectCards.Grid = CardGrid;
+ProjectCards.Card = Card;
+
+export default ProjectCards;

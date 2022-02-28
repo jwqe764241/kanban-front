@@ -5,7 +5,7 @@ import { parseCookie } from "core/utils";
 import wrapper from "core/store";
 import axios, { createRequester } from "core/apiAxios";
 
-import ProjectSection from "components/dashboard/ProjectSection";
+import ProjectCards from "components/dashboard/ProjectCards";
 
 const Container = styled.div`
   width: 100%;
@@ -14,16 +14,30 @@ const Container = styled.div`
   padding: 2.5rem;
 `;
 
+const ProjectSection = styled.div`
+  padding: 2rem 1.5rem;
+  background-color: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.platinum};
+  border-radius: 4px;
+`;
+
+const Title = styled.div`
+  color: ${({ theme }) => theme.colors.darkGray};
+  font-size: 1.25rem;
+  font-weight: 600;
+  padding-bottom: 1.75rem;
+`;
+
 const Dashboard = ({ projects }) => {
   return (
     <Container>
       <ProjectSection>
-        <ProjectSection.Title>Your Projects</ProjectSection.Title>
-        <ProjectSection.CardContainer>
+        <Title>Your Projects</Title>
+        <ProjectCards.Grid>
           {projects.map((project) => (
-            <ProjectSection.Card key={project.id} project={project} />
+            <ProjectCards.Card key={project.id} project={project} />
           ))}
-        </ProjectSection.CardContainer>
+        </ProjectCards.Grid>
       </ProjectSection>
     </Container>
   );
