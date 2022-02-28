@@ -5,7 +5,7 @@ import { getDateString } from "core/utils";
 
 const CardGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   column-gap: 1.25rem;
   row-gap: 1.25rem;
 `;
@@ -13,7 +13,7 @@ const CardGrid = styled.div`
 const CardContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
   padding: 1.5rem 1.5rem;
-  border: 1px solid #dadada;
+  border: 1px solid ${({ theme }) => theme.colors.platinum};
   border-radius: 4px;
 `;
 
