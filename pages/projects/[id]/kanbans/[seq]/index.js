@@ -18,22 +18,19 @@ import { NoStyleButton, SuccessButton } from "components/layout/Button";
 import Modal from "components/layout/Modal";
 import AddColumnModal from "components/kanban/AddColumnModal";
 
-const KanbanInfo = styled.div`
-  padding: 20px 20px 0px 20px;
-`;
-
-const KanbanName = styled.div`
-  font-size: 14px;
-  font-weight: 500;
-  color: #212427;
-`;
-
-const KanbanContainer = styled.div`
-  display: flex;
+const Container = styled.div`
   flex: 1;
-  padding: 20px 15px;
+  display: flex;
+  flex-direction: column;
+  background-color: ${({ theme }) => theme.colors.cultured};
+  overflow-x: hidden;
+`;
+
+const Body = styled.div`
+  flex: 1;
+  display: flex;
+  padding: 2rem 3rem;
   overflow-x: auto;
-  color: #212427;
 `;
 
 const DashedButton = styled(NoStyleButton)`
@@ -350,12 +347,9 @@ const Kanban = ({ project, kanban }) => {
   };
 
   return (
-    <>
-      <ProjectHeader project={project} activeMenu="kanbans" />
-      <KanbanInfo>
-        <KanbanName>{kanban.name}</KanbanName>
-      </KanbanInfo>
-      <KanbanContainer>
+    <Container>
+      <ProjectHeader project={project} />
+      <Body>
         {columns && columns.length > 0 ? (
           <DragDropContext onDragEnd={onDragEnd}>
             <TaskColumnList>
@@ -385,7 +379,7 @@ const Kanban = ({ project, kanban }) => {
             </SuccessButton>
           </EmptyColumn>
         )}
-      </KanbanContainer>
+      </Body>
       <Modal.Portal>
         <AddColumnModal
           show={isAddColumnOpen}
@@ -393,7 +387,7 @@ const Kanban = ({ project, kanban }) => {
           onCreate={onColumnCreate}
         />
       </Modal.Portal>
-    </>
+    </Container>
   );
 };
 
