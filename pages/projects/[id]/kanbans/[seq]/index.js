@@ -10,7 +10,7 @@ import { parseCookie } from "core/utils";
 import { DragDropContext, resetServerContext } from "react-beautiful-dnd";
 import KanbanDataStorage from "core/kanban-data-storage";
 
-import ProjectHeader from "components/project/ProjectHeader";
+import KanbanHeader from "components/kanban/KanbanHeader";
 import TaskColumnList from "components/kanban/TaskColumnList";
 import TaskColumn from "components/kanban/TaskColumn";
 import { PlusIcon } from "components/layout/Icon";
@@ -348,7 +348,7 @@ const Kanban = ({ project, kanban }) => {
 
   return (
     <Container>
-      <ProjectHeader project={project} />
+      <KanbanHeader project={project} kanban={kanban} />
       <Body>
         {columns && columns.length > 0 ? (
           <DragDropContext onDragEnd={onDragEnd}>

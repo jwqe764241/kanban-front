@@ -6,7 +6,7 @@ import axios, { createRequester } from "core/apiAxios";
 import wrapper from "core/store";
 import { parseCookie } from "core/utils";
 
-import ProjectHeader from "components/project/ProjectHeader";
+import KanbanHeader from "components/kanban/KanbanHeader";
 import DeleteKanbanForm from "components/kanban/DeleteKanbanForm";
 import {
   Input,
@@ -73,7 +73,7 @@ const EditKanban = ({ project, kanban }) => {
 
   return (
     <>
-      <ProjectHeader project={project} activeMenu="kanbans" />
+      <KanbanHeader project={project} kanban={kanban} />
       <ContainerMd>
         <Header title={`Edit ${kanban.name}`} />
         <Body>
