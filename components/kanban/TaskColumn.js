@@ -16,29 +16,18 @@ import TaskList from "components/kanban/TaskList";
 import Task from "components/kanban/Task";
 import AddTaskForm from "components/kanban/AddTaskForm";
 
-const ColumnContainer = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 350px;
-  border: 1px solid #d8dee4;
-  border-radius: 6px;
-  background-color: #f6f8fa;
-  margin-right: 20px;
+  margin-right: 1.5rem;
 `;
 
-const HeaderContainer = styled.div`
-  padding: 12px 10px;
-  font-size: 14px;
+const Header = styled.div`
+  padding: 0.75rem;
+  font-size: 1rem;
   font-weight: 500;
-`;
-
-const Count = styled.span`
-  padding: 0px 10px 0px 5px;
-  margin-left: 2px;
-`;
-
-const Title = styled.div`
-  display: inline-block;
+  color: ${({ theme }) => theme.colors.darkGray};
 `;
 
 const ButtonContainer = styled.span`
@@ -78,10 +67,9 @@ const TaskColumn = ({
     <>
       <Draggable draggableId={`column-${taskColumnId}`} index={index}>
         {(provided) => (
-          <ColumnContainer {...provided.draggableProps} ref={provided.innerRef}>
-            <HeaderContainer {...provided.dragHandleProps}>
-              <Count>{tasks.length}</Count>
-              <Title>{taskColumn.name}</Title>
+          <Container {...provided.draggableProps} ref={provided.innerRef}>
+            <Header {...provided.dragHandleProps}>
+              <span>{taskColumn.name}</span>
               <ButtonContainer>
                 <NoStyleButton
                   style={{ display: "flex" }}
@@ -105,7 +93,7 @@ const TaskColumn = ({
                   </Dropdown.Menu>
                 </Dropdown>
               </ButtonContainer>
-            </HeaderContainer>
+            </Header>
             {isAddTaskOpen ? (
               <AddTaskForm
                 taskColumn={taskColumn}
@@ -126,7 +114,7 @@ const TaskColumn = ({
                 />
               ))}
             </TaskList>
-          </ColumnContainer>
+          </Container>
         )}
       </Draggable>
       <Modal.Portal>

@@ -2,23 +2,20 @@ import { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Draggable } from "react-beautiful-dnd";
+import { getDateString } from "core/utils";
 
-import Dropdown from "components/layout/Dropdown";
-import DropdownIcon from "public/icons/dropdown.svg";
 import EditIcon from "public/icons/edit.svg";
 import DeleteIcon from "public/icons/delete.svg";
-import { CardIcon } from "components/layout/Icon";
 import Modal from "components/layout/Modal";
 import EditTaskModal from "components/kanban/EditTaskModal";
+import ContextMenu from "components/kanban/ContextMenu";
 
 const Container = styled.div`
   position: relative;
-  background-color: white;
-  border: 1px solid #d8dee4;
-  border-radius: 6px;
-  padding: 12px 8px 12px 32px;
-
-  margin-bottom: 10px;
+  margin-bottom: 0.75rem;
+  background-color: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.platinum};
+  border-radius: 4px;
 
   &:hover {
     box-shadow: 0 1px 3px rgb(106 115 125 / 30%) !important;
@@ -29,42 +26,37 @@ const Container = styled.div`
   }
 `;
 
-const Icon = styled.span`
-  position: absolute;
-  top: 12px;
-  left: 10px;
-`;
-
-const DropdownWrap = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 10px 8px 0px 0px;
-`;
-
-const TextContainer = styled.div`
-  margin-right: 26px;
-  font-size: 14px;
-  font-weight: 300;
-  color: #24292f;
+const ContainerWrap = styled.div`
+  padding: 0.75rem 1rem;
 `;
 
 const Text = styled.div`
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 300;
+  color: ${({ theme }) => theme.colors.gray};
   word-wrap: break-word;
-  line-height: 1.2;
+  line-height: 1.25rem;
+`;
+
+const Date = styled.div`
+  font-size: 0.75rem;
+  font-weight: 200;
+  color: ${({ theme }) => theme.colors.lightGray};
 `;
 
 const Task = ({ task, index, onDelete, onEdit }) => {
-  const taskId = task.id.toString();
+  const { id, text, createdAt } = task;
+  const taskId = id.toString();
   const [isEditTaskOpen, setEditTaskOpen] = useState(false);
 
-  const onDeleteButtonClick = () => {
-    if (!window.confirm("Are you sure you want to delete this task?")) return;
-    onDelete(task);
+  const onEditClick = () => {
+    setEditTaskOpen(true);
   };
 
-  const onEditButtonClick = () => {
-    setEditTaskOpen(true);
+  const onDeleteClick = () => {
+    if (!window.confirm("Are you sure you want to delete this task?")) return;
+    onDelete(task);
   };
 
   return (
@@ -76,29 +68,22 @@ const Task = ({ task, index, onDelete, onEdit }) => {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
           >
-            <Icon>
-              <CardIcon />
-            </Icon>
-            <DropdownWrap>
-              <Dropdown>
-                <Dropdown.Toggle>
-                  <DropdownIcon style={{ width: "1rem" }} />
-                </Dropdown.Toggle>
-                <Dropdown.Menu position={{ right: "0" }}>
-                  <Dropdown.Item onClick={onEditButtonClick}>
-                    <EditIcon />
-                    Edit
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={onDeleteButtonClick}>
-                    <DeleteIcon />
-                    Delete
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </DropdownWrap>
-            <TextContainer>
-              <Text>{task.text}</Text>
-            </TextContainer>
+            <ContextMenu.Trigger>
+              <ContainerWrap>
+                <Text>{text}</Text>
+                <Date>{getDateString(createdAt)}</Date>
+              </ContainerWrap>
+              <ContextMenu.Menu id="context-root">
+                <ContextMenu.Item onClick={onEditClick}>
+                  <EditIcon />
+                  Edit
+                </ContextMenu.Item>
+                <ContextMenu.Item onClick={onDeleteClick}>
+                  <DeleteIcon />
+                  Delete
+                </ContextMenu.Item>
+              </ContextMenu.Menu>
+            </ContextMenu.Trigger>
           </Container>
         )}
       </Draggable>
@@ -120,6 +105,7 @@ Task.propTypes = {
     prevId: PropTypes.number,
     taskColumnId: PropTypes.number,
     text: PropTypes.string,
+    createdAt: PropTypes.string,
   }).isRequired,
   index: PropTypes.number.isRequired,
   onDelete: PropTypes.func.isRequired,

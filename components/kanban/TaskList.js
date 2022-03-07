@@ -2,21 +2,21 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Droppable } from "react-beautiful-dnd";
 
-const ListContainer = styled.div`
+const Container = styled.div`
   flex: auto;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 0px 8px 8px 8px;
+  padding: 0px 0.5rem 0.5rem 0.5rem;
 `;
 
 const TaskList = ({ droppableId, children }) => {
   return (
     <Droppable droppableId={droppableId} direction="vertical" type="task">
       {(provided) => (
-        <ListContainer ref={provided.innerRef} {...provided.droppableProps}>
+        <Container ref={provided.innerRef} {...provided.droppableProps}>
           {children}
           {provided.placeholder}
-        </ListContainer>
+        </Container>
       )}
     </Droppable>
   );

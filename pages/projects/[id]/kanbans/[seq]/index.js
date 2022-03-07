@@ -379,6 +379,7 @@ const Kanban = ({ project, kanban }) => {
             </SuccessButton>
           </EmptyColumn>
         )}
+        <div id="context-root" />
       </Body>
       <Modal.Portal>
         <AddColumnModal
