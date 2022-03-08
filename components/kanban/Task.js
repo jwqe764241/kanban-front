@@ -27,11 +27,11 @@ const Container = styled.div`
 `;
 
 const ContainerWrap = styled.div`
-  padding: 0.75rem 1rem;
+  padding: 0.875rem 1.25rem;
 `;
 
 const Text = styled.div`
-  margin-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
   font-size: 0.875rem;
   font-weight: 300;
   color: ${({ theme }) => theme.colors.gray};

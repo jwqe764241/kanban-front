@@ -19,7 +19,7 @@ import AddTaskForm from "components/kanban/AddTaskForm";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 350px;
+  width: 300px;
   margin-right: 1.5rem;
 `;
 
