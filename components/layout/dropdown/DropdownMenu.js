@@ -4,18 +4,14 @@ import styled from "styled-components";
 
 import DropdownContext from "./DropdownContext";
 
-function buildPositionCss(position) {
-  const avaliable = new Set(["top", "right", "bottom", "left"]);
-  let css = "";
-  Object.entries(position).forEach(([key, value]) => {
-    if (avaliable.has(key) && value != null) {
-      css += `${key}: ${value};\n`;
-    }
-  });
-  return css;
-}
-
-const Container = styled.div`
+const Container = styled.div.attrs(({ position }) => ({
+  style: {
+    top: position ? position.top : 0,
+    right: position ? position.right : 0,
+    bottom: position ? position.bottom : 0,
+    left: position ? position.left : 0,
+  },
+}))`
   ${({ show }) => (!show ? "display: none" : "")};
   position: absolute;
   background-color: ${({ theme }) => theme.colors.white};
@@ -23,7 +19,6 @@ const Container = styled.div`
   box-shadow: rgb(100 100 111 / 25%) 0px 0px 20px 5px;
   width: 200px;
   z-index: 100;
-  ${({ position }) => (position ? buildPositionCss(position) : "")}
 `;
 
 const DropdownMenu = ({ position, children }) => {

@@ -6,7 +6,7 @@ import wrapper from "core/store";
 import { getCookie, parseJwtClaims } from "core/utils";
 
 import Main from "components/Main";
-import Sidebar from "components/layout/Sidebar";
+import Navbar from "components/layout/Navbar";
 
 const excludePath = new Set(["/login", "/_error"]);
 
@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps }) {
       <GlobalStyle />
       <ThemeProvider theme={theme}>
         <Main>
-          <Sidebar/>
+          <Navbar/>
           <Component {...pageProps} />
         </Main>
         <div id="modal-root" />
