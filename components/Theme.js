@@ -10,9 +10,9 @@ const colors = {
   lightGray: "#8d8d8d",
   blueRYB: "#1a50ff",
 
-  primary: "#004D40",
-  secondary: "#009688",
-  aaa: "#00BFA5",
+  primary: "#00796b",
+  primaryDark: "#004c40",
+  primaryLight: "#48a999",
 };
 
 const margins = {

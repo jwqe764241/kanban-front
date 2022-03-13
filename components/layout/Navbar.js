@@ -13,7 +13,7 @@ const Container = styled.nav`
   justify-content: space-between;
   padding: 0.25rem;
   z-index: 10;
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.primaryDark};
   color: ${({ theme }) => theme.colors.white};
 `;
 
@@ -31,7 +31,7 @@ const Item = styled.span`
 
 const ButtonItem = styled(Item)`
   border-radius: 2px;
-  background-color: ${({ theme }) => theme.colors.secondary};
+  background-color: ${({ theme }) => theme.colors.primaryLight};
 
   &:hover {
     background-color: #00897b;
@@ -78,7 +78,7 @@ const Navbar = () => {
               <SettingIcon />
             </ButtonItem>
           </Dropdown.Toggle>
-          <Dropdown.Menu position={{ right: "0", top: "2.25rem" }}>
+          <Dropdown.Menu position={{ right: "0", top: "2.5rem" }}>
             <Dropdown.Item onClick={onSignout}>
               <SignoutIcon />
               Sign out
