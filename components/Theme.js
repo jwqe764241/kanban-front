@@ -1,18 +1,14 @@
 const colors = {
-  spaceCadet: "#1d2951",
-  unitedNationsBlue: "#5b92e5",
-  white: "#ffffff",
-  cultured: "#f6f4f5",
-  platinum: "#e5e4e2",
-  cadetBlueCrayola: "#a9b2c3",
-  darkGray: "#212427",
-  gray: "#4c4c4c",
-  lightGray: "#8d8d8d",
-  blueRYB: "#1a50ff",
+  primary: "#256c95",
+  primaryDark: "#3d7ba4",
+  primaryLight: "#5393bf",
+  secondary: "#205c7e",
+  secondaryDark: "#00578a",
+  secondaryLight: "#0079be",
+  black: "#111111",
 
-  primary: "#00796b",
-  primaryDark: "#004c40",
-  primaryLight: "#48a999",
+  gray: "#f4f5f7",
+  white: "#ffffff",
 };
 
 const margins = {

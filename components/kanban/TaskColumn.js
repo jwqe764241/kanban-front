@@ -17,17 +17,26 @@ import Task from "components/kanban/Task";
 import AddTaskForm from "components/kanban/AddTaskForm";
 
 const Container = styled.div`
+  width: 300px;
+  margin-right: 1rem;
+`;
+
+const Wrap = styled.div`
   display: flex;
   flex-direction: column;
-  width: 300px;
-  margin-right: 1.5rem;
+  padding: 0.75rem 0.5rem;
+  background-color: #e3e3e3;
+  border-radius: 4px;
 `;
 
 const Header = styled.div`
-  padding: 0.75rem;
   font-size: 1rem;
   font-weight: 500;
-  color: ${({ theme }) => theme.colors.darkGray};
+  color: ${({ theme }) => theme.colors.black};
+`;
+
+const Name = styled.span`
+  margin-left: 0.5rem;
 `;
 
 const ButtonContainer = styled.span`
@@ -68,52 +77,54 @@ const TaskColumn = ({
       <Draggable draggableId={`column-${taskColumnId}`} index={index}>
         {(provided) => (
           <Container {...provided.draggableProps} ref={provided.innerRef}>
-            <Header {...provided.dragHandleProps}>
-              <span>{taskColumn.name}</span>
-              <ButtonContainer>
-                <NoStyleButton
-                  style={{ display: "flex" }}
-                  onClick={openAddTaskForm}
-                >
-                  <PlusIcon />
-                </NoStyleButton>
-                <Dropdown>
-                  <Dropdown.Toggle>
-                    <DropdownIcon style={{ width: "1rem" }} />
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu position={{ right: "0" }}>
-                    <Dropdown.Item onClick={openEditColumnModal}>
-                      <EditIcon />
-                      Edit
-                    </Dropdown.Item>
-                    <Dropdown.Item onClick={openDeleteColumnModal}>
-                      <DeleteIcon />
-                      Delete
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </ButtonContainer>
-            </Header>
-            {isAddTaskOpen ? (
-              <AddTaskForm
-                taskColumn={taskColumn}
-                onAddTask={onCreateTask}
-                setShow={setAddTaskOpen}
-              />
-            ) : (
-              <></>
-            )}
-            <TaskList droppableId={taskColumnId}>
-              {tasks.map((task, arrIndex) => (
-                <Task
-                  key={task.id}
-                  task={task}
-                  index={arrIndex}
-                  onDelete={onDeleteTask}
-                  onEdit={onEditTask}
+            <Wrap>
+              <Header {...provided.dragHandleProps}>
+                <Name>{taskColumn.name}</Name>
+                <ButtonContainer>
+                  <NoStyleButton
+                    style={{ display: "flex" }}
+                    onClick={openAddTaskForm}
+                  >
+                    <PlusIcon />
+                  </NoStyleButton>
+                  <Dropdown>
+                    <Dropdown.Toggle>
+                      <DropdownIcon style={{ width: "1rem" }} />
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu position={{ right: "0" }}>
+                      <Dropdown.Item onClick={openEditColumnModal}>
+                        <EditIcon />
+                        Edit
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={openDeleteColumnModal}>
+                        <DeleteIcon />
+                        Delete
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </ButtonContainer>
+              </Header>
+              {isAddTaskOpen ? (
+                <AddTaskForm
+                  taskColumn={taskColumn}
+                  onAddTask={onCreateTask}
+                  setShow={setAddTaskOpen}
                 />
-              ))}
-            </TaskList>
+              ) : (
+                <></>
+              )}
+              <TaskList droppableId={taskColumnId}>
+                {tasks.map((task, arrIndex) => (
+                  <Task
+                    key={task.id}
+                    task={task}
+                    index={arrIndex}
+                    onDelete={onDeleteTask}
+                    onEdit={onEditTask}
+                  />
+                ))}
+              </TaskList>
+            </Wrap>
           </Container>
         )}
       </Draggable>

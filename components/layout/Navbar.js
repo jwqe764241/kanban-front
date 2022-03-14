@@ -11,9 +11,9 @@ import SignoutIcon from "public/icons/signout.svg";
 const Container = styled.nav`
   display: flex;
   justify-content: space-between;
-  padding: 0.25rem;
+  padding: 4px;
   z-index: 10;
-  background-color: ${({ theme }) => theme.colors.primaryDark};
+  background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.white};
 `;
 
@@ -30,11 +30,11 @@ const Item = styled.span`
 `;
 
 const ButtonItem = styled(Item)`
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: ${({ theme }) => theme.colors.primaryLight};
 
   &:hover {
-    background-color: #00897b;
+    background-color: ${({ theme }) => theme.colors.primaryDark};
   }
 
   svg {

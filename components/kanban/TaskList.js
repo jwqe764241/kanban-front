@@ -3,10 +3,9 @@ import PropTypes from "prop-types";
 import { Droppable } from "react-beautiful-dnd";
 
 const Container = styled.div`
-  flex: auto;
+  padding: 1rem 0;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 0px 0.5rem 0.5rem 0.5rem;
 `;
 
 const TaskList = ({ droppableId, children }) => {

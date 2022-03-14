@@ -22,15 +22,15 @@ const Container = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  background-color: ${({ theme }) => theme.colors.cultured};
   overflow-x: hidden;
 `;
 
 const Body = styled.div`
   flex: 1;
   display: flex;
-  padding: 2rem 3rem;
+  padding: 0.5rem;
   overflow-x: auto;
+  background-color: ${({ theme }) => theme.colors.secondary};
 `;
 
 const DashedButton = styled(NoStyleButton)`
