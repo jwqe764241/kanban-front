@@ -3,9 +3,23 @@ import PropTypes from "prop-types";
 import { Droppable } from "react-beautiful-dnd";
 
 const Container = styled.div`
-  padding: 1rem 0;
+  padding-bottom: 0.5rem;
   overflow-x: hidden;
   overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) => theme.colors.scrollbarThumb};
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: ${({ theme }) => theme.colors.scrollbarTrack};
+    border-radius: 4px;
+  }
 `;
 
 const TaskList = ({ droppableId, children }) => {

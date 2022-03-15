@@ -13,8 +13,8 @@ import KanbanDataStorage from "core/kanban-data-storage";
 import KanbanHeader from "components/kanban/KanbanHeader";
 import TaskColumnList from "components/kanban/TaskColumnList";
 import TaskColumn from "components/kanban/TaskColumn";
-import { PlusIcon } from "components/layout/Icon";
-import { NoStyleButton, SuccessButton } from "components/layout/Button";
+import PlusIcon from "public/icons/plus.svg";
+import { NoStyleButton } from "components/layout/Button";
 import Modal from "components/layout/Modal";
 import AddColumnModal from "components/kanban/AddColumnModal";
 
@@ -26,59 +26,42 @@ const Container = styled.div`
 `;
 
 const Body = styled.div`
-  flex: 1;
   display: flex;
+  flex: 1;
   padding: 0.5rem;
   overflow-x: auto;
   background-color: ${({ theme }) => theme.colors.secondary};
-`;
 
-const DashedButton = styled(NoStyleButton)`
-  width: 300px;
-  display: inline-block;
-  color: #5f5f5f;
-  border: 1px solid #d8dee4;
-  border-style: dashed;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  padding: 40px 0px;
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
 
-  &:hover {
-    text-decoration: underline;
+  &::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) => theme.colors.scrollbarThumb};
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: ${({ theme }) => theme.colors.scrollbarTrack};
+    border-radius: 4px;
   }
 `;
 
-const AddColumnButton = ({ onClick }) => {
-  return (
-    <div>
-      <DashedButton onClick={onClick}>
-        <PlusIcon
-          style={{
-            marginRight: "5px",
-            fill: "#5f5f5f",
-            verticalAlign: "text-bottom",
-          }}
-        />
-        Add column
-      </DashedButton>
-    </div>
-  );
-};
+const AddColumnButton = styled(NoStyleButton)`
+  display: flex;
+  align-items: center;
+  width: 320px;
+  padding: 0.5em 1em;
+  color: ${({ theme }) => theme.colors.white};
+  font-size: 1rem;
+  border-radius: 4px;
+  background-color: ${({ theme }) => theme.colors.secondaryLight};
 
-AddColumnButton.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
-
-const EmptyColumn = styled.div`
-  width: 100%;
-  text-align: center;
-
-  & > div:nth-child(1) {
-    margin-top: 50px;
-    margin-bottom: 15px;
-    font-size: 20px;
-    font-weight: 500;
+  & > svg {
+    width: 1em;
+    height: 1em;
+    margin-right: 0.5rem;
+    fill: currentColor;
   }
 `;
 
@@ -350,35 +333,32 @@ const Kanban = ({ project, kanban }) => {
     <Container>
       <KanbanHeader project={project} kanban={kanban} />
       <Body>
-        {columns && columns.length > 0 ? (
-          <DragDropContext onDragEnd={onDragEnd}>
-            <TaskColumnList>
-              {columns.map((data, index) => (
-                <TaskColumn
-                  key={data.id}
-                  taskColumn={data}
-                  index={index}
-                  onDeleteColumn={onDeleteColumn}
-                  onEditColumn={onEditColumn}
-                  onCreateTask={onCreateTask}
-                  onDeleteTask={onDeleteTask}
-                  onEditTask={onEditTask}
-                />
-              ))}
-            </TaskColumnList>
-            <AddColumnButton onClick={openAddColumnModal} />
-          </DragDropContext>
-        ) : (
-          <EmptyColumn>
-            <div>Add your first columns!</div>
-            <SuccessButton
-              style={{ width: "110px" }}
-              onClick={openAddColumnModal}
-            >
-              Add column
-            </SuccessButton>
-          </EmptyColumn>
-        )}
+        <DragDropContext onDragEnd={onDragEnd}>
+          <TaskColumnList>
+            {columns.map((data, index) => (
+              <TaskColumn
+                key={data.id}
+                taskColumn={data}
+                index={index}
+                onDeleteColumn={onDeleteColumn}
+                onEditColumn={onEditColumn}
+                onCreateTask={onCreateTask}
+                onDeleteTask={onDeleteTask}
+                onEditTask={onEditTask}
+              />
+            ))}
+          </TaskColumnList>
+          <div>
+            <AddColumnButton onClick={openAddColumnModal}>
+              <PlusIcon />
+              <div>
+                {columns && columns.length > 0
+                  ? "Add another column"
+                  : "Add a column"}
+              </div>
+            </AddColumnButton>
+          </div>
+        </DragDropContext>
         <div id="context-root" />
       </Body>
       <Modal.Portal>

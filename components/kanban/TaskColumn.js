@@ -7,7 +7,7 @@ import Dropdown from "components/layout/Dropdown";
 import DropdownIcon from "public/icons/dropdown.svg";
 import EditIcon from "public/icons/edit.svg";
 import DeleteIcon from "public/icons/delete.svg";
-import { PlusIcon } from "components/layout/Icon";
+import PlusIcon from "public/icons/plus.svg";
 import Modal from "components/layout/Modal";
 import { NoStyleButton } from "components/layout/Button";
 import DeleteColumnModal from "components/kanban/DeleteColumnModal";
@@ -17,19 +17,21 @@ import Task from "components/kanban/Task";
 import AddTaskForm from "components/kanban/AddTaskForm";
 
 const Container = styled.div`
-  width: 300px;
+  width: 320px;
   margin-right: 1rem;
 `;
 
 const Wrap = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 0.75rem 0.5rem;
+  max-height: 100%;
+  padding: 1rem 0.5rem;
   background-color: #e3e3e3;
   border-radius: 4px;
 `;
 
 const Header = styled.div`
+  padding-bottom: 1rem;
   font-size: 1rem;
   font-weight: 500;
   color: ${({ theme }) => theme.colors.black};
@@ -43,6 +45,25 @@ const ButtonContainer = styled.span`
   display: flex;
   cursor: pointer;
   float: right;
+`;
+
+const AddTaskButton = styled(NoStyleButton)`
+  display: flex;
+  align-items: center;
+  padding-top: 0.5rem;
+  color: ${({ theme }) => theme.colors.darkgray40};
+  transition: color 0.1s ease;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.darkgray70};
+  }
+
+  & > svg {
+    width: 1em;
+    height: 1em;
+    margin-right: 0.5rem;
+    fill: currentColor;
+  }
 `;
 
 const TaskColumn = ({
@@ -81,12 +102,6 @@ const TaskColumn = ({
               <Header {...provided.dragHandleProps}>
                 <Name>{taskColumn.name}</Name>
                 <ButtonContainer>
-                  <NoStyleButton
-                    style={{ display: "flex" }}
-                    onClick={openAddTaskForm}
-                  >
-                    <PlusIcon />
-                  </NoStyleButton>
                   <Dropdown>
                     <Dropdown.Toggle>
                       <DropdownIcon style={{ width: "1rem" }} />
@@ -124,6 +139,14 @@ const TaskColumn = ({
                   />
                 ))}
               </TaskList>
+              <AddTaskButton onClick={openAddTaskForm}>
+                <PlusIcon />
+                <div>
+                  {tasks && tasks.length > 0
+                    ? "Add another task"
+                    : "Add a task"}
+                </div>
+              </AddTaskButton>
             </Wrap>
           </Container>
         )}

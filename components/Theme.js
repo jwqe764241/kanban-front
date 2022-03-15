@@ -4,11 +4,25 @@ const colors = {
   primaryLight: "#5393bf",
   secondary: "#205c7e",
   secondaryDark: "#00578a",
-  secondaryLight: "#0079be",
+  secondaryLight: "#409ace",
+
+  white: "#ffffff",
+  gray10: "#ebeaea",
+  gray30: "#c2c1c1",
+  gray50: "#999797",
+  gray70: "#707070",
+  gray80: "#555555",
   black: "#111111",
 
-  gray: "#f4f5f7",
-  white: "#ffffff",
+  darkgray10: "#f9fafc",
+  darkgray20: "#f2f4f6",
+  darkgray40: "#788893",
+  darkgray70: "#303550",
+  darkgray80: "#2a2e47",
+  darkgray90: "#1e233e",
+
+  scrollbarThumb: "#003758",
+  scrollbarTrack: "#a6cde4",
 };
 
 const margins = {

@@ -4,15 +4,15 @@ import styled from "styled-components";
 
 import DropdownContext from "./DropdownContext";
 
-const Container = styled.div.attrs(({ position }) => ({
+const Container = styled.div.attrs(({ position, show }) => ({
   style: {
     top: position ? position.top : 0,
     right: position ? position.right : 0,
     bottom: position ? position.bottom : 0,
     left: position ? position.left : 0,
+    display: show ? "" : "none",
   },
 }))`
-  ${({ show }) => (!show ? "display: none" : "")};
   position: absolute;
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: 4px;
