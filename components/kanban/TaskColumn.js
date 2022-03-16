@@ -25,13 +25,12 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   max-height: 100%;
-  padding: 1rem 0.5rem;
   background-color: #e3e3e3;
   border-radius: 4px;
 `;
 
 const Header = styled.div`
-  padding-bottom: 1rem;
+  padding: 1rem 0.5rem;
   font-size: 1rem;
   color: ${({ theme }) => theme.colors.darkgray70};
 `;
@@ -50,7 +49,7 @@ const ButtonContainer = styled.span`
 const AddTaskButton = styled(NoStyleButton)`
   display: flex;
   align-items: center;
-  padding-top: 0.5rem;
+  padding: 1rem 0.5rem 0.5rem 1rem;
   color: ${({ theme }) => theme.colors.darkgray40};
   transition: color 0.1s ease;
 
@@ -128,7 +127,10 @@ const TaskColumn = ({
               ) : (
                 <></>
               )}
-              <TaskList droppableId={taskColumnId}>
+              <TaskList
+                droppableId={taskColumnId}
+                empty={!(tasks && tasks.length > 0)}
+              >
                 {tasks.map((task, arrIndex) => (
                   <Task
                     key={task.id}

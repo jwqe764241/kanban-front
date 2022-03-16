@@ -42,7 +42,6 @@ const Body = styled.div`
   }
 
   &::-webkit-scrollbar-track {
-    background-color: ${({ theme }) => theme.colors.scrollbarTrack};
     border-radius: 4px;
   }
 `;

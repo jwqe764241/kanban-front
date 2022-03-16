@@ -5,9 +5,7 @@ import PropTypes from "prop-types";
 import { TextArea } from "components/layout/Form";
 import { SuccessButton, CancelButton } from "components/layout/Button";
 
-const Container = styled.div`
-  padding: 8px;
-`;
+const Container = styled.div``;
 
 const ButtonContainer = styled.div`
   display: flex;
