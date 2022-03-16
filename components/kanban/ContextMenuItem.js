@@ -5,9 +5,9 @@ const ContextMenuItem = styled.button`
   display: block;
   padding: 1em 1.5em;
   border: none;
-  color: ${({ theme }) => theme.colors.cadetBlueCrayola};
-  background-color: transparent;
-  font-size: 12px;
+  color: ${({ theme }) => theme.colors.gray80};
+  background-color: ${({ theme }) => theme.colors.white};
+  font-size: 0.75rem;
   text-align: left;
   cursor: pointer;
   transition: color 0.1s ease;
@@ -15,17 +15,17 @@ const ContextMenuItem = styled.button`
 
   &:hover {
     color: ${({ theme }) => theme.colors.white};
-    background-color: ${({ theme }) => theme.colors.unitedNationsBlue};
+    background-color: ${({ theme }) => theme.colors.primary};
   }
 
   &:first-child {
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
   }
 
   &:last-child {
-    border-bottom-right-radius: 4px;
-    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
   }
 
   & > svg {

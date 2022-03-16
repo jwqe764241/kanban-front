@@ -33,11 +33,11 @@ const Wrap = styled.div`
 const Header = styled.div`
   padding-bottom: 1rem;
   font-size: 1rem;
-  font-weight: 500;
-  color: ${({ theme }) => theme.colors.black};
+  color: ${({ theme }) => theme.colors.darkgray70};
 `;
 
 const Name = styled.span`
+  font-weight: 600;
   margin-left: 0.5rem;
 `;
 

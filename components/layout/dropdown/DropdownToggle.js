@@ -10,7 +10,12 @@ const ToggleButton = styled.button`
   padding: 0;
   border: none;
   background-color: transparent;
+  color: currentColor;
   cursor: pointer;
+
+  & > svg {
+    fill: currentColor;
+  }
 `;
 
 const DropdownToggle = ({ children }) => {
