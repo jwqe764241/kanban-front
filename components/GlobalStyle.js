@@ -4,7 +4,6 @@ import { createGlobalStyle } from "styled-components";
 const GlobalStyle = createGlobalStyle`
   ${reset}
 
-  
   * {
     box-sizing: border-box;
   }
@@ -17,6 +16,12 @@ const GlobalStyle = createGlobalStyle`
   body,
   div#__next {
     height: 100%;
+  }
+
+  button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
   }
 `;
 

@@ -2,36 +2,35 @@ import styled from "styled-components";
 
 const Button = styled.button`
   width: 100%;
-  padding: 8px 0px;
+  padding: 0.5em 0;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.1s ease;
   user-select: none;
 `;
 
 export const PrimaryButton = styled(Button)`
-  color: #fff;
-  background-color: #2852a7;
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.action};
 
   &:hover {
-    color: #fff;
-    background-color: #284b92;
+    background-color: ${({ theme }) => theme.colors.actionHover};
   }
 
   &:disabled {
-    background-color: #193266;
+    background-color: ${({ theme }) => theme.colors.actionDisable};
     cursor: default;
   }
 `;
 
 export const SecondaryButton = styled(Button)`
-  color: #fff;
-  background-color: #6c757d;
+  color: ${({ theme }) => theme.colors.black};
+  background-color: ${({ theme }) => theme.colors.gray10};
+  border: 1px solid ${({ theme }) => theme.colors.gray20};
 
   &:hover {
-    color: #fff;
-    background-color: #5a6268;
+    background-color: ${({ theme }) => theme.colors.gray20};
   }
 
   &:disabled {
@@ -41,47 +40,43 @@ export const SecondaryButton = styled(Button)`
 `;
 
 export const SuccessButton = styled(Button)`
-  color: #fff;
-  background-color: #28a745;
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.success};
 
   &:hover {
-    color: #fff;
-    background-color: #218838;
+    background-color: ${({ theme }) => theme.colors.successHover};
   }
 
   &:disabled {
-    background-color: #1d6a2f;
+    background-color: ${({ theme }) => theme.colors.successDisable};
     cursor: default;
   }
 `;
 
 export const DangerButton = styled(Button)`
-  color: #fff;
-  background-color: #dc3545;
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.error};
 
   &:hover {
-    color: #fff;
-    background-color: #be3241;
+    background-color: ${({ theme }) => theme.colors.errorHover};
   }
 
   &:disabled {
-    background-color: #a82e3a;
+    background-color: ${({ theme }) => theme.colors.errorDisable};
     cursor: default;
   }
 `;
 
-export const CancelButton = styled(Button)`
-  color: #24292f;
-  background-color: #f6f8fa;
-  border: 1px solid #1b1f2426;
-  font-weight: 500;
+export const WarningButton = styled(Button)`
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.warning};
 
   &:hover {
-    background-color: #f3f4f6;
+    background-color: ${({ theme }) => theme.colors.warningHover};
   }
 
   &:disabled {
-    background-color: #eaebeb;
+    background-color: ${({ theme }) => theme.colors.warningDisable};
     cursor: default;
   }
 `;
