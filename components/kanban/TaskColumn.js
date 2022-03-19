@@ -118,15 +118,12 @@ const TaskColumn = ({
                   </Dropdown>
                 </ButtonContainer>
               </Header>
-              {isAddTaskOpen ? (
-                <AddTaskForm
-                  taskColumn={taskColumn}
-                  onAddTask={onCreateTask}
-                  setShow={setAddTaskOpen}
-                />
-              ) : (
-                <></>
-              )}
+              <AddTaskForm
+                taskColumn={taskColumn}
+                onAddTask={onCreateTask}
+                show={isAddTaskOpen}
+                setShow={setAddTaskOpen}
+              />
               <TaskList
                 droppableId={taskColumnId}
                 empty={!(tasks && tasks.length > 0)}
