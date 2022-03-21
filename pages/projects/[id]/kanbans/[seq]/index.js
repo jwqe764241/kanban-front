@@ -54,7 +54,12 @@ const AddColumnButton = styled(NoStyleButton)`
   color: ${({ theme }) => theme.colors.white};
   font-size: 1rem;
   border-radius: 4px;
+  transition: background-color 0.1s ease;
   background-color: ${({ theme }) => theme.colors.secondaryLight};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.secondaryLightHover};
+  }
 
   & > svg {
     width: 1em;
