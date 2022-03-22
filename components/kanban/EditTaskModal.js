@@ -2,8 +2,8 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 
 import Modal from "components/layout/Modal";
-import { SuccessButton } from "components/layout/Button";
-import { TextArea, Label } from "components/layout/Form";
+import { SuccessButton, SecondaryButton } from "components/layout/Button";
+import { Form, Label, TextArea } from "components/layout/Form";
 
 const EditTaskModal = ({ show, setShow, task, onEdit }) => {
   const [isEditing, setEditing] = useState(false);
@@ -49,7 +49,7 @@ const EditTaskModal = ({ show, setShow, task, onEdit }) => {
         <Modal.CloseButton onClick={close} />
       </Modal.Header>
       <Modal.Body>
-        <div style={{ margin: "15px 0px" }}>
+        <Form>
           <Label>Text</Label>
           <TextArea
             id="text"
@@ -61,14 +61,17 @@ const EditTaskModal = ({ show, setShow, task, onEdit }) => {
             style={{ height: "200px" }}
             autoFocus
           />
-        </div>
+        </Form>
         <SuccessButton
-          style={{ width: "110px", marginBottom: "15px" }}
+          style={{ width: "120px", marginRight: "0.5rem" }}
           onClick={onEditClick}
           disabled={!data.text || isEditing}
         >
           Update task
         </SuccessButton>
+        <SecondaryButton style={{ width: "80px" }} onClick={close}>
+          Cancel
+        </SecondaryButton>
       </Modal.Body>
     </Modal>
   );

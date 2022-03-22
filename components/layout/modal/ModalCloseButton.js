@@ -1,19 +1,19 @@
 import styled from "styled-components";
 
-import ClsoeIcon from "public/icons/close.svg";
+import ClsoeIcon from "public/icons/close-lg.svg";
+import { NoStyleButton } from "components/layout/Button";
 
-const Button = styled.button`
+const Button = styled(NoStyleButton)`
   width: 1em;
   height: 1em;
   padding: 0;
   float: right;
-  font-size: inherit;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
+  font-size: 1em;
+  color: currentColor;
 
   & > svg {
     display: block;
+    fill: currentColor;
   }
 `;
 

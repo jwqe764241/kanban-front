@@ -12,9 +12,9 @@ const HorizontalRule = styled.hr`
 
 const Label = styled.label`
   display: ${(props) => (props.block ? "block" : "inline-block")};
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
-  margin-bottom: 12px;
+  margin-bottom: 0.5rem;
 `;
 
 const Optional = styled.span`
@@ -26,50 +26,37 @@ const InputWrap = styled.div`
   margin-bottom: 25px;
 `;
 
+const Form = styled.div`
+  margin-bottom: 1rem;
+`;
+
 const ErrorMessage = styled.div`
-  font-size: 12px;
-  font-weight: 300;
-  margin-top: 10px;
-  color: #ec0000;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: ${({ theme }) => theme.colors.error};
 `;
 
 const StyledInput = styled.input`
   width: 100%;
-  border: 1px solid;
-  border-color: rgb(216, 222, 226);
-  border-radius: 6px;
-  line-height: 20px;
+  border: none;
+  border-radius: 2px;
   outline: none;
-  padding: 5px 12px;
-  background-color: #fafbfc;
-  box-shadow: ${(props) =>
-    props.error ? "#ff000080 0px 0px 0px 3px" : "none"};
-
-  &:focus {
-    box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
-    border-color: #868686;
-    background-color: #ffffff;
-  }
+  padding: 0.5rem 1rem;
+  background-color: ${({ theme }) => theme.colors.darkgray30};
+  box-shadow: ${({ error, theme }) =>
+    error ? `${theme.colors.error} 0px 0px 0px 2px` : "none"};
 `;
 
 const StyledTextArea = styled.textarea`
   width: 100%;
-  border: 1px solid;
-  border-color: rgb(216, 222, 226);
-  border-radius: 6px;
-  line-height: 20px;
+  border: none;
+  border-radius: 2px;
   outline: none;
-  padding: 5px 12px;
-  background-color: #fafbfc;
-  box-shadow: ${(props) =>
-    props.error ? "#ff000080 0px 0px 0px 3px" : "none"};
+  padding: 0.5rem 1rem;
+  background-color: ${({ theme }) => theme.colors.darkgray30};
+  box-shadow: ${({ error, theme }) =>
+    error ? `${theme.colors.error} 0px 0px 0px 2px` : "none"};
   resize: vertical;
-
-  &:focus {
-    box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
-    border-color: #868686;
-    background-color: #ffffff;
-  }
 `;
 
 const Input = ({ errors, name, ...otherProps }) => {
@@ -112,4 +99,4 @@ TextArea.defaultProps = {
   name: undefined,
 };
 
-export { HorizontalRule, InputWrap, Label, Optional, Input, TextArea };
+export { HorizontalRule, InputWrap, Form, Label, Optional, Input, TextArea };

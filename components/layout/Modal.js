@@ -23,9 +23,9 @@ const Background = styled.div`
 const Container = styled.div`
   width: 500px;
   margin: 10vh auto;
-  background-color: ${({ theme }) => theme.colors.white};
-  border: 1px solid ${({ theme }) => theme.colors.platinum};
-  border-radius: 4px;
+  color: ${({ theme }) => theme.colors.darkgray70};
+  background-color: ${({ theme }) => theme.colors.darkgray20};
+  border-radius: 2px;
 `;
 
 const Modal = ({ show, onClose, children }) => {

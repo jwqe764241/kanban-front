@@ -18,6 +18,7 @@ const colors = {
 
   darkgray10: "#f9fafc",
   darkgray20: "#f2f4f6",
+  darkgray30: "#d5dbe2",
   darkgray40: "#788893",
   darkgray70: "#303550",
   darkgray80: "#2a2e47",

@@ -1,8 +1,15 @@
 import { useState } from "react";
+import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import Modal from "components/layout/Modal";
 import { DangerButton, SecondaryButton } from "components/layout/Button";
+
+const Message = styled.div`
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  font-weight: 300;
+`;
 
 const DeleteColumnModal = ({ show, setShow, taskColumn, onDelete }) => {
   const [isDeleting, setDeleting] = useState(false);
@@ -23,22 +30,17 @@ const DeleteColumnModal = ({ show, setShow, taskColumn, onDelete }) => {
         <Modal.CloseButton onClick={close} />
       </Modal.Header>
       <Modal.Body>
-        <div style={{ margin: "15px 0px" }}>
-          <div style={{ fontSize: "14px", fontWeight: "300" }}>
-            Are you sure you want to delete to delete this column?
-          </div>
-        </div>
+        <Message>
+          Are you sure you want to delete to delete this column?
+        </Message>
         <DangerButton
-          style={{ width: "110px", marginBottom: "15px", marginRight: "5px" }}
+          style={{ width: "120px", marginRight: "0.5rem" }}
           onClick={onDeleteClick}
           disabled={isDeleting}
         >
           Delete column
         </DangerButton>
-        <SecondaryButton
-          style={{ width: "80px", marginBottom: "15px" }}
-          onClick={close}
-        >
+        <SecondaryButton style={{ width: "80px" }} onClick={close}>
           Cancel
         </SecondaryButton>
       </Modal.Body>

@@ -2,8 +2,8 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 
 import Modal from "components/layout/Modal";
-import { SuccessButton } from "components/layout/Button";
-import { Input, Label } from "components/layout/Form";
+import { SuccessButton, SecondaryButton } from "components/layout/Button";
+import { Form, Label, Input } from "components/layout/Form";
 
 const AddColumnModal = ({ show, setShow, onCreate }) => {
   const [isCreating, setCreating] = useState(false);
@@ -49,7 +49,7 @@ const AddColumnModal = ({ show, setShow, onCreate }) => {
         <Modal.CloseButton onClick={close} />
       </Modal.Header>
       <Modal.Body>
-        <div style={{ margin: "15px 0px" }}>
+        <Form>
           <Label htmlFor="name">Column name</Label>
           <Input
             id="name"
@@ -61,14 +61,17 @@ const AddColumnModal = ({ show, setShow, onCreate }) => {
             autoFocus
             placeholder="Enter column name (To do, In progress, Done)"
           />
-        </div>
+        </Form>
         <SuccessButton
-          style={{ width: "110px", marginBottom: "15px" }}
+          style={{ width: "120px", marginRight: "0.5rem" }}
           onClick={onCreateClick}
           disabled={!data.name || isCreating}
         >
           Add column
         </SuccessButton>
+        <SecondaryButton style={{ width: "80px" }} onClick={close}>
+          Cancel
+        </SecondaryButton>
       </Modal.Body>
     </Modal>
   );
