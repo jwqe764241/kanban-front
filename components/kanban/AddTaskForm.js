@@ -30,6 +30,11 @@ const AddTaskForm = ({ taskColumn, show, setShow, onAddTask }) => {
   const [data, setData] = useState({ text: "" });
   const [isCreating, setCreating] = useState(false);
 
+  const close = () => {
+    setData({ text: "" });
+    setShow(false);
+  };
+
   const onChange = (e) => {
     const { name, value } = e.target;
     setData({
@@ -44,7 +49,7 @@ const AddTaskForm = ({ taskColumn, show, setShow, onAddTask }) => {
     setCreating(false);
 
     if (response.status === 201) {
-      setShow(false);
+      close();
     }
   };
 
