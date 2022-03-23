@@ -34,7 +34,7 @@ const ButtonItem = styled(Item)`
   background-color: ${({ theme }) => theme.colors.primaryLight};
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.primaryDark};
+    background-color: ${({ theme }) => theme.colors.primaryLightHover};
   }
 
   svg {

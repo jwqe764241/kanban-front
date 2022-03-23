@@ -18,6 +18,10 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
   }
 
+  body {
+    background-color: #f2f4f6;
+  }
+
   button {
     -webkit-appearance: none;
     -moz-appearance: none;

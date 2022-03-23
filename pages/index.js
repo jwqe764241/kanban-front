@@ -1,3 +1,4 @@
+import Link from "next/link";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -5,40 +6,65 @@ import { parseCookie } from "core/utils";
 import wrapper from "core/store";
 import axios, { createRequester } from "core/apiAxios";
 
+import ProjectIcon from "public/icons/project.svg";
 import ProjectCards from "components/dashboard/ProjectCards";
 
 const Container = styled.div`
   width: 100%;
   background-color: ${({ theme }) => theme.colors.cultured};
   overflow-y: auto;
-  padding: 2.5rem;
-`;
-
-const ProjectSection = styled.div`
-  padding: 2rem 1.5rem;
-  background-color: ${({ theme }) => theme.colors.white};
-  border: 1px solid ${({ theme }) => theme.colors.platinum};
-  border-radius: 4px;
+  padding: 2rem 5rem;
 `;
 
 const Title = styled.div`
-  color: ${({ theme }) => theme.colors.darkGray};
-  font-size: 1.25rem;
-  font-weight: 600;
-  padding-bottom: 1.75rem;
+  display: flex;
+  align-items: center;
+  padding-bottom: 1rem;
+  color: ${({ theme }) => theme.colors.black};
+
+  & > svg {
+    width: 1em;
+    height: 1em;
+    margin-right: 0.5em;
+  }
+  & > span {
+    font-weight: 600;
+  }
+`;
+
+const NewProjectLink = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.darkgray70};
+  background-color: ${({ theme }) => theme.colors.darkgray30};
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.darkgray40};
+  }
 `;
 
 const Dashboard = ({ projects }) => {
   return (
     <Container>
-      <ProjectSection>
-        <Title>Your Projects</Title>
+      <div>
+        <Title>
+          <ProjectIcon />
+          <span>Your Projects</span>
+        </Title>
         <ProjectCards.Grid>
           {projects.map((project) => (
             <ProjectCards.Card key={project.id} project={project} />
           ))}
+          <Link href="/projects/new">
+            <NewProjectLink>Create new project...</NewProjectLink>
+          </Link>
         </ProjectCards.Grid>
-      </ProjectSection>
+      </div>
     </Container>
   );
 };

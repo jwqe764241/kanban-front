@@ -50,7 +50,7 @@ const AddTaskButton = styled(NoStyleButton)`
   display: flex;
   align-items: center;
   padding: 1rem 0.5rem 0.5rem 1rem;
-  color: ${({ theme }) => theme.colors.darkgray40};
+  color: ${({ theme }) => theme.colors.darkgray60};
   transition: color 0.1s ease;
 
   &:hover {
