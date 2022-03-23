@@ -53,10 +53,6 @@ const AddTaskForm = ({ taskColumn, show, setShow, onAddTask }) => {
     }
   };
 
-  const onCancelButtonClick = () => {
-    setShow(false);
-  };
-
   return (
     <Container show={show}>
       <TextArea
@@ -75,7 +71,7 @@ const AddTaskForm = ({ taskColumn, show, setShow, onAddTask }) => {
         >
           Add
         </SuccessButton>
-        <SecondaryButton onClick={onCancelButtonClick}>Cancel</SecondaryButton>
+        <SecondaryButton onClick={close}>Cancel</SecondaryButton>
       </ButtonContainer>
     </Container>
   );
