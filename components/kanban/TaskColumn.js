@@ -25,7 +25,7 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   max-height: 100%;
-  background-color: #e3e3e3;
+  background-color: ${({ theme }) => theme.colors.gray10};
   border-radius: 4px;
 `;
 

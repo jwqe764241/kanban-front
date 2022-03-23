@@ -355,11 +355,7 @@ const Kanban = ({ project, kanban }) => {
           <div>
             <AddColumnButton onClick={openAddColumnModal}>
               <PlusIcon />
-              <div>
-                {columns && columns.length > 0
-                  ? "Add another column"
-                  : "Add a column"}
-              </div>
+              <div>Add a column</div>
             </AddColumnButton>
           </div>
         </DragDropContext>

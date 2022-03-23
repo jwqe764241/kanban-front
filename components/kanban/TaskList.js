@@ -4,7 +4,7 @@ import { Droppable } from "react-beautiful-dnd";
 
 const Container = styled.div.attrs(({ empty }) => ({
   style: {
-    padding: empty ? "0.25rem 0.5rem" : "0 0.5rem",
+    padding: empty ? "0.25rem 0.5rem" : "0 0.5rem 0.25rem",
   },
 }))`
   padding: 0 0.5rem;

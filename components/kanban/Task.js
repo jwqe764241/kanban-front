@@ -11,7 +11,7 @@ import ContextMenu from "components/kanban/ContextMenu";
 
 const Container = styled.div`
   position: relative;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: 4px;
   box-shadow: rgb(0 0 0 / 15%) 0px 2px 3px 0px;
