@@ -11,8 +11,10 @@ import ProjectCards from "components/dashboard/ProjectCards";
 
 const Container = styled.div`
   width: 100%;
-  background-color: ${({ theme }) => theme.colors.cultured};
   overflow-y: auto;
+`;
+
+const CardContainer = styled.div`
   padding: 2rem 5rem;
 `;
 
@@ -51,7 +53,7 @@ const NewProjectLink = styled.div`
 const Dashboard = ({ projects }) => {
   return (
     <Container>
-      <div>
+      <CardContainer>
         <Title>
           <ProjectIcon />
           <span>Your Projects</span>
@@ -64,7 +66,7 @@ const Dashboard = ({ projects }) => {
             <NewProjectLink>Create new project...</NewProjectLink>
           </Link>
         </ProjectCards.Grid>
-      </div>
+      </CardContainer>
     </Container>
   );
 };

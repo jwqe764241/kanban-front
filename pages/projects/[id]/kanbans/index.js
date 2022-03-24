@@ -1,43 +1,78 @@
+import Link from "next/link";
 import { connect } from "react-redux";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import wrapper from "core/store";
 import { parseCookie } from "core/utils";
 import axios, { createRequester } from "core/apiAxios";
 
+import KanbanIcon from "public/icons/kanban.svg";
 import ProjectHeader from "components/project/ProjectHeader";
 import KanbanCards from "components/project/KanbanCards";
 
 const Container = styled.div`
-  flex: 1;
-  background-color: ${({ theme }) => theme.colors.cultured};
+  width: 100%;
+  overflow-y: auto;
 `;
 
-const Body = styled.div`
-  padding: 2rem 3rem;
+const CardContainer = styled.div`
+  padding: 2rem 5rem;
 `;
 
 const Title = styled.div`
+  display: flex;
+  align-items: center;
+  padding-bottom: 1rem;
+  color: ${({ theme }) => theme.colors.black};
+
+  & > svg {
+    width: 1em;
+    height: 1em;
+    margin-right: 0.5em;
+  }
+  & > span {
+    font-weight: 600;
+  }
+`;
+
+const NewKanbanLink = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
   font-weight: 500;
-  margin-bottom: 2rem;
+  color: ${({ theme }) => theme.colors.darkgray70};
+  background-color: ${({ theme }) => theme.colors.darkgray30};
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.darkgray40};
+  }
 `;
 
 const KanbanList = ({ project, kanbans }) => {
-  const router = useRouter();
-  const { id } = router.query;
+  // const router = useRouter();
+  // const { id } = router.query;
 
   return (
     <Container>
-      <ProjectHeader project={project} activeMenu="kanbans" />
-      <Body>
-        <Title>Kanbans</Title>
+      <ProjectHeader project={project} />
+      <CardContainer>
+        <Title>
+          <KanbanIcon />
+          <span>Kanbans</span>
+        </Title>
         <KanbanCards.Grid>
           {kanbans.map((kanban) => (
             <KanbanCards.Card key={kanban.sequenceId} kanban={kanban} />
           ))}
+          <Link href={`/projects/${project.id}/kanbans/new`}>
+            <NewKanbanLink>Create new kanban...</NewKanbanLink>
+          </Link>
         </KanbanCards.Grid>
-      </Body>
+      </CardContainer>
     </Container>
   );
 };

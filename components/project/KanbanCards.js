@@ -1,65 +1,58 @@
 import Link from "next/link";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { getDateString } from "core/utils";
 
 const CardGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  column-gap: 1.25rem;
-  row-gap: 1.25rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: 122px;
+  grid-gap: 1rem;
 `;
 
 const CardContainer = styled.div`
-  background-color: ${({ theme }) => theme.colors.white};
-  padding: 1.5rem 1.5rem;
-  border: 1px solid ${({ theme }) => theme.colors.platinum};
+  padding: 0.75rem 1rem;
   border-radius: 4px;
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.primary};
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.primaryHover};
+  }
 `;
 
 const Name = styled.div`
+  padding-bottom: 0.75rem;
+  font-weight: 400;
   color: ${({ theme }) => theme.colors.darkGray};
-  margin-bottom: 0.75rem;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  text-overflow: ellipsis;
   white-space: nowrap;
+  text-overflow: ellipsis;
   overflow: hidden;
 `;
 
 const Description = styled.div`
-  height: 2.5rem;
-  margin-bottom: 1.5rem;
-  color: ${({ theme }) => theme.colors.gray};
-  line-height: 1.25rem;
-  font-size: 0.8rem;
+  font-size: 0.875rem;
   font-weight: 300;
+  line-height: 1.25em;
+  color: ${({ theme }) => theme.colors.gray};
   text-overflow: ellipsis;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
 `;
 
-const Date = styled.div`
-  color: ${({ theme }) => theme.colors.lightGray};
-  font-size: 0.75rem;
-  font-weight: 200;
-  text-align: right;
-`;
-
 const Card = ({ kanban }) => {
-  const { projectId, sequenceId, name, description, createdAt } = kanban;
+  const { projectId, sequenceId, name, description } = kanban;
 
   return (
-    <CardContainer>
-      <Link href={`/projects/${projectId}/kanbans/${sequenceId}`}>
+    <Link href={`/projects/${projectId}/kanbans/${sequenceId}`}>
+      <CardContainer>
         <Name>{name}</Name>
-      </Link>
-      <Description>{description}</Description>
-      <Date>{getDateString(createdAt)}</Date>
-    </CardContainer>
+        <Description>{description}</Description>
+      </CardContainer>
+    </Link>
   );
 };
 

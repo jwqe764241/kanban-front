@@ -10,7 +10,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0.25rem;
-  background-color: ${({ theme }) => theme.colors.gray};
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const Name = styled.span`

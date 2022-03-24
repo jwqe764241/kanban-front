@@ -5,8 +5,8 @@ import PropTypes from "prop-types";
 const CardGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  column-gap: 1rem;
-  row-gap: 1rem;
+  grid-auto-rows: 122px;
+  grid-gap: 1rem;
 `;
 
 const CardContainer = styled.div`
@@ -23,7 +23,7 @@ const CardContainer = styled.div`
 `;
 
 const Name = styled.div`
-  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
   font-weight: 400;
   color: ${({ theme }) => theme.colors.darkGray};
   white-space: nowrap;
@@ -32,7 +32,6 @@ const Name = styled.div`
 `;
 
 const Description = styled.div`
-  height: 5em;
   font-size: 0.875rem;
   font-weight: 300;
   line-height: 1.25em;
