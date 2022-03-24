@@ -17,29 +17,25 @@ const Container = styled.nav`
   color: ${({ theme }) => theme.colors.white};
 `;
 
-const Item = styled.span`
+const ButtonItem = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1em;
-  height: 1em;
-  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
   text-align: center;
   cursor: pointer;
-  transition: background-color 0.1s ease;
-`;
-
-const ButtonItem = styled(Item)`
   border-radius: 4px;
   background-color: ${({ theme }) => theme.colors.primaryLight};
+  transition: background-color 0.1s ease;
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.primaryLightHover};
   }
 
   svg {
-    width: 0.5em;
-    height: 0.5em;
+    width: 1rem;
+    height: 1rem;
     fill: ${({ theme }) => theme.colors.white};
   }
 `;
