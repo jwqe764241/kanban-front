@@ -3,30 +3,49 @@ import styled from "styled-components";
 import Link from "next/link";
 import PropTypes from "prop-types";
 
+import EditIcon from "public/icons/edit.svg";
 import Modal from "components/layout/Modal";
 import KanbanInfoModal from "./KanbanInfoModal";
 
 const Container = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  padding: 0.25rem;
+  padding: 4px;
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const Name = styled.span`
   display: inline-block;
+  padding: 0.5rem;
   margin-right: 0.5em;
   font-weight: 700;
+  color: ${({ theme }) => theme.colors.darkgray70};
   cursor: pointer;
-  padding: 0.5rem;
-  color:${({ theme }) => theme.colors.black}
+`;
+
+const Edit = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: ${({ theme }) => theme.colors.darkgray60};
+  cursor: pointer;
+  transition: color 0.1s ease;
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.secondaryDark};
+    color: ${({ theme }) => theme.colors.darkgray70};
+  }
+
+  & > svg {
+    width: 1em;
+    height: 1em;
+    margin-right: 0.25em;
   }
 `;
 
-const KanbanHeader = ({ project, kanban }) => {
+const KanbanHeader = ({ kanban }) => {
   const { projectId, sequenceId } = kanban;
   const [isInfoOpen, setInfoOpen] = useState(false);
 
@@ -38,7 +57,14 @@ const KanbanHeader = ({ project, kanban }) => {
             <Name>{kanban.name}</Name>
           </Link>
         </div>
-        <div />
+        <div>
+          <Link href={`/projects/${projectId}/kanbans/${sequenceId}/edit`}>
+            <Edit>
+              <EditIcon />
+              <span>Edit</span>
+            </Edit>
+          </Link>
+        </div>
       </Container>
       <Modal.Portal>
         <KanbanInfoModal
