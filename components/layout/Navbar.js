@@ -5,7 +5,7 @@ import axios from "core/apiAxios";
 
 import Dropdown from "components/layout/Dropdown";
 import HomeIcon from "public/icons/home.svg";
-import SettingIcon from "public/icons/setting.svg";
+import ListIcon from "public/icons/list.svg";
 import SignoutIcon from "public/icons/signout.svg";
 
 const Container = styled.nav`
@@ -75,7 +75,7 @@ const Navbar = () => {
         <Dropdown>
           <Dropdown.Toggle>
             <ButtonItem>
-              <SettingIcon />
+              <ListIcon />
             </ButtonItem>
           </Dropdown.Toggle>
           <Dropdown.Menu position={{ right: "0", top: "2.5rem" }}>
