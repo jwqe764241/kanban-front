@@ -67,7 +67,8 @@ const AddTaskForm = ({ taskColumn, show, setShow, onAddTask }) => {
       <ButtonContainer>
         <SuccessButton
           onClick={onAddButtonClick}
-          disabled={!data.text || isCreating}
+          disabled={!data.text}
+          doing={isCreating}
         >
           Add
         </SuccessButton>

@@ -10,7 +10,11 @@ const Button = styled.button`
   user-select: none;
 `;
 
-export const PrimaryButton = styled(Button)`
+export const PrimaryButton = styled(Button).attrs(({ doing, theme }) => ({
+  style: {
+    backgroundColor: doing ? theme.colors.actionDoing : "",
+  },
+}))`
   color: ${({ theme }) => theme.colors.white};
   background-color: ${({ theme }) => theme.colors.action};
 
@@ -24,22 +28,29 @@ export const PrimaryButton = styled(Button)`
   }
 `;
 
-export const SecondaryButton = styled(Button)`
-  color: ${({ theme }) => theme.colors.black};
-  background-color: ${({ theme }) => theme.colors.gray10};
-  border: 1px solid ${({ theme }) => theme.colors.gray20};
+export const SecondaryButton = styled(Button).attrs(({ doing, theme }) => ({
+  style: {
+    backgroundColor: doing ? theme.colors.cancelDoing : "",
+  },
+}))`
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.cancel};
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.gray20};
+    background-color: ${({ theme }) => theme.colors.cancelHover};
   }
 
   &:disabled {
-    background-color: #3f4448;
+    background-color: ${({ theme }) => theme.colors.cancelDisable};
     cursor: default;
   }
 `;
 
-export const SuccessButton = styled(Button)`
+export const SuccessButton = styled(Button).attrs(({ doing, theme }) => ({
+  style: {
+    backgroundColor: doing ? theme.colors.successDoing : "",
+  },
+}))`
   color: ${({ theme }) => theme.colors.white};
   background-color: ${({ theme }) => theme.colors.success};
 
@@ -53,7 +64,11 @@ export const SuccessButton = styled(Button)`
   }
 `;
 
-export const DangerButton = styled(Button)`
+export const DangerButton = styled(Button).attrs(({ doing, theme }) => ({
+  style: {
+    backgroundColor: doing ? theme.colors.errorDoing : "",
+  },
+}))`
   color: ${({ theme }) => theme.colors.white};
   background-color: ${({ theme }) => theme.colors.error};
 
@@ -67,7 +82,11 @@ export const DangerButton = styled(Button)`
   }
 `;
 
-export const WarningButton = styled(Button)`
+export const WarningButton = styled(Button).attrs(({ doing, theme }) => ({
+  style: {
+    backgroundColor: doing ? theme.colors.warningDoing : "",
+  },
+}))`
   color: ${({ theme }) => theme.colors.white};
   background-color: ${({ theme }) => theme.colors.warning};
 

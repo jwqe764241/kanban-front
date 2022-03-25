@@ -36,7 +36,7 @@ const DeleteColumnModal = ({ show, setShow, taskColumn, onDelete }) => {
         <DangerButton
           style={{ width: "120px", marginRight: "0.5rem" }}
           onClick={onDeleteClick}
-          disabled={isDeleting}
+          doing={isDeleting}
         >
           Delete column
         </DangerButton>

@@ -65,7 +65,8 @@ const AddColumnModal = ({ show, setShow, onCreate }) => {
         <SuccessButton
           style={{ width: "120px", marginRight: "0.5rem" }}
           onClick={onCreateClick}
-          disabled={!data.name || isCreating}
+          disabled={!data.name}
+          doing={isCreating}
         >
           Add column
         </SuccessButton>

@@ -65,7 +65,8 @@ const EditColumnModal = ({ show, setShow, taskColumn, onEdit }) => {
         <SuccessButton
           style={{ width: "120px", marginRight: "0.5rem" }}
           onClick={onEditClick}
-          disabled={!data.name || isEditing}
+          disabled={!data.name}
+          doing={isEditing}
         >
           Update column
         </SuccessButton>

@@ -37,6 +37,11 @@ const colors = {
   actionDisable: "#859ce0",
   actionDoing: "#1d3272",
 
+  cancel: "#6c6a6a",
+  cancelHover: "#5a5858",
+  cancelDisable: "#c1c1c1",
+  cancelDoing: "#403f3f",
+
   success: "#49b234",
   successHover: "#409f2d",
   successDisable: "#96dd88",

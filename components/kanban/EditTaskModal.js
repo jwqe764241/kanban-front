@@ -65,7 +65,8 @@ const EditTaskModal = ({ show, setShow, task, onEdit }) => {
         <SuccessButton
           style={{ width: "120px", marginRight: "0.5rem" }}
           onClick={onEditClick}
-          disabled={!data.text || isEditing}
+          disabled={!data.text}
+          doing={isEditing}
         >
           Update task
         </SuccessButton>
