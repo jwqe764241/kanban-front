@@ -55,7 +55,7 @@ const colors = {
   error: "#f2330d",
   errorHover: "#d02c0b",
   errorDisable: "#faad9e",
-  errorDoin: "#aa2409",
+  errorDoing: "#aa2409",
 };
 
 const margins = {
