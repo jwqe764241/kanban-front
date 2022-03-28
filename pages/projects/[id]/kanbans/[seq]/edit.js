@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import styled from "styled-components";
 import PropTypes from "prop-types";
 import { connect, useSelector, useDispatch } from "react-redux";
 import axios, { createRequester } from "core/apiAxios";
@@ -9,16 +10,30 @@ import { parseCookie } from "core/utils";
 import KanbanHeader from "components/kanban/KanbanHeader";
 import DeleteKanbanForm from "components/kanban/DeleteKanbanForm";
 import {
+  Form,
+  InputWrap,
+  Label,
+  LabelHint,
   Input,
   TextArea,
-  Label,
-  Optional,
-  InputWrap,
-  HorizontalRule,
 } from "components/layout/Form";
-import { Header, Body } from "components/layout/Page";
-import { ContainerMd } from "components/layout/Container";
+import { HorizontalRule, Title, Description } from "components/layout/Page";
 import { SuccessButton } from "components/layout/Button";
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0;
+  overflow-y: auto;
+`;
+
+const Wrap = styled.div`
+  width: 100%;
+  max-width: 720px;
+  padding: 0 1rem;
+  color: ${({ theme }) => theme.colors.darkgray70};
+`;
 
 const EditKanban = ({ project, kanban }) => {
   const router = useRouter();
@@ -74,51 +89,56 @@ const EditKanban = ({ project, kanban }) => {
   return (
     <>
       <KanbanHeader project={project} kanban={kanban} />
-      <ContainerMd>
-        <Header title={`Edit ${kanban.name}`} />
-        <Body>
-          <InputWrap>
-            <Label block>Name</Label>
-            <Input
-              id="name"
-              type="text"
-              name="name"
-              style={{ width: "300px" }}
-              value={data.name}
-              onChange={onChange}
-              errors={errors}
-            />
-          </InputWrap>
-          <InputWrap>
-            <Label block>
-              Description <Optional>(optional)</Optional>
-            </Label>
-            <TextArea
-              id="description"
-              name="description"
-              style={{ height: "100px" }}
-              value={data.description}
-              onChange={onChange}
-              errors={errors}
-            />
-          </InputWrap>
-          {isProgressed ? (
-            <SuccessButton type="button" style={{ width: "120px" }} disabled>
-              Saving...
-            </SuccessButton>
-          ) : (
+      <Container>
+        <Wrap>
+          <Title>{`Edit ${kanban.name}`}</Title>
+          <HorizontalRule />
+          <Form>
+            <InputWrap>
+              <Label block required>
+                Name
+              </Label>
+              <LabelHint>Must be between 2-50 characters</LabelHint>
+              <Input
+                id="name"
+                type="text"
+                name="name"
+                style={{ width: "300px" }}
+                value={data.name}
+                onChange={onChange}
+                errors={errors}
+              />
+            </InputWrap>
+            <InputWrap>
+              <Label block>Description</Label>
+              <LabelHint>
+                Must be less than or equal to 200 characters
+              </LabelHint>
+              <TextArea
+                id="description"
+                name="description"
+                style={{ height: "100px" }}
+                value={data.description}
+                onChange={onChange}
+                errors={errors}
+              />
+            </InputWrap>
             <SuccessButton
               type="button"
-              style={{ width: "120px" }}
+              style={{ width: "140px" }}
               onClick={handleUpdate}
+              disabled={!data.name}
+              doing={isProgressed}
             >
-              Save kanban
+              {isProgressed ? "Saving..." : "Save kanban"}
             </SuccessButton>
-          )}
+          </Form>
           <HorizontalRule />
-          <DeleteKanbanForm name={kanban.name} onDelete={handleDelete} />
-        </Body>
-      </ContainerMd>
+          <Form>
+            <DeleteKanbanForm name={kanban.name} onDelete={handleDelete} />
+          </Form>
+        </Wrap>
+      </Container>
     </>
   );
 };
