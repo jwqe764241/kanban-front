@@ -1,46 +1,22 @@
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const HeaderContainer = styled.div`
-  border-bottom: 1px solid #e1e4e8;
-  padding-bottom: 20px;
-  margin-bottom: 25px;
+export const Title = styled.div`
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
 `;
 
-const Title = styled.div`
-  font-size: 24px;
-  font-weight: 400;
-  margin-bottom: 10px;
+export const Description = styled.div`
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: ${({ theme }) => theme.colors.darkgray60};
 `;
 
-const Description = styled.div`
-  font-size: 14px;
-  font-weight: 300;
-  color: slategrey;
+export const HorizontalRule = styled.hr`
+  height: 0;
+  margin-top: 1rem;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray20};
 `;
-
-const Header = (props) => {
-  const { title, description } = props;
-
-  return (
-    <HeaderContainer>
-      <Title>{title}</Title>
-      {description && <Description>{description}</Description>}
-    </HeaderContainer>
-  );
-};
-
-Header.propTypes = {
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string,
-};
-
-Header.defaultProps = {
-  description: undefined,
-};
-
-const Body = styled.div`
-  width: 100%;
-`;
-
-export { Header, Body };
