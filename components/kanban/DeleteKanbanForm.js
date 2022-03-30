@@ -1,7 +1,6 @@
-import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import { InputWrap, Label, LabelHint } from "components/layout/Form";
+import { Form, InputWrap, Label, LabelHint } from "components/layout/Form";
 import { DangerButton } from "components/layout/Button";
 
 const DeleteKanbanForm = ({ name, onDelete }) => {
@@ -12,18 +11,18 @@ const DeleteKanbanForm = ({ name, onDelete }) => {
   };
 
   return (
-    <div>
+    <Form>
       <InputWrap>
         <Label>Delete {name}</Label>
         <LabelHint>
-          Once you delete this project, there is no going back. Please be
+          Once you delete this kanban, there is no going back. Please be
           certain.
         </LabelHint>
       </InputWrap>
       <DangerButton style={{ width: "140px" }} onClick={handleDelete}>
         Delete kanban
       </DangerButton>
-    </div>
+    </Form>
   );
 };
 

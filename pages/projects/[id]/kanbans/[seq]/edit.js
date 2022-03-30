@@ -17,7 +17,7 @@ import {
   Input,
   TextArea,
 } from "components/layout/Form";
-import { HorizontalRule, Title, Description } from "components/layout/Page";
+import { HorizontalRule, Title } from "components/layout/Page";
 import { SuccessButton } from "components/layout/Button";
 
 const Container = styled.div`
@@ -134,9 +134,7 @@ const EditKanban = ({ project, kanban }) => {
             </SuccessButton>
           </Form>
           <HorizontalRule />
-          <Form>
-            <DeleteKanbanForm name={kanban.name} onDelete={handleDelete} />
-          </Form>
+          <DeleteKanbanForm name={kanban.name} onDelete={handleDelete} />
         </Wrap>
       </Container>
     </>

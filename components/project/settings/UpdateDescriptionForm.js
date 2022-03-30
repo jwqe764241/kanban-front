@@ -1,13 +1,14 @@
 import { useState } from "react";
-import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import { InputWrap, Label, TextArea } from "components/layout/Form";
+import {
+  Form,
+  InputWrap,
+  Label,
+  LabelHint,
+  TextArea,
+} from "components/layout/Form";
 import { SuccessButton } from "components/layout/Button";
-
-const Form = styled.div`
-  margin-bottom: 30px;
-`;
 
 const UpdateDescriptionForm = ({ description, onUpdate }) => {
   const [data, setData] = useState({ description });
@@ -33,6 +34,7 @@ const UpdateDescriptionForm = ({ description, onUpdate }) => {
     <Form>
       <InputWrap>
         <Label block>Description</Label>
+        <LabelHint>Must be less than or equal to 200 characters</LabelHint>
         <TextArea
           id="description"
           name="description"
@@ -43,7 +45,7 @@ const UpdateDescriptionForm = ({ description, onUpdate }) => {
         />
       </InputWrap>
       <SuccessButton
-        style={{ width: "80px" }}
+        style={{ width: "100px" }}
         onClick={onUpdateClick}
         disabled={data.description === description}
       >

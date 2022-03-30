@@ -1,7 +1,13 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-import { InputWrap, Label, Input } from "components/layout/Form";
+import {
+  Form,
+  InputWrap,
+  Label,
+  LabelHint,
+  Input,
+} from "components/layout/Form";
 import { SecondaryButton } from "components/layout/Button";
 
 const RenameForm = ({ name, onRename }) => {
@@ -25,25 +31,28 @@ const RenameForm = ({ name, onRename }) => {
   };
 
   return (
-    <InputWrap>
-      <Label block>Name</Label>
-      <Input
-        id="name"
-        type="text"
-        name="name"
-        style={{ width: "250px" }}
-        value={data.name}
-        errors={errors}
-        onChange={onChange}
-      />
+    <Form>
+      <InputWrap>
+        <Label block>Name</Label>
+        <LabelHint>Must be between 2-50 characters</LabelHint>
+        <Input
+          id="name"
+          type="text"
+          name="name"
+          style={{ width: "300px" }}
+          value={data.name}
+          errors={errors}
+          onChange={onChange}
+        />
+      </InputWrap>
       <SecondaryButton
-        style={{ width: "80px", marginLeft: "10px" }}
+        style={{ width: "100px" }}
         onClick={onRenameClick}
         disabled={!data.name || data.name === name}
       >
         Rename
       </SecondaryButton>
-    </InputWrap>
+    </Form>
   );
 };
 

@@ -1,40 +1,42 @@
+import styled, { css } from "styled-components";
 import PropTypes from "prop-types";
-import styled from "styled-components";
 import Link from "next/link";
 
 const Container = styled.div`
-  grid-column: 1;
+  align-self: flex-start;
+  max-width: 280px;
+  min-width: 280px;
+  margin-right: 1rem;
+  padding: 0 1rem;
 `;
 
-const MenuContainer = styled.div`
-  background-color: #f6f8fa;
-  border: 1px solid #d0d7de;
-  border-radius: 6px;
+const MenuList = styled.ul`
+  list-style: none;
+  color: ${({ theme }) => theme.colors.darkgray70};
 `;
 
-const Menu = styled.a`
+const Item = styled.li`
   width: 100%;
-  display: flex;
-  padding: 16px;
-  font-size: 14px;
+  margin: 0.25rem 0;
+  padding: 0.5rem;
+  padding-left: 2rem;
+  font-size: 0.875rem;
   font-weight: 300;
-  border-top: 1px solid #d0d7de;
+  border-radius: 4px;
   cursor: pointer;
-  ${(props) =>
-    props.active
-      ? `
-	background-color: white;
-	border-left: 2px solid #f9826c;
- `
-      : ""}
-
-  &:first-child {
-    border-top: none;
-  }
 
   &:hover {
-    background-color: ${(props) => (!props.active ? "#f0f3f6" : "")};
+    background-color: ${({ theme, active }) =>
+      !active ? theme.colors.darkgray30 : ""};
   }
+
+  ${({ theme, active }) =>
+    active &&
+    css`
+      font-weight: 700;
+      color: ${theme.colors.primaryDark};
+      background-color: #d6eaf5;
+    `}
 `;
 
 const Sidebar = ({ id, activeMenu }) => {
@@ -58,13 +60,13 @@ const Sidebar = ({ id, activeMenu }) => {
 
   return (
     <Container>
-      <MenuContainer>
+      <MenuList>
         {list.map((menu) => (
           <Link key={menu.id} href={menu.href}>
-            <Menu active={menu.id === activeMenu}>{menu.name}</Menu>
+            <Item active={menu.id === activeMenu}>{menu.name}</Item>
           </Link>
         ))}
-      </MenuContainer>
+      </MenuList>
     </Container>
   );
 };

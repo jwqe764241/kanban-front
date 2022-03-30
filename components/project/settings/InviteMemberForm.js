@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
+import { Form } from "components/layout/Form";
 import { SuccessButton } from "components/layout/Button";
 import { List, ListHeader, EmptyList } from "components/layout/List";
 import UserListItem from "components/layout/UserListItem";
@@ -46,7 +47,7 @@ const InviteMemberForm = ({ invitations, onSuggest, onInvite, onRemove }) => {
   };
 
   return (
-    <>
+    <Form>
       <ButtonContainer>
         <SuccessButton
           style={{ width: "130px" }}
@@ -75,7 +76,7 @@ const InviteMemberForm = ({ invitations, onSuggest, onInvite, onRemove }) => {
           onInvite={oi}
         />
       </Modal.Portal>
-    </>
+    </Form>
   );
 };
 

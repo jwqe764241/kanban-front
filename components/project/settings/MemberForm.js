@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
+import { Form } from "components/layout/Form";
 import { List, ListHeader, EmptyList } from "components/layout/List";
 import UserListItem from "components/layout/UserListItem";
 
@@ -25,15 +26,19 @@ const MemberForm = ({ members, onRemove }) => {
     }
   };
 
-  return memberList && memberList.length > 0 ? (
-    <List>
-      <ListHeader>{`${memberList.length} Members`}</ListHeader>
-      {memberList.map((member) => (
-        <UserListItem key={member.id} user={member} remove onRemove={or} />
-      ))}
-    </List>
-  ) : (
-    <EmptyList>No members in this project</EmptyList>
+  return (
+    <Form>
+      {memberList && memberList.length > 0 ? (
+        <List>
+          <ListHeader>{`${memberList.length} Members`}</ListHeader>
+          {memberList.map((member) => (
+            <UserListItem key={member.id} user={member} remove onRemove={or} />
+          ))}
+        </List>
+      ) : (
+        <EmptyList>No members in this project</EmptyList>
+      )}
+    </Form>
   );
 };
 

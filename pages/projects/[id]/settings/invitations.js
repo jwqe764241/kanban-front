@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import PropTypes from "prop-types";
 import axios, { createRequester } from "core/apiAxios";
 import { connect, useSelector, useDispatch } from "react-redux";
@@ -5,10 +6,24 @@ import wrapper from "core/store";
 import { parseCookie } from "core/utils";
 
 import ProjectHeader from "components/project/ProjectHeader";
-import { ContainerXL } from "components/layout/Container";
-import { Layout, Body, Title } from "components/project/settings/Layout";
+import { HorizontalRule, Title } from "components/layout/Page";
 import Sidebar from "components/project/settings/Sidebar";
 import InviteMemberForm from "components/project/settings/InviteMemberForm";
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 2rem 0;
+  overflow-y: auto;
+`;
+
+const Wrap = styled.div`
+  width: 100%;
+  max-width: 720px;
+  padding: 0 1rem;
+  color: ${({ theme }) => theme.colors.darkgray70};
+`;
 
 const InvitationSettings = ({ project, invitations }) => {
   const { token } = useSelector((state) => state);
@@ -57,20 +72,19 @@ const InvitationSettings = ({ project, invitations }) => {
   return (
     <>
       <ProjectHeader project={project} activeMenu="settings" />
-      <ContainerXL>
-        <Layout>
-          <Sidebar id={project.id} activeMenu="invitations" />
-          <Body>
-            <Title>Invitations</Title>
-            <InviteMemberForm
-              invitations={invitations}
-              onSuggest={onSuggest}
-              onInvite={onInvite}
-              onRemove={onRemove}
-            />
-          </Body>
-        </Layout>
-      </ContainerXL>
+      <Container>
+        <Sidebar id={project.id} activeMenu="invitations" />
+        <Wrap>
+          <Title>Invitations</Title>
+          <HorizontalRule />
+          <InviteMemberForm
+            invitations={invitations}
+            onSuggest={onSuggest}
+            onInvite={onInvite}
+            onRemove={onRemove}
+          />
+        </Wrap>
+      </Container>
     </>
   );
 };
