@@ -33,7 +33,7 @@ const MemberSettings = ({ project, members }) => {
   const onRemove = async (userId) => {
     let response;
     try {
-      response = requester.delete(
+      response = await requester.delete(
         `/projects/${project.id}/members/${userId}`,
         token,
       );
@@ -49,7 +49,7 @@ const MemberSettings = ({ project, members }) => {
       <Container>
         <Sidebar id={project.id} activeMenu="members" />
         <Wrap>
-          <Title>Members</Title>
+          <Title>Members ({members.length})</Title>
           <HorizontalRule />
           <MemberForm members={members} onRemove={onRemove} />
         </Wrap>

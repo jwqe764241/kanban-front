@@ -25,11 +25,11 @@ export const LabelHint = styled.div`
 `;
 
 export const InputWrap = styled.div`
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 `;
 
 export const Form = styled.div`
-  padding: 1.5rem 0;
+  padding: 1rem 0;
 `;
 
 const ErrorMessage = styled.div`
