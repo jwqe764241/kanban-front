@@ -2,24 +2,69 @@ import { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
+import RemoveIcon from "public/icons/close-lg.svg";
+import { SuccessButton, NoStyleButton } from "components/layout/Button";
 import { Form } from "components/layout/Form";
-import { SuccessButton } from "components/layout/Button";
-import { List, ListHeader, EmptyList } from "components/layout/List";
-import UserListItem from "components/layout/UserListItem";
 import Modal from "components/layout/Modal";
 import InviteUserModal from "components/project/members/InviteUserModal";
 
-const ButtonContainer = styled.div`
+const ButtonWrap = styled.div`
   display: flex;
   flex-direction: row-reverse;
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
+`;
+
+const List = styled.div``;
+
+const Item = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  color: ${({ theme }) => theme.colors.gray80};
+
+  &:first-child {
+    padding: 0 0 1rem;
+  }
+
+  & ~ & {
+    border-top: 1px solid ${({ theme }) => theme.colors.gray20};
+  }
+`;
+
+const Info = styled.div`
+  flex: 1;
+`;
+
+const Name = styled.div`
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+`;
+
+const Email = styled.div`
+  font-size: 0.875rem;
+  color: ${({ theme }) => theme.colors.gray50};
+`;
+
+const RemoveButton = styled(NoStyleButton)`
+  width: 1em;
+  height: 1em;
+  padding: 0;
+  float: right;
+  font-size: 1em;
+  color: currentColor;
+
+  & > svg {
+    display: block;
+    fill: currentColor;
+  }
 `;
 
 const InviteMemberForm = ({ invitations, onSuggest, onInvite, onRemove }) => {
   const [isInviteUserOpen, setInviteUserOpen] = useState(false);
   const [invitationList, setInvitationList] = useState([...invitations]);
 
-  const oi = async (user) => {
+  const handleInvite = async (user) => {
     const response = await onInvite(user);
     if (response.status === 200) {
       setInvitationList((oldArray) => [...oldArray, response.data]);
@@ -28,7 +73,7 @@ const InviteMemberForm = ({ invitations, onSuggest, onInvite, onRemove }) => {
     }
   };
 
-  const or = async (userId) => {
+  const handleRemove = async (userId) => {
     if (!window.confirm("Are you sure you want to remove this user?")) {
       return;
     }
@@ -47,36 +92,41 @@ const InviteMemberForm = ({ invitations, onSuggest, onInvite, onRemove }) => {
   };
 
   return (
-    <Form>
-      <ButtonContainer>
-        <SuccessButton
-          style={{ width: "130px" }}
-          onClick={() => {
-            setInviteUserOpen(true);
-          }}
-        >
-          Invite a member
-        </SuccessButton>
-      </ButtonContainer>
-      {invitationList && invitationList.length > 0 ? (
+    <>
+      <Form>
+        <ButtonWrap>
+          <SuccessButton
+            style={{ width: "140px" }}
+            onClick={() => {
+              setInviteUserOpen(true);
+            }}
+          >
+            Invite a member
+          </SuccessButton>
+        </ButtonWrap>
         <List>
-          <ListHeader>{`${invitationList.length} Invited Users`}</ListHeader>
           {invitationList.map((member) => (
-            <UserListItem key={member.id} user={member} remove onRemove={or} />
+            <Item>
+              <Info>
+                <Name>{member.name}</Name>
+                <Email>{member.email}</Email>
+              </Info>
+              <RemoveButton onClick={() => handleRemove(member.id)}>
+                <RemoveIcon />
+              </RemoveButton>
+            </Item>
           ))}
         </List>
-      ) : (
-        <EmptyList>You haven&apos;t invited any users yet</EmptyList>
-      )}
+      </Form>
       <Modal.Portal>
         <InviteUserModal
           show={isInviteUserOpen}
           setShow={setInviteUserOpen}
           onSuggest={onSuggest}
-          onInvite={oi}
+          onInvite={handleInvite}
         />
       </Modal.Portal>
-    </Form>
+    </>
   );
 };
 

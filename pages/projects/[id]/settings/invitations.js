@@ -75,7 +75,7 @@ const InvitationSettings = ({ project, invitations }) => {
       <Container>
         <Sidebar id={project.id} activeMenu="invitations" />
         <Wrap>
-          <Title>Invitations</Title>
+          <Title>Invitations ({invitations.length})</Title>
           <HorizontalRule />
           <InviteMemberForm
             invitations={invitations}

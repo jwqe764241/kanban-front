@@ -30,6 +30,10 @@ export const InputWrap = styled.div`
 
 export const Form = styled.div`
   padding: 1rem 0;
+
+  &:first-child {
+    padding: 0 0 1rem;
+  }
 `;
 
 const ErrorMessage = styled.div`
