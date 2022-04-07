@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import axios, { createRequester } from "core/apiAxios";
@@ -29,6 +30,7 @@ const InvitationSettings = ({ project, invitations }) => {
   const { token } = useSelector((state) => state);
   const dispatch = useDispatch();
   const requester = createRequester(axios, dispatch);
+  const [invitationList, setInvitationList] = useState([...invitations]);
 
   const onSuggest = async (value) => {
     try {
@@ -75,10 +77,11 @@ const InvitationSettings = ({ project, invitations }) => {
       <Container>
         <Sidebar id={project.id} activeMenu="invitations" />
         <Wrap>
-          <Title>Invitations ({invitations.length})</Title>
+          <Title>Invitations ({invitationList.length})</Title>
           <HorizontalRule />
           <InviteMemberForm
-            invitations={invitations}
+            invitations={invitationList}
+            setInvitations={setInvitationList}
             onSuggest={onSuggest}
             onInvite={onInvite}
             onRemove={onRemove}

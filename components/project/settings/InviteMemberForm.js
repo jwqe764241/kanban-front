@@ -60,14 +60,19 @@ const RemoveButton = styled(NoStyleButton)`
   }
 `;
 
-const InviteMemberForm = ({ invitations, onSuggest, onInvite, onRemove }) => {
+const InviteMemberForm = ({
+  invitations,
+  setInvitations,
+  onSuggest,
+  onInvite,
+  onRemove,
+}) => {
   const [isInviteUserOpen, setInviteUserOpen] = useState(false);
-  const [invitationList, setInvitationList] = useState([...invitations]);
 
   const handleInvite = async (user) => {
     const response = await onInvite(user);
     if (response.status === 200) {
-      setInvitationList((oldArray) => [...oldArray, response.data]);
+      setInvitations((oldArray) => [...oldArray, response.data]);
     } else if (response.status === 409) {
       alert("User was already invited");
     }
@@ -79,12 +84,12 @@ const InviteMemberForm = ({ invitations, onSuggest, onInvite, onRemove }) => {
     }
     const response = await onRemove(userId);
     if (response.status === 200) {
-      const index = invitationList.findIndex(
+      const index = invitations.findIndex(
         (invitedUser) => invitedUser.id === userId,
       );
       if (index !== -1) {
-        invitationList.splice(index, 1);
-        setInvitationList([...invitationList]);
+        invitations.splice(index, 1);
+        setInvitations([...invitations]);
       }
     } else if (response.status === 403) {
       alert("You have no permission to do this");
@@ -105,7 +110,7 @@ const InviteMemberForm = ({ invitations, onSuggest, onInvite, onRemove }) => {
           </SuccessButton>
         </ButtonWrap>
         <List>
-          {invitationList.map((member) => (
+          {invitations.map((member) => (
             <Item>
               <Info>
                 <Name>{member.name}</Name>
@@ -132,6 +137,7 @@ const InviteMemberForm = ({ invitations, onSuggest, onInvite, onRemove }) => {
 
 InviteMemberForm.propTypes = {
   invitations: PropTypes.arrayOf(PropTypes.object),
+  setInvitations: PropTypes.func.isRequired,
   onSuggest: PropTypes.func.isRequired,
   onInvite: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
