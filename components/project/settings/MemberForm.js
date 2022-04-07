@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -52,19 +51,17 @@ const RemoveButton = styled(NoStyleButton)`
   }
 `;
 
-const MemberForm = ({ members, onRemove }) => {
-  const [memberList, setMemberList] = useState([...members]);
-
+const MemberForm = ({ members, setMembers, onRemove }) => {
   const handleRemove = async (userId) => {
     if (!window.confirm("Are you sure you want to remove this member?")) {
       return;
     }
     const response = await onRemove(userId);
     if (response.status === 200) {
-      const index = memberList.findIndex((member) => member.id === userId);
+      const index = members.findIndex((member) => member.id === userId);
       if (index !== -1) {
-        memberList.splice(index, 1);
-        setMemberList([...memberList]);
+        members.splice(index, 1);
+        setMembers([...members]);
       }
     } else if (response.status === 400) {
       alert("You can't remove admin");
@@ -76,7 +73,7 @@ const MemberForm = ({ members, onRemove }) => {
   return (
     <Form>
       <List>
-        {memberList.map((member) => (
+        {members.map((member) => (
           <Item key={member.id}>
             <Info>
               <Name>{member.name}</Name>
@@ -94,6 +91,7 @@ const MemberForm = ({ members, onRemove }) => {
 
 MemberForm.propTypes = {
   members: PropTypes.arrayOf(PropTypes.object),
+  setMembers: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
 };
 

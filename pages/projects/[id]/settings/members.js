@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import axios, { createRequester } from "core/apiAxios";
@@ -29,6 +30,7 @@ const MemberSettings = ({ project, members }) => {
   const { token } = useSelector((state) => state);
   const dispatch = useDispatch();
   const requester = createRequester(axios, dispatch);
+  const [memberList, setMemberList] = useState([...members]);
 
   const onRemove = async (userId) => {
     let response;
@@ -49,9 +51,13 @@ const MemberSettings = ({ project, members }) => {
       <Container>
         <Sidebar id={project.id} activeMenu="members" />
         <Wrap>
-          <Title>Members ({members.length})</Title>
+          <Title>Members ({memberList.length})</Title>
           <HorizontalRule />
-          <MemberForm members={members} onRemove={onRemove} />
+          <MemberForm
+            members={memberList}
+            setMembers={setMemberList}
+            onRemove={onRemove}
+          />
         </Wrap>
       </Container>
     </>
