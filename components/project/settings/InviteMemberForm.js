@@ -14,8 +14,6 @@ const ButtonWrap = styled.div`
   margin-bottom: 1rem;
 `;
 
-const List = styled.div``;
-
 const Item = styled.div`
   display: flex;
   justify-content: space-between;
@@ -58,6 +56,17 @@ const RemoveButton = styled(NoStyleButton)`
     display: block;
     fill: currentColor;
   }
+`;
+
+const EmptyMessage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 6rem;
+  color: ${({ theme }) => theme.colors.darkgray70};
+  font-weight: 600;
+  border-radius: 4px;
+  background-color: ${({ theme }) => theme.colors.darkgray30};
 `;
 
 const InviteMemberForm = ({
@@ -109,19 +118,23 @@ const InviteMemberForm = ({
             Invite a member
           </SuccessButton>
         </ButtonWrap>
-        <List>
-          {invitations.map((member) => (
-            <Item>
-              <Info>
-                <Name>{member.name}</Name>
-                <Email>{member.email}</Email>
-              </Info>
-              <RemoveButton onClick={() => handleRemove(member.id)}>
-                <RemoveIcon />
-              </RemoveButton>
-            </Item>
-          ))}
-        </List>
+        {invitations.length > 0 ? (
+          <div>
+            {invitations.map((member) => (
+              <Item>
+                <Info>
+                  <Name>{member.name}</Name>
+                  <Email>{member.email}</Email>
+                </Info>
+                <RemoveButton onClick={() => handleRemove(member.id)}>
+                  <RemoveIcon />
+                </RemoveButton>
+              </Item>
+            ))}
+          </div>
+        ) : (
+          <EmptyMessage>You haven&apos;t invited any users yet</EmptyMessage>
+        )}
       </Form>
       <Modal.Portal>
         <InviteUserModal

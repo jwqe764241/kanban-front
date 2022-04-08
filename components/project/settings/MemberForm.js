@@ -5,8 +5,6 @@ import RemoveIcon from "public/icons/close-lg.svg";
 import { NoStyleButton } from "components/layout/Button";
 import { Form } from "components/layout/Form";
 
-const List = styled.div``;
-
 const Item = styled.div`
   display: flex;
   justify-content: space-between;
@@ -51,6 +49,17 @@ const RemoveButton = styled(NoStyleButton)`
   }
 `;
 
+const EmptyMessage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 6rem;
+  color: ${({ theme }) => theme.colors.darkgray70};
+  font-weight: 600;
+  border-radius: 4px;
+  background-color: ${({ theme }) => theme.colors.darkgray30};
+`;
+
 const MemberForm = ({ members, setMembers, onRemove }) => {
   const handleRemove = async (userId) => {
     if (!window.confirm("Are you sure you want to remove this member?")) {
@@ -72,19 +81,23 @@ const MemberForm = ({ members, setMembers, onRemove }) => {
 
   return (
     <Form>
-      <List>
-        {members.map((member) => (
-          <Item key={member.id}>
-            <Info>
-              <Name>{member.name}</Name>
-              <Email>{member.email}</Email>
-            </Info>
-            <RemoveButton onClick={() => handleRemove(member.id)}>
-              <RemoveIcon />
-            </RemoveButton>
-          </Item>
-        ))}
-      </List>
+      {members.length > 0 ? (
+        <div>
+          {members.map((member) => (
+            <Item key={member.id}>
+              <Info>
+                <Name>{member.name}</Name>
+                <Email>{member.email}</Email>
+              </Info>
+              <RemoveButton onClick={() => handleRemove(member.id)}>
+                <RemoveIcon />
+              </RemoveButton>
+            </Item>
+          ))}
+        </div>
+      ) : (
+        <EmptyMessage>No members in this project</EmptyMessage>
+      )}
     </Form>
   );
 };
