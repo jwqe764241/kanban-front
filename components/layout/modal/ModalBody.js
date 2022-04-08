@@ -1,7 +1,9 @@
 import styled from "styled-components";
 
 const ModalBody = styled.div`
-  padding: 1.5rem 1rem;
+  max-height: 75vh;
+  padding: 1rem 1rem;
+  overflow-y: auto;
 `;
 
 export default ModalBody;

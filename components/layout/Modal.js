@@ -10,19 +10,21 @@ import ModalTitle from "./modal/ModalTitle";
 import ModalCloseButton from "./modal/ModalCloseButton";
 
 const Background = styled.div`
+  display: flex;
+  justify-content: center;
   position: fixed;
   z-index: 9999;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
   background-color: rgba(0, 0, 0, 0.5);
 `;
 
 const Container = styled.div`
   width: 500px;
-  margin: 10vh auto;
+  height: fit-content;
+  margin-top: 10vh;
   color: ${({ theme }) => theme.colors.darkgray70};
   background-color: ${({ theme }) => theme.colors.darkgray20};
   border-radius: 2px;
