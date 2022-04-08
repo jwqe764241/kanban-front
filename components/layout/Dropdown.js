@@ -10,8 +10,6 @@ import DropdownMenu from "./dropdown/DropdownMenu";
 import DropdownItem from "./dropdown/DropdownItem";
 
 const Container = styled.div`
-  width: 100%;
-  height: 100%;
   position: relative;
 `;
 

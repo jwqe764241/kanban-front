@@ -5,6 +5,7 @@ import axios from "core/apiAxios";
 
 import Dropdown from "components/layout/Dropdown";
 import HomeIcon from "public/icons/home.svg";
+import PlusIcon from "public/icons/plus.svg";
 import ListIcon from "public/icons/list.svg";
 import SignoutIcon from "public/icons/signout.svg";
 
@@ -15,6 +16,10 @@ const Container = styled.nav`
   z-index: 10;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.white};
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
 `;
 
 const ButtonItem = styled.span`
@@ -60,14 +65,19 @@ const Navbar = () => {
 
   return (
     <Container>
-      <div>
+      <ButtonContainer>
         <Link href="/">
           <ButtonItem>
             <HomeIcon />
           </ButtonItem>
         </Link>
-      </div>
-      <div>
+      </ButtonContainer>
+      <ButtonContainer>
+        <Link href="/projects/new">
+          <ButtonItem style={{ marginRight: "0.5rem" }}>
+            <PlusIcon />
+          </ButtonItem>
+        </Link>
         <Dropdown>
           <Dropdown.Toggle>
             <ButtonItem>
@@ -81,7 +91,7 @@ const Navbar = () => {
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-      </div>
+      </ButtonContainer>
     </Container>
   );
 };
