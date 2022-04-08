@@ -3,9 +3,12 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Draggable } from "react-beautiful-dnd";
 
-import { DropdownMenu, DropdownButton } from "components/layout/Dropdown";
-import { DropdownIcon, PlusIcon } from "components/layout/Icon";
-import { ModalPortal } from "components/layout/Modal";
+import Dropdown from "components/layout/Dropdown";
+import DropdownIcon from "public/icons/dropdown.svg";
+import EditIcon from "public/icons/edit.svg";
+import DeleteIcon from "public/icons/delete.svg";
+import PlusIcon from "public/icons/plus.svg";
+import Modal from "components/layout/Modal";
 import { NoStyleButton } from "components/layout/Button";
 import DeleteColumnModal from "components/kanban/DeleteColumnModal";
 import EditColumnModal from "components/kanban/EditColumnModal";
@@ -13,35 +16,53 @@ import TaskList from "components/kanban/TaskList";
 import Task from "components/kanban/Task";
 import AddTaskForm from "components/kanban/AddTaskForm";
 
-const ColumnContainer = styled.div`
+const Container = styled.div`
+  width: 320px;
+  margin-right: 1rem;
+`;
+
+const Wrap = styled.div`
   display: flex;
   flex-direction: column;
-  width: 350px;
-  border: 1px solid #d8dee4;
-  border-radius: 6px;
-  background-color: #f6f8fa;
-  margin-right: 20px;
+  max-height: 100%;
+  background-color: ${({ theme }) => theme.colors.gray10};
+  border-radius: 4px;
 `;
 
-const HeaderContainer = styled.div`
-  padding: 12px 10px;
-  font-size: 14px;
-  font-weight: 500;
+const Header = styled.div`
+  padding: 1rem 0.5rem;
+  font-size: 1rem;
+  color: ${({ theme }) => theme.colors.darkgray70};
 `;
 
-const Count = styled.span`
-  padding: 0px 10px 0px 5px;
-  margin-left: 2px;
-`;
-
-const Title = styled.div`
-  display: inline-block;
+const Name = styled.span`
+  font-weight: 600;
+  margin-left: 0.5rem;
 `;
 
 const ButtonContainer = styled.span`
   display: flex;
   cursor: pointer;
   float: right;
+`;
+
+const AddTaskButton = styled(NoStyleButton)`
+  display: flex;
+  align-items: center;
+  padding: 1rem 0.5rem 0.5rem 1rem;
+  color: ${({ theme }) => theme.colors.darkgray60};
+  transition: color 0.1s ease;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.darkgray70};
+  }
+
+  & > svg {
+    width: 1em;
+    height: 1em;
+    margin-right: 0.5rem;
+    fill: currentColor;
+  }
 `;
 
 const TaskColumn = ({
@@ -75,51 +96,61 @@ const TaskColumn = ({
     <>
       <Draggable draggableId={`column-${taskColumnId}`} index={index}>
         {(provided) => (
-          <ColumnContainer {...provided.draggableProps} ref={provided.innerRef}>
-            <HeaderContainer {...provided.dragHandleProps}>
-              <Count>{tasks.length}</Count>
-              <Title>{taskColumn.name}</Title>
-              <ButtonContainer>
-                <NoStyleButton
-                  style={{ display: "flex" }}
-                  onClick={openAddTaskForm}
-                >
-                  <PlusIcon />
-                </NoStyleButton>
-                <DropdownMenu icon={<DropdownIcon />}>
-                  <DropdownButton type="button" onClick={openEditColumnModal}>
-                    Edit column
-                  </DropdownButton>
-                  <DropdownButton type="button" onClick={openDeleteColumnModal}>
-                    Delete column
-                  </DropdownButton>
-                </DropdownMenu>
-              </ButtonContainer>
-            </HeaderContainer>
-            {isAddTaskOpen ? (
+          <Container {...provided.draggableProps} ref={provided.innerRef}>
+            <Wrap>
+              <Header {...provided.dragHandleProps}>
+                <Name>{taskColumn.name}</Name>
+                <ButtonContainer>
+                  <Dropdown>
+                    <Dropdown.Toggle>
+                      <DropdownIcon style={{ width: "1rem" }} />
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu position={{ right: "0" }}>
+                      <Dropdown.Item onClick={openEditColumnModal}>
+                        <EditIcon />
+                        Edit
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={openDeleteColumnModal}>
+                        <DeleteIcon />
+                        Delete
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </ButtonContainer>
+              </Header>
               <AddTaskForm
                 taskColumn={taskColumn}
                 onAddTask={onCreateTask}
+                show={isAddTaskOpen}
                 setShow={setAddTaskOpen}
               />
-            ) : (
-              <></>
-            )}
-            <TaskList droppableId={taskColumnId}>
-              {tasks.map((task, arrIndex) => (
-                <Task
-                  key={task.id}
-                  task={task}
-                  index={arrIndex}
-                  onDelete={onDeleteTask}
-                  onEdit={onEditTask}
-                />
-              ))}
-            </TaskList>
-          </ColumnContainer>
+              <TaskList
+                droppableId={taskColumnId}
+                empty={!(tasks && tasks.length > 0)}
+              >
+                {tasks.map((task, arrIndex) => (
+                  <Task
+                    key={task.id}
+                    task={task}
+                    index={arrIndex}
+                    onDelete={onDeleteTask}
+                    onEdit={onEditTask}
+                  />
+                ))}
+              </TaskList>
+              <AddTaskButton onClick={openAddTaskForm}>
+                <PlusIcon />
+                <div>
+                  {tasks && tasks.length > 0
+                    ? "Add another task"
+                    : "Add a task"}
+                </div>
+              </AddTaskButton>
+            </Wrap>
+          </Container>
         )}
       </Draggable>
-      <ModalPortal>
+      <Modal.Portal>
         <EditColumnModal
           show={isEditColumnOpen}
           setShow={setEditColumnOpen}
@@ -132,7 +163,7 @@ const TaskColumn = ({
           taskColumn={taskColumn}
           onDelete={onDeleteColumn}
         />
-      </ModalPortal>
+      </Modal.Portal>
     </>
   );
 };

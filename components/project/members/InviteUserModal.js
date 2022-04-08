@@ -1,29 +1,11 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import styled from "styled-components";
 
-import { Modal } from "components/layout/Modal";
+import Modal from "components/layout/Modal";
 import { SuccessButton } from "components/layout/Button";
-import { Input } from "components/layout/Form";
+import { Form, Input } from "components/layout/Form";
 import SuggestionSelect from "components/project/members/SuggestionSelect";
 import SelectedUser from "components/project/members/SelectedUser";
-
-const Title = styled.div`
-  padding: 30px 20px 10px 20px;
-  text-align: center;
-  font-size: 20px;
-  font-weight: 500;
-`;
-
-const Container = styled.div`
-  padding: 20px;
-`;
-
-const ButtonContainer = styled.div`
-  padding: 0px 20px 15px 20px;
-  display: flex;
-  justify-content: flex-end;
-`;
 
 const InviteUserModal = ({ show, setShow, onSuggest, onInvite }) => {
   const [suggestionUsers, setSuggestionUsers] = useState(null);
@@ -66,8 +48,11 @@ const InviteUserModal = ({ show, setShow, onSuggest, onInvite }) => {
 
   return (
     <Modal show={show} onClose={close}>
-      <Title>Invite a member</Title>
-      <Container>
+      <Modal.Header>
+        <Modal.Title>Invite a member</Modal.Title>
+        <Modal.CloseButton onClick={close} />
+      </Modal.Header>
+      <Modal.Body>
         {selectedUser ? (
           <SelectedUser
             user={selectedUser}
@@ -76,7 +61,7 @@ const InviteUserModal = ({ show, setShow, onSuggest, onInvite }) => {
             }}
           />
         ) : (
-          <>
+          <Form>
             <Input
               type="text"
               placeholder="Search by username"
@@ -86,10 +71,8 @@ const InviteUserModal = ({ show, setShow, onSuggest, onInvite }) => {
               list={suggestionUsers}
               onSelect={onSuggestionSelect}
             />
-          </>
+          </Form>
         )}
-      </Container>
-      <ButtonContainer>
         <SuccessButton
           onClick={onInviteClick}
           disabled={!!(selectedUser == null || isInviting)}
@@ -100,7 +83,7 @@ const InviteUserModal = ({ show, setShow, onSuggest, onInvite }) => {
               : "Invite a member to project"
             : "Select a member to invite"}
         </SuccessButton>
-      </ButtonContainer>
+      </Modal.Body>
     </Modal>
   );
 };

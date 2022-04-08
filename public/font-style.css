@@ -1,30 +1,4 @@
 @font-face {
-  font-family: "NanumGothic";
-  src: url("/font/NanumGothic-Regular.woff2") format("woff2"),
-    url("/font/NanumGothic-Regular.woff") format("woff");
-  font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "NanumGothic";
-  src: url("/font/NanumGothic-Bold.woff2") format("woff2"),
-    url("/font/NanumGothic-Bold.woff") format("woff");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "NanumGothic";
-  src: url("/font/NanumGothic-ExtraBold.woff2") format("woff2"),
-    url("/font/NanumGothic-ExtraBold.woff") format("woff");
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
   font-family: "NotoSansKR";
   src: url("/font/NotoSansKR-100.woff2") format("woff2"),
     url("/font/NotoSansKR-100.woff") format("woff");
@@ -70,18 +44,4 @@
     url("/font/NotoSansKR-900.woff") format("woff");
   font-weight: 900;
   font-display: swap;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html * {
-  font-family: "NotoSansKR";
-}
-
-html,
-body,
-div#__next {
-  height: 100%;
 }

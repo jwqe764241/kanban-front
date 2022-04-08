@@ -1,100 +1,50 @@
-import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/router";
+import { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import useDetectOutsideClick from "components/hook/useDetectOutsideClick";
+import useDetectRouteChange from "components/hook/useDetectRouteChange";
+
+import DropdownContext from "./dropdown/DropdownContext";
+import DropdownToggle from "./dropdown/DropdownToggle";
+import DropdownMenu from "./dropdown/DropdownMenu";
+import DropdownItem from "./dropdown/DropdownItem";
 
 const Container = styled.div`
+  width: 100%;
+  height: 100%;
   position: relative;
 `;
 
-const NoneStyledButton = styled.button`
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  display: flex;
-`;
-
-const DropdownList = styled.ul`
-  position: absolute;
-  z-index: 100;
-  width: 160px;
-  right: 0px;
-  top: 20px;
-  padding: 4px 0px;
-  border: 1px solid #e1e4e8;
-  background-color: white;
-  border-radius: 6px;
-  user-select: none;
-  box-shadow: rgb(140 149 159 / 20%) 0px 8px 24px 0px;
-`;
-
-const DropdownButton = styled.button`
-  color: #24292e;
-  font-size: 14px;
-  font-weight: 300;
-  padding: 6px 5px 6px 20px;
-  cursor: pointer;
-  background: transparent;
-  border: none;
-  width: 100%;
-  text-align: left;
-
-  &:hover {
-    background-color: #00509d;
-    color: white;
-  }
-`;
-
-const DropdownMenu = ({ icon, children }) => {
-  const ref = useRef();
-  const router = useRouter();
+const Dropdown = ({ children }) => {
+  const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+  const closeDropdown = () => setIsOpen(false);
+  useDetectOutsideClick(ref, isOpen, closeDropdown); // close dropdown menu when user clicked outside
+  useDetectRouteChange(isOpen, closeDropdown); // close dropdown menu when route changed
 
-  // close dropdown menu when user clicked outside
-  useEffect(() => {
-    const handleClick = (e) => {
-      if (isOpen && ref.current && !ref.current.contains(e.target)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClick);
-    return () => {
-      document.removeEventListener("mousedown", handleClick);
-    };
-  }, [isOpen]);
-
-  // close dropdown menu when route changed
-  useEffect(() => {
-    const handleRouteChange = () => {
-      setIsOpen(false);
-    };
-    router.events.on("routeChangeStart", handleRouteChange);
-    return () => {
-      router.events.off("routeChangeStart", handleRouteChange);
-    };
-  }, [router.asPath]);
-
-  const onMenuButtonClick = () => {
-    setIsOpen(true);
+  const contextValue = {
+    isOpen,
+    setIsOpen,
+    ref,
   };
 
   return (
-    <Container>
-      <NoneStyledButton type="button" onClick={onMenuButtonClick}>
-        {icon}
-      </NoneStyledButton>
-      {isOpen && <DropdownList ref={ref}>{children}</DropdownList>}
-    </Container>
+    <DropdownContext.Provider value={contextValue}>
+      <Container>{children}</Container>
+    </DropdownContext.Provider>
   );
 };
 
-DropdownMenu.propTypes = {
-  icon: PropTypes.node.isRequired,
+Dropdown.propTypes = {
   children: PropTypes.node,
 };
 
-DropdownMenu.defaultProps = {
+Dropdown.defaultProps = {
   children: <></>,
 };
 
-export { DropdownMenu, DropdownButton };
+Dropdown.Menu = DropdownMenu;
+Dropdown.Item = DropdownItem;
+Dropdown.Toggle = DropdownToggle;
+
+export default Dropdown;

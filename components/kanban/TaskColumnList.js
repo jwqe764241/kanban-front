@@ -2,7 +2,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Droppable } from "react-beautiful-dnd";
 
-const ListContainer = styled.div`
+const Container = styled.div`
   display: flex;
 `;
 
@@ -10,10 +10,10 @@ const TaskColumnList = ({ children }) => {
   return (
     <Droppable droppableId="all-columns" direction="horizontal" type="column">
       {(provided) => (
-        <ListContainer ref={provided.innerRef} {...provided.droppableProps}>
+        <Container ref={provided.innerRef} {...provided.droppableProps}>
           {children}
           {provided.placeholder}
-        </ListContainer>
+        </Container>
       )}
     </Droppable>
   );

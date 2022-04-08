@@ -1,24 +1,7 @@
-import styled from "styled-components";
 import PropTypes from "prop-types";
 
+import { Form, InputWrap, Label, LabelHint } from "components/layout/Form";
 import { DangerButton } from "components/layout/Button";
-
-const Container = styled.div`
-  margin: 20px 0px 20px 0px;
-`;
-
-const Title = styled.div`
-  font-size: 24px;
-  font-weight: 400;
-  margin-bottom: 10px;
-`;
-
-const Description = styled.div`
-  font-size: 14px;
-  font-weight: 300;
-  color: slategrey;
-  margin-bottom: 20px;
-`;
 
 const DeleteKanbanForm = ({ name, onDelete }) => {
   const handleDelete = () => {
@@ -28,15 +11,18 @@ const DeleteKanbanForm = ({ name, onDelete }) => {
   };
 
   return (
-    <Container>
-      <Title>Delete {name}</Title>
-      <Description>
-        Once you delete this project, there is no going back. Please be certain.
-      </Description>
-      <DangerButton style={{ width: "120px" }} onClick={handleDelete}>
+    <Form>
+      <InputWrap>
+        <Label>Delete {name}</Label>
+        <LabelHint>
+          Once you delete this kanban, there is no going back. Please be
+          certain.
+        </LabelHint>
+      </InputWrap>
+      <DangerButton style={{ width: "140px" }} onClick={handleDelete}>
         Delete kanban
       </DangerButton>
-    </Container>
+    </Form>
   );
 };
 

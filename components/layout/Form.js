@@ -1,84 +1,85 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import PropTypes from "prop-types";
 
-const HorizontalRule = styled.hr`
-  height: 0;
-  margin: 15px 0;
-  overflow: hidden;
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid #e1e4e8; ;
-`;
-
-const Label = styled.label`
+export const Label = styled.label`
   display: ${(props) => (props.block ? "block" : "inline-block")};
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 12px;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.darkgray70};
+
+  ${({ required, theme }) =>
+    required &&
+    css`
+      &::after {
+        color: ${theme.colors.error};
+        content: "*";
+        padding-left: 3px;
+      }
+    `};
 `;
 
-const Optional = styled.span`
-  color: #57606a;
-  font-size: 12px;
+export const LabelHint = styled.div`
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  color: ${({ theme }) => theme.colors.darkgray50};
 `;
 
-const InputWrap = styled.div`
-  margin-bottom: 25px;
+export const InputWrap = styled.div`
+  margin-bottom: 1rem;
+`;
+
+export const Form = styled.div`
+  padding: 1rem 0;
+
+  &:first-child {
+    padding: 0 0 1rem;
+  }
 `;
 
 const ErrorMessage = styled.div`
-  font-size: 12px;
-  font-weight: 300;
-  margin-top: 10px;
-  color: #ec0000;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: ${({ theme }) => theme.colors.error};
 `;
 
 const StyledInput = styled.input`
   width: 100%;
-  border: 1px solid;
-  border-color: rgb(216, 222, 226);
-  border-radius: 6px;
-  line-height: 20px;
+  border: none;
+  border-radius: 2px;
   outline: none;
-  padding: 5px 12px;
-  background-color: #fafbfc;
-  box-shadow: ${(props) =>
-    props.error ? "#ff000080 0px 0px 0px 3px" : "none"};
+  padding: 0.5rem 1rem;
+  background-color: ${({ theme }) => theme.colors.darkgray30};
+  box-shadow: ${({ error, theme }) =>
+    error ? `${theme.colors.error} 0px 0px 0px 2px` : "none"};
 
   &:focus {
-    box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
-    border-color: #868686;
-    background-color: #ffffff;
+    box-shadow: ${({ theme }) => `${theme.colors.darkgray60} 0px 0px 0px 2px`};
   }
 `;
 
 const StyledTextArea = styled.textarea`
   width: 100%;
-  border: 1px solid;
-  border-color: rgb(216, 222, 226);
-  border-radius: 6px;
-  line-height: 20px;
+  border: none;
+  border-radius: 2px;
   outline: none;
-  padding: 5px 12px;
-  background-color: #fafbfc;
-  box-shadow: ${(props) =>
-    props.error ? "#ff000080 0px 0px 0px 3px" : "none"};
+  padding: 0.5rem 1rem;
+  background-color: ${({ theme }) => theme.colors.darkgray30};
+  box-shadow: ${({ error, theme }) =>
+    error ? `${theme.colors.error} 0px 0px 0px 2px` : "none"};
   resize: vertical;
 
   &:focus {
-    box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
-    border-color: #868686;
-    background-color: #ffffff;
+    box-shadow: ${({ theme }) => `${theme.colors.darkgray60} 0px 0px 0px 2px`};
   }
 `;
 
-const Input = ({ errors, name, ...otherProps }) => {
+export const Input = ({ errors, name, ...otherProps }) => {
   const error = errors ? errors[name] : null;
   return (
-    <span>
+    <div>
       <StyledInput name={name} error={!!error} {...otherProps} />
       {error ? <ErrorMessage>{error.message}</ErrorMessage> : <></>}
-    </span>
+    </div>
   );
 };
 
@@ -92,7 +93,7 @@ Input.defaultProps = {
   name: undefined,
 };
 
-const TextArea = ({ errors, name, ...otherProps }) => {
+export const TextArea = ({ errors, name, ...otherProps }) => {
   const error = errors ? errors[name] : null;
   return (
     <div>
@@ -111,5 +112,3 @@ TextArea.defaultProps = {
   errors: undefined,
   name: undefined,
 };
-
-export { HorizontalRule, InputWrap, Label, Optional, Input, TextArea };

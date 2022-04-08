@@ -1,63 +1,46 @@
 import { useRouter } from "next/router";
-import Link from "next/link";
 import styled from "styled-components";
+import Link from "next/link";
 import axios from "core/apiAxios";
-import PropTypes from "prop-types";
 
-import { DropdownMenu, DropdownButton } from "components/layout/Dropdown";
-import { ProjectMenuIcon, UserMenuIcon } from "components/layout/Icon";
+import Dropdown from "components/layout/Dropdown";
+import HomeIcon from "public/icons/home.svg";
+import ListIcon from "public/icons/list.svg";
+import SignoutIcon from "public/icons/signout.svg";
 
-const Container = styled.div`
+const Container = styled.nav`
   display: flex;
-  padding: 16px 32px;
-  background-color: #24292e;
+  justify-content: space-between;
+  padding: 4px;
+  z-index: 10;
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.white};
 `;
 
-const Brand = styled.a`
+const ButtonItem = styled.span`
   display: flex;
-  height: 30px;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
-  font-weight: 800;
-  color: white;
+  width: 2rem;
+  height: 2rem;
+  text-align: center;
   cursor: pointer;
-  padding-right: 30px;
-  text-decoration: none;
+  border-radius: 4px;
+  background-color: ${({ theme }) => theme.colors.primaryLight};
+  transition: background-color 0.1s ease;
 
-  :hover {
-    color: lightgrey;
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.primaryLightHover};
+  }
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+    fill: ${({ theme }) => theme.colors.white};
   }
 `;
 
-const Tools = styled.div`
-  display: flex;
-  flex-grow: 1;
-`;
-
-const UserInfo = styled.div`
-  padding: 8px 16px;
-  border-bottom: 1px solid #e1e4e8;
-
-  div {
-    font-size: 14px;
-
-    &:nth-child(1) {
-      font-weight: 400;
-      padding-bottom: 8px;
-    }
-
-    &:nth-child(2) {
-      font-weight: 600;
-    }
-  }
-`;
-
-const DropdownWrap = styled.div`
-  align-self: center;
-`;
-
-const Navbar = ({ name }) => {
+const Navbar = () => {
   const router = useRouter();
 
   const onSignout = async () => {
@@ -77,40 +60,30 @@ const Navbar = ({ name }) => {
 
   return (
     <Container>
-      <Link href="/">
-        <Brand>Kanban</Brand>
-      </Link>
-      <Tools />
-      {/* Project Menu */}
-      <DropdownWrap>
-        <DropdownMenu icon={<ProjectMenuIcon />}>
-          <Link href="/projects/new">
-            <DropdownButton type="button">New Project</DropdownButton>
-          </Link>
-        </DropdownMenu>
-      </DropdownWrap>
-      {/* User Menu */}
-      <DropdownWrap>
-        <DropdownMenu icon={<UserMenuIcon />}>
-          <UserInfo>
-            <div>Signed in as</div>
-            <div>{name}</div>
-          </UserInfo>
-          <DropdownButton type="button" onClick={onSignout}>
-            Sign out
-          </DropdownButton>
-        </DropdownMenu>
-      </DropdownWrap>
+      <div>
+        <Link href="/">
+          <ButtonItem>
+            <HomeIcon />
+          </ButtonItem>
+        </Link>
+      </div>
+      <div>
+        <Dropdown>
+          <Dropdown.Toggle>
+            <ButtonItem>
+              <ListIcon />
+            </ButtonItem>
+          </Dropdown.Toggle>
+          <Dropdown.Menu position={{ right: "0", top: "2.5rem" }}>
+            <Dropdown.Item onClick={onSignout}>
+              <SignoutIcon />
+              Sign out
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      </div>
     </Container>
   );
-};
-
-Navbar.propTypes = {
-  name: PropTypes.string,
-};
-
-Navbar.defaultProps = {
-  name: "",
 };
 
 export default Navbar;

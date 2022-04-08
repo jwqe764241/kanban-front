@@ -3,65 +3,48 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Draggable } from "react-beautiful-dnd";
 
-import { CardIcon, DropdownIcon } from "components/layout/Icon";
-import { DropdownMenu, DropdownButton } from "components/layout/Dropdown";
-import { ModalPortal } from "components/layout/Modal";
+import EditIcon from "public/icons/edit.svg";
+import DeleteIcon from "public/icons/delete.svg";
+import Modal from "components/layout/Modal";
 import EditTaskModal from "components/kanban/EditTaskModal";
+import ContextMenu from "components/kanban/ContextMenu";
 
 const Container = styled.div`
   position: relative;
-  background-color: white;
-  border: 1px solid #d8dee4;
-  border-radius: 6px;
-  padding: 12px 8px 12px 32px;
-
-  margin-bottom: 10px;
-
-  &:hover {
-    box-shadow: 0 1px 3px rgb(106 115 125 / 30%) !important;
-  }
+  margin-bottom: 0.5rem;
+  background-color: ${({ theme }) => theme.colors.white};
+  border-radius: 4px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 2px 3px 0px;
 
   &:last-child {
     margin-bottom: 0px;
   }
 `;
 
-const Icon = styled.span`
-  position: absolute;
-  top: 12px;
-  left: 10px;
-`;
-
-const DropdownWrap = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 10px 8px 0px 0px;
-`;
-
-const TextContainer = styled.div`
-  margin-right: 26px;
-  font-size: 14px;
-  font-weight: 300;
-  color: #24292f;
+const ContainerWrap = styled.div`
+  padding: 0.75rem 1rem;
 `;
 
 const Text = styled.div`
+  font-size: 1rem;
+  font-weight: 300;
+  color: ${({ theme }) => theme.colors.black};
   word-wrap: break-word;
-  line-height: 1.2;
+  line-height: 1.25rem;
 `;
 
 const Task = ({ task, index, onDelete, onEdit }) => {
-  const taskId = task.id.toString();
+  const { id, text } = task;
+  const taskId = id.toString();
   const [isEditTaskOpen, setEditTaskOpen] = useState(false);
 
-  const onDeleteButtonClick = () => {
-    if (!window.confirm("Are you sure you want to delete this task?")) return;
-    onDelete(task);
+  const onEditClick = () => {
+    setEditTaskOpen(true);
   };
 
-  const onEditButtonClick = () => {
-    setEditTaskOpen(true);
+  const onDeleteClick = () => {
+    if (!window.confirm("Are you sure you want to delete this task?")) return;
+    onDelete(task);
   };
 
   return (
@@ -73,33 +56,32 @@ const Task = ({ task, index, onDelete, onEdit }) => {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
           >
-            <Icon>
-              <CardIcon />
-            </Icon>
-            <DropdownWrap>
-              <DropdownMenu icon={<DropdownIcon />}>
-                <DropdownButton type="button" onClick={onEditButtonClick}>
-                  Edit task
-                </DropdownButton>
-                <DropdownButton type="button" onClick={onDeleteButtonClick}>
-                  Delete task
-                </DropdownButton>
-              </DropdownMenu>
-            </DropdownWrap>
-            <TextContainer>
-              <Text>{task.text}</Text>
-            </TextContainer>
+            <ContextMenu.Trigger>
+              <ContainerWrap>
+                <Text>{text}</Text>
+              </ContainerWrap>
+              <ContextMenu.Menu id="context-root">
+                <ContextMenu.Item onClick={onEditClick}>
+                  <EditIcon />
+                  Edit
+                </ContextMenu.Item>
+                <ContextMenu.Item onClick={onDeleteClick}>
+                  <DeleteIcon />
+                  Delete
+                </ContextMenu.Item>
+              </ContextMenu.Menu>
+            </ContextMenu.Trigger>
           </Container>
         )}
       </Draggable>
-      <ModalPortal>
+      <Modal.Portal>
         <EditTaskModal
           show={isEditTaskOpen}
           setShow={setEditTaskOpen}
           task={task}
           onEdit={onEdit}
         />
-      </ModalPortal>
+      </Modal.Portal>
     </>
   );
 };
@@ -110,6 +92,7 @@ Task.propTypes = {
     prevId: PropTypes.number,
     taskColumnId: PropTypes.number,
     text: PropTypes.string,
+    createdAt: PropTypes.string,
   }).isRequired,
   index: PropTypes.number.isRequired,
   onDelete: PropTypes.func.isRequired,

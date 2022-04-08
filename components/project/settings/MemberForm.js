@@ -1,22 +1,76 @@
-import { useState } from "react";
+import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import { List, ListHeader, EmptyList } from "components/layout/List";
-import UserListItem from "components/layout/UserListItem";
+import RemoveIcon from "public/icons/close-lg.svg";
+import { NoStyleButton } from "components/layout/Button";
+import { Form } from "components/layout/Form";
 
-const MemberForm = ({ members, onRemove }) => {
-  const [memberList, setMemberList] = useState([...members]);
+const Item = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  color: ${({ theme }) => theme.colors.gray80};
 
-  const or = async (userId) => {
+  &:first-child {
+    padding: 0 0 1rem;
+  }
+
+  & ~ & {
+    border-top: 1px solid ${({ theme }) => theme.colors.gray20};
+  }
+`;
+
+const Info = styled.div`
+  flex: 1;
+`;
+
+const Name = styled.div`
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+`;
+
+const Email = styled.div`
+  font-size: 0.875rem;
+  color: ${({ theme }) => theme.colors.gray50};
+`;
+
+const RemoveButton = styled(NoStyleButton)`
+  width: 1em;
+  height: 1em;
+  padding: 0;
+  float: right;
+  font-size: 1em;
+  color: currentColor;
+
+  & > svg {
+    display: block;
+    fill: currentColor;
+  }
+`;
+
+const EmptyMessage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 6rem;
+  color: ${({ theme }) => theme.colors.darkgray70};
+  font-weight: 600;
+  border-radius: 4px;
+  background-color: ${({ theme }) => theme.colors.darkgray30};
+`;
+
+const MemberForm = ({ members, setMembers, onRemove }) => {
+  const handleRemove = async (userId) => {
     if (!window.confirm("Are you sure you want to remove this member?")) {
       return;
     }
     const response = await onRemove(userId);
     if (response.status === 200) {
-      const index = memberList.findIndex((member) => member.id === userId);
+      const index = members.findIndex((member) => member.id === userId);
       if (index !== -1) {
-        memberList.splice(index, 1);
-        setMemberList([...memberList]);
+        members.splice(index, 1);
+        setMembers([...members]);
       }
     } else if (response.status === 400) {
       alert("You can't remove admin");
@@ -25,20 +79,32 @@ const MemberForm = ({ members, onRemove }) => {
     }
   };
 
-  return memberList && memberList.length > 0 ? (
-    <List>
-      <ListHeader>{`${memberList.length} Members`}</ListHeader>
-      {memberList.map((member) => (
-        <UserListItem key={member.id} user={member} remove onRemove={or} />
-      ))}
-    </List>
-  ) : (
-    <EmptyList>No members in this project</EmptyList>
+  return (
+    <Form>
+      {members.length > 0 ? (
+        <div>
+          {members.map((member) => (
+            <Item key={member.id}>
+              <Info>
+                <Name>{member.name}</Name>
+                <Email>{member.email}</Email>
+              </Info>
+              <RemoveButton onClick={() => handleRemove(member.id)}>
+                <RemoveIcon />
+              </RemoveButton>
+            </Item>
+          ))}
+        </div>
+      ) : (
+        <EmptyMessage>No members in this project</EmptyMessage>
+      )}
+    </Form>
   );
 };
 
 MemberForm.propTypes = {
   members: PropTypes.arrayOf(PropTypes.object),
+  setMembers: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
 };
 
