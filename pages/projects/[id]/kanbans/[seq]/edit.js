@@ -95,9 +95,7 @@ const EditKanban = ({ project, kanban }) => {
           <HorizontalRule />
           <Form>
             <InputWrap>
-              <Label block required>
-                Name
-              </Label>
+              <Label block>Name</Label>
               <LabelHint>Must be between 2-50 characters</LabelHint>
               <Input
                 id="name"
