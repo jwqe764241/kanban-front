@@ -11,16 +11,17 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 4px;
-  background-color: ${({ theme }) => theme.colors.white};
+  height: 2.5rem;
+  padding: 0 0.5rem;
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.secondary};
 `;
 
-const Name = styled.span`
+const Name = styled.div`
   display: inline-block;
-  padding: 0.5rem;
-  margin-right: 0.5em;
+  margin-left: 0.5rem;
   font-weight: 700;
-  color: ${({ theme }) => theme.colors.darkgray70};
+  color: inherit;
   cursor: pointer;
 `;
 
@@ -30,18 +31,23 @@ const Edit = styled.div`
   margin-right: 0.5rem;
   font-size: 0.75rem;
   font-weight: 400;
-  color: ${({ theme }) => theme.colors.darkgray60};
+  color: inherit;
   cursor: pointer;
   transition: color 0.1s ease;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.darkgray70};
+    color: ${({ theme }) => theme.colors.gray30};
   }
 
   & > svg {
-    width: 1em;
-    height: 1em;
+    width: 0.875em;
+    height: 0.875em;
     margin-right: 0.25em;
+  }
+
+  & > span {
+    padding-bottom: 1px;
+    border-bottom: 1px solid;
   }
 `;
 

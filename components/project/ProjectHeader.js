@@ -11,14 +11,14 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 4px;
+  height: 2.5rem;
+  padding: 0 0.5rem;
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
-const Name = styled.span`
+const Name = styled.div`
   display: inline-block;
   padding: 0.5rem;
-  margin-right: 0.5em;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.darkgray70};
   cursor: pointer;

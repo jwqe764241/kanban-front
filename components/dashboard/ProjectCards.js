@@ -13,12 +13,12 @@ const CardContainer = styled.div`
   padding: 0.75rem 1rem;
   border-radius: 4px;
   color: ${({ theme }) => theme.colors.white};
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.secondary};
   cursor: pointer;
   transition: background-color 0.1s ease;
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.primaryHover};
+    background-color: ${({ theme }) => theme.colors.secondaryHover};
   }
 `;
 

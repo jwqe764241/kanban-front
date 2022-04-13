@@ -28,7 +28,7 @@ const Container = styled.div`
 const Body = styled.div`
   display: flex;
   flex: 1;
-  padding: 0.5rem;
+  padding: 0 0.5rem 0.5rem;
   overflow-x: auto;
   background-color: ${({ theme }) => theme.colors.secondary};
 

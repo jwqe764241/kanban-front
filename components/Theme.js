@@ -1,13 +1,14 @@
 const colors = {
-  primary: "#256c95",
-  primaryHover: "#1e5676",
-  primaryDark: "#1b486a",
-  primaryLight: "#5393bf",
-  primaryLightHover: "#3d7ba4",
-  secondary: "#205c7e",
-  secondaryDark: "#00578a",
-  secondaryLight: "#409ace",
-  secondaryLightHover: "#3088bb",
+  primary: "#205c7e",
+  primaryDark: "#00578a",
+  primaryLight: "#409ace",
+  primaryLightHover: "#3088bb",
+
+  secondary: "#256c95",
+  secondaryHover: "#1e5676",
+  secondaryDark: "#1b486a",
+  secondaryLight: "#5393bf",
+  secondaryLightHover: "#3d7ba4",
 
   white: "#ffffff",
   gray10: "#ebeaea",

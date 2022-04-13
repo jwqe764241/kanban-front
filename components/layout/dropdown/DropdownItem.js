@@ -15,7 +15,7 @@ const DropdownItem = styled.button`
 
   &:hover {
     color: ${({ theme }) => theme.colors.white};
-    background-color: ${({ theme }) => theme.colors.primary};
+    background-color: ${({ theme }) => theme.colors.secondaryLight};
   }
 
   &:first-child {

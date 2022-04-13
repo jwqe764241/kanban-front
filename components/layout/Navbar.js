@@ -12,7 +12,7 @@ import SignoutIcon from "public/icons/signout.svg";
 const Container = styled.nav`
   display: flex;
   justify-content: space-between;
-  padding: 4px;
+  padding: 0.25rem;
   z-index: 10;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.white};
@@ -22,7 +22,7 @@ const ButtonContainer = styled.div`
   display: flex;
 `;
 
-const ButtonItem = styled.span`
+const ButtonItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -31,11 +31,11 @@ const ButtonItem = styled.span`
   text-align: center;
   cursor: pointer;
   border-radius: 4px;
-  background-color: ${({ theme }) => theme.colors.primaryLight};
+  background-color: ${({ theme }) => theme.colors.secondaryLight};
   transition: background-color 0.1s ease;
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.primaryLightHover};
+    background-color: ${({ theme }) => theme.colors.secondaryLightHover};
   }
 
   svg {
