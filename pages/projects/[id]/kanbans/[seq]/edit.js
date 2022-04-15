@@ -42,7 +42,6 @@ const EditKanban = ({ project, kanban }) => {
   const dispatch = useDispatch();
   const requester = createRequester(axios, dispatch);
 
-  const [isProgressed, setIsProgressed] = useState(false);
   const [data, setData] = useState({
     name: kanban.name,
     description: kanban.description,
@@ -57,11 +56,13 @@ const EditKanban = ({ project, kanban }) => {
     });
   };
 
-  const handleUpdate = async () => {
-    setIsProgressed(true);
-
+  const handleUpdateName = async () => {
     try {
-      await requester.patch(`/projects/${id}/kanbans/${seq}`, data, token);
+      await requester.patch(
+        `/projects/${id}/kanbans/${seq}/name`,
+        { name: data.name },
+        token,
+      );
       router.push(`/projects/${id}/kanbans/${seq}`);
     } catch (e) {
       const errorResponse = e.response;
@@ -73,8 +74,26 @@ const EditKanban = ({ project, kanban }) => {
         alert("Unknown error.");
       }
     }
+  };
 
-    setIsProgressed(false);
+  const handleUpdateDescription = async () => {
+    try {
+      await requester.patch(
+        `/projects/${id}/kanbans/${seq}/description`,
+        { description: data.description },
+        token,
+      );
+      router.push(`/projects/${id}/kanbans/${seq}`);
+    } catch (e) {
+      const errorResponse = e.response;
+      if (errorResponse.status === 400) {
+        setErrors(errorResponse.data.data);
+      } else if (errorResponse.status === 403) {
+        alert("Use hanve no permission to do this.");
+      } else {
+        alert("Unknown error.");
+      }
+    }
   };
 
   const handleDelete = async () => {
@@ -107,6 +126,16 @@ const EditKanban = ({ project, kanban }) => {
                 errors={errors}
               />
             </InputWrap>
+            <SuccessButton
+              type="button"
+              style={{ width: "100px" }}
+              onClick={handleUpdateName}
+              disabled={!data.name}
+            >
+              Rename
+            </SuccessButton>
+          </Form>
+          <Form>
             <InputWrap>
               <Label block>Description</Label>
               <LabelHint>
@@ -123,12 +152,11 @@ const EditKanban = ({ project, kanban }) => {
             </InputWrap>
             <SuccessButton
               type="button"
-              style={{ width: "140px" }}
-              onClick={handleUpdate}
+              style={{ width: "100px" }}
+              onClick={handleUpdateDescription}
               disabled={!data.name}
-              doing={isProgressed}
             >
-              {isProgressed ? "Saving..." : "Save kanban"}
+              Update
             </SuccessButton>
           </Form>
           <HorizontalRule />
