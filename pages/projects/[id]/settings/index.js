@@ -54,7 +54,7 @@ const Settings = ({ project }) => {
       token,
     );
     if (response.status === 200) {
-      // router.push(`/projects/${id}/kanbans`);
+      router.reload();
     }
   };
 
@@ -72,7 +72,7 @@ const Settings = ({ project }) => {
       token,
     );
     if (response.status === 200) {
-      // router.push(`/projects/${id}/kanbans`);
+      router.reload();
     }
   };
 
