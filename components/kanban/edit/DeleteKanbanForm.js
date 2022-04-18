@@ -4,7 +4,7 @@ import { Form, InputWrap, Label, LabelHint } from "components/layout/Form";
 import { DangerButton } from "components/layout/Button";
 
 const DeleteKanbanForm = ({ name, onDelete }) => {
-  const handleDelete = () => {
+  const handleDeleteClick = () => {
     if (window.confirm("Sure you want to delete this kanban?")) {
       onDelete();
     }
@@ -19,7 +19,7 @@ const DeleteKanbanForm = ({ name, onDelete }) => {
           certain.
         </LabelHint>
       </InputWrap>
-      <DangerButton style={{ width: "140px" }} onClick={handleDelete}>
+      <DangerButton style={{ width: "140px" }} onClick={handleDeleteClick}>
         Delete kanban
       </DangerButton>
     </Form>

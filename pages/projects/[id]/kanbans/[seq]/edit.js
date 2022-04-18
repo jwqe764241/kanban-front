@@ -8,17 +8,10 @@ import wrapper from "core/store";
 import { parseCookie } from "core/utils";
 
 import KanbanHeader from "components/kanban/KanbanHeader";
-import DeleteKanbanForm from "components/kanban/DeleteKanbanForm";
-import {
-  Form,
-  InputWrap,
-  Label,
-  LabelHint,
-  Input,
-  TextArea,
-} from "components/layout/Form";
+import RenameForm from "components/kanban/edit/RenameForm";
+import UpdateDescriptionForm from "components/kanban/edit/UpdateDescriptionForm";
+import DeleteKanbanForm from "components/kanban/edit/DeleteKanbanForm";
 import { HorizontalRule, Title } from "components/layout/Page";
-import { SuccessButton } from "components/layout/Button";
 
 const Container = styled.div`
   display: flex;
@@ -41,58 +34,44 @@ const EditKanban = ({ project, kanban }) => {
   const { token } = useSelector((state) => state);
   const dispatch = useDispatch();
   const requester = createRequester(axios, dispatch);
-
   const [data, setData] = useState({
     name: kanban.name,
     description: kanban.description,
   });
-  const [errors, setErrors] = useState();
 
-  const onChange = (e) => {
-    const { name, value } = e.target;
+  const handleNameChange = (e) => {
     setData({
       ...data,
-      [name]: value,
+      name: e.target.value,
     });
   };
 
-  const handleUpdateName = async () => {
-    try {
-      await requester.patch(
-        `/projects/${id}/kanbans/${seq}/name`,
-        { name: data.name },
-        token,
-      );
-      router.push(`/projects/${id}/kanbans/${seq}`);
-    } catch (e) {
-      const errorResponse = e.response;
-      if (errorResponse.status === 400) {
-        setErrors(errorResponse.data.data);
-      } else if (errorResponse.status === 403) {
-        alert("Use hanve no permission to do this.");
-      } else {
-        alert("Unknown error.");
-      }
+  const handleRename = async () => {
+    const response = await requester.patch(
+      `/projects/${id}/kanbans/${seq}/name`,
+      { name: data.name },
+      token,
+    );
+    if (response.status === 200) {
+      router.reload();
     }
   };
 
-  const handleUpdateDescription = async () => {
-    try {
-      await requester.patch(
-        `/projects/${id}/kanbans/${seq}/description`,
-        { description: data.description },
-        token,
-      );
-      router.push(`/projects/${id}/kanbans/${seq}`);
-    } catch (e) {
-      const errorResponse = e.response;
-      if (errorResponse.status === 400) {
-        setErrors(errorResponse.data.data);
-      } else if (errorResponse.status === 403) {
-        alert("Use hanve no permission to do this.");
-      } else {
-        alert("Unknown error.");
-      }
+  const handleDescriptionChange = (e) => {
+    setData({
+      ...data,
+      description: e.target.value,
+    });
+  };
+
+  const handleDescriptionUpdate = async () => {
+    const response = await requester.patch(
+      `/projects/${id}/kanbans/${seq}/description`,
+      { description: data.description },
+      token,
+    );
+    if (response.status === 200) {
+      router.reload();
     }
   };
 
@@ -112,53 +91,18 @@ const EditKanban = ({ project, kanban }) => {
         <Wrap>
           <Title>{`Edit ${kanban.name}`}</Title>
           <HorizontalRule />
-          <Form>
-            <InputWrap>
-              <Label block>Name</Label>
-              <LabelHint>Must be between 2-50 characters</LabelHint>
-              <Input
-                id="name"
-                type="text"
-                name="name"
-                style={{ width: "300px" }}
-                value={data.name}
-                onChange={onChange}
-                errors={errors}
-              />
-            </InputWrap>
-            <SuccessButton
-              type="button"
-              style={{ width: "100px" }}
-              onClick={handleUpdateName}
-              disabled={!data.name}
-            >
-              Rename
-            </SuccessButton>
-          </Form>
-          <Form>
-            <InputWrap>
-              <Label block>Description</Label>
-              <LabelHint>
-                Must be less than or equal to 200 characters
-              </LabelHint>
-              <TextArea
-                id="description"
-                name="description"
-                style={{ height: "100px" }}
-                value={data.description}
-                onChange={onChange}
-                errors={errors}
-              />
-            </InputWrap>
-            <SuccessButton
-              type="button"
-              style={{ width: "100px" }}
-              onClick={handleUpdateDescription}
-              disabled={!data.name}
-            >
-              Update
-            </SuccessButton>
-          </Form>
+          <RenameForm
+            name={data.name}
+            onNameChange={handleNameChange}
+            onRename={handleRename}
+            disabled={!data.name || data.name === kanban.name}
+          />
+          <UpdateDescriptionForm
+            description={data.description}
+            onDescriptionChange={handleDescriptionChange}
+            onDescriptionUpdate={handleDescriptionUpdate}
+            disabled={data.description === kanban.description}
+          />
           <HorizontalRule />
           <DeleteKanbanForm name={kanban.name} onDelete={handleDelete} />
         </Wrap>
