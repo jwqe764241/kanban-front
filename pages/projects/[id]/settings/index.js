@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import PropTypes from "prop-types";
@@ -34,12 +35,23 @@ const Settings = ({ project }) => {
   const { token } = useSelector((state) => state);
   const dispatch = useDispatch();
   const requester = createRequester(axios, dispatch);
+  const [data, setData] = useState({
+    name: project.name,
+    description: project.description,
+  });
 
-  const onRename = async (data) => {
+  const handleNameChange = (e) => {
+    setData({
+      ...data,
+      name: e.target.value,
+    });
+  };
+
+  const handleRename = async () => {
     try {
       const response = await requester.patch(
         `/projects/${id}/name`,
-        data,
+        { name: data.name },
         token,
       );
       if (response.status === 200) {
@@ -51,11 +63,18 @@ const Settings = ({ project }) => {
     }
   };
 
-  const onUpdateDescription = async (data) => {
+  const handleDescriptionChange = (e) => {
+    setData({
+      ...data,
+      description: e.target.value,
+    });
+  };
+
+  const handleDescriptionUpdate = async () => {
     try {
       const response = await requester.patch(
         `/projects/${id}/description`,
-        data,
+        { description: data.description },
         token,
       );
       return response;
@@ -85,10 +104,17 @@ const Settings = ({ project }) => {
         <Wrap>
           <Title>Settings</Title>
           <HorizontalRule />
-          <RenameForm name={project.name} onRename={onRename} />
+          <RenameForm
+            name={data.name}
+            onNameChange={handleNameChange}
+            onRename={handleRename}
+            disabled={!data.name || data.name === project.name}
+          />
           <UpdateDescriptionForm
-            description={project.description}
-            onUpdate={onUpdateDescription}
+            description={data.description}
+            onDescriptionChange={handleDescriptionChange}
+            onDescriptionUpdate={handleDescriptionUpdate}
+            disabled={data.description === project.description}
           />
           <HorizontalRule />
           <DeleteForm onDelete={onDelete} />

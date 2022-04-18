@@ -10,25 +10,23 @@ import {
 } from "components/layout/Form";
 import { SuccessButton } from "components/layout/Button";
 
-const UpdateDescriptionForm = ({ description, onUpdate }) => {
-  const [data, setData] = useState({ description });
+const UpdateDescriptionForm = ({
+  description,
+  onDescriptionChange,
+  onDescriptionUpdate,
+  disabled,
+}) => {
   const [errors, setErrors] = useState();
 
-  const onChange = (e) => {
-    const { target } = e;
-    setData({
-      ...data,
-      [target.name]: target.value,
-    });
-  };
-
-  const onUpdateClick = async () => {
-    const response = await onUpdate(data);
+  const handleUpdateClick = async () => {
+    const response = await onDescriptionUpdate();
     const { status } = response;
     if (status === 400) {
       setErrors(response.data.data);
     }
   };
+
+  // 이름이 변경되지 않았을 때 버튼이 disabled 되어야 함
 
   return (
     <Form>
@@ -39,15 +37,15 @@ const UpdateDescriptionForm = ({ description, onUpdate }) => {
           id="description"
           name="description"
           style={{ height: "100px" }}
-          value={data.description}
+          value={description}
           errors={errors}
-          onChange={onChange}
+          onChange={onDescriptionChange}
         />
       </InputWrap>
       <SuccessButton
         style={{ width: "100px" }}
-        onClick={onUpdateClick}
-        disabled={data.description === description}
+        onClick={handleUpdateClick}
+        disabled={disabled}
       >
         Update
       </SuccessButton>
@@ -57,11 +55,14 @@ const UpdateDescriptionForm = ({ description, onUpdate }) => {
 
 UpdateDescriptionForm.propTypes = {
   description: PropTypes.string,
-  onUpdate: PropTypes.func.isRequired,
+  onDescriptionChange: PropTypes.func.isRequired,
+  onDescriptionUpdate: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
 };
 
 UpdateDescriptionForm.defaultProps = {
   description: "",
+  disabled: false,
 };
 
 export default UpdateDescriptionForm;

@@ -10,20 +10,11 @@ import {
 } from "components/layout/Form";
 import { SecondaryButton } from "components/layout/Button";
 
-const RenameForm = ({ name, onRename }) => {
-  const [data, setData] = useState({ name });
+const RenameForm = ({ name, onNameChange, onRename, disabled }) => {
   const [errors, setErrors] = useState();
 
-  const onChange = (e) => {
-    const { target } = e;
-    setData({
-      ...data,
-      [target.name]: target.value,
-    });
-  };
-
-  const onRenameClick = async () => {
-    const response = await onRename(data);
+  const handleRenameClick = async () => {
+    const response = await onRename();
     const { status } = response;
     if (status === 400) {
       setErrors(response.data.data);
@@ -40,15 +31,15 @@ const RenameForm = ({ name, onRename }) => {
           type="text"
           name="name"
           style={{ width: "300px" }}
-          value={data.name}
+          value={name}
           errors={errors}
-          onChange={onChange}
+          onChange={onNameChange}
         />
       </InputWrap>
       <SecondaryButton
         style={{ width: "100px" }}
-        onClick={onRenameClick}
-        disabled={!data.name || data.name === name}
+        onClick={handleRenameClick}
+        disabled={disabled}
       >
         Rename
       </SecondaryButton>
@@ -58,11 +49,14 @@ const RenameForm = ({ name, onRename }) => {
 
 RenameForm.propTypes = {
   name: PropTypes.string,
+  onNameChange: PropTypes.func.isRequired,
   onRename: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
 };
 
 RenameForm.defaultProps = {
   name: "",
+  disabled: false,
 };
 
 export default RenameForm;
