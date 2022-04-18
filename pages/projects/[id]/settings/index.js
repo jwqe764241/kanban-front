@@ -48,18 +48,13 @@ const Settings = ({ project }) => {
   };
 
   const handleRename = async () => {
-    try {
-      const response = await requester.patch(
-        `/projects/${id}/name`,
-        { name: data.name },
-        token,
-      );
-      if (response.status === 200) {
-        router.push(`/projects/${id}/kanbans`);
-      }
-      return response;
-    } catch (e) {
-      return e;
+    const response = await requester.patch(
+      `/projects/${id}/name`,
+      { name: data.name },
+      token,
+    );
+    if (response.status === 200) {
+      // router.push(`/projects/${id}/kanbans`);
     }
   };
 
@@ -71,15 +66,13 @@ const Settings = ({ project }) => {
   };
 
   const handleDescriptionUpdate = async () => {
-    try {
-      const response = await requester.patch(
-        `/projects/${id}/description`,
-        { description: data.description },
-        token,
-      );
-      return response;
-    } catch (e) {
-      return e;
+    const response = await requester.patch(
+      `/projects/${id}/description`,
+      { description: data.description },
+      token,
+    );
+    if (response.status === 200) {
+      // router.push(`/projects/${id}/kanbans`);
     }
   };
 

@@ -14,10 +14,14 @@ const RenameForm = ({ name, onNameChange, onRename, disabled }) => {
   const [errors, setErrors] = useState();
 
   const handleRenameClick = async () => {
-    const response = await onRename();
-    const { status } = response;
-    if (status === 400) {
-      setErrors(response.data.data);
+    try {
+      await onRename();
+    } catch (e) {
+      const { response } = e;
+      const { status } = response;
+      if (status === 400) {
+        setErrors(response.data.data);
+      }
     }
   };
 

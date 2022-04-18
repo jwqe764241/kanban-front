@@ -19,14 +19,16 @@ const UpdateDescriptionForm = ({
   const [errors, setErrors] = useState();
 
   const handleUpdateClick = async () => {
-    const response = await onDescriptionUpdate();
-    const { status } = response;
-    if (status === 400) {
-      setErrors(response.data.data);
+    try {
+      await onDescriptionUpdate();
+    } catch (e) {
+      const { response } = e;
+      const { status } = response;
+      if (status === 400) {
+        setErrors(response.data.data);
+      }
     }
   };
-
-  // 이름이 변경되지 않았을 때 버튼이 disabled 되어야 함
 
   return (
     <Form>
