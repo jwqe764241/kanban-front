@@ -76,11 +76,12 @@ const EditKanban = ({ project, kanban }) => {
   };
 
   const handleDelete = async () => {
-    try {
-      await requester.delete(`/projects/${id}/kanbans/${seq}`, token);
+    const response = await requester.delete(
+      `/projects/${id}/kanbans/${seq}`,
+      token,
+    );
+    if (response.status === 200) {
       router.push(`/projects/${id}/kanbans`);
-    } catch (e) {
-      alert("Unknown error.");
     }
   };
 

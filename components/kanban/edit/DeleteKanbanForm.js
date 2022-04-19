@@ -6,7 +6,11 @@ import { DangerButton } from "components/layout/Button";
 const DeleteKanbanForm = ({ name, onDelete }) => {
   const handleDeleteClick = () => {
     if (window.confirm("Sure you want to delete this kanban?")) {
-      onDelete();
+      try {
+        onDelete();
+      } catch (e) {
+        alert("Unknown error.");
+      }
     }
   };
 
