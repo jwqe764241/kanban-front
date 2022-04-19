@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import wrapper from "core/store";
 import { parseCookie } from "core/utils";
 import axios, { createRequester } from "core/apiAxios";
@@ -134,6 +135,16 @@ const NewKanban = ({ project }) => {
       </Container>
     </>
   );
+};
+
+NewKanban.propTypes = {
+  project: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string,
+    description: PropTypes.string,
+    registerUsername: PropTypes.string,
+    createdAt: PropTypes.string,
+  }).isRequired,
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(

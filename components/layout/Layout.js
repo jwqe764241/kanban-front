@@ -1,9 +1,9 @@
 import styled, { ThemeProvider } from "styled-components";
+import PropTypes from "prop-types";
 
 import GlobalStyle from "components/GlobalStyle";
-import theme from "components/theme";
+import theme from "components/Theme";
 import Navbar from "components/layout/Navbar";
-import { Children } from "react";
 
 const Main = styled.div`
   display: flex;
@@ -24,6 +24,14 @@ export const NoStyleLayout = ({ children }) => {
   );
 };
 
+NoStyleLayout.propTypes = {
+  children: PropTypes.node,
+};
+
+NoStyleLayout.defaultProps = {
+  children: <></>,
+};
+
 export const DefaultLayout = ({ children }) => {
   return (
     <>
@@ -37,4 +45,12 @@ export const DefaultLayout = ({ children }) => {
       </ThemeProvider>
     </>
   );
+};
+
+DefaultLayout.propTypes = {
+  children: PropTypes.node,
+};
+
+DefaultLayout.defaultProps = {
+  children: <></>,
 };
