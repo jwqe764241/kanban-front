@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 
 import Alert from "@material-ui/lab/Alert";
 
+import { NoStyleLayout } from "components/layout/Layout";
 import { Input, InputWrap } from "components/layout/Form";
 import { SuccessButton } from "components/layout/Button";
 
@@ -153,6 +154,10 @@ const Login = () => {
       </Form>
     </Panel>
   );
+};
+
+Login.getLayout = (page) => {
+  return <NoStyleLayout>{page}</NoStyleLayout>;
 };
 
 export const getServerSideProps = async (context) => {
