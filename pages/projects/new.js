@@ -57,7 +57,7 @@ const New = () => {
     try {
       const response = await requester.post("/projects", data, token);
       if (response.status === 201) {
-        router.push("/");
+        router.push("/projects");
       }
     } catch (e) {
       const errorResponse = e.response;

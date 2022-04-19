@@ -33,7 +33,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     } catch (e) {
       return {
         redirect: {
-          destination: `/`,
+          destination: "/projects",
           permanent: false,
         },
       };

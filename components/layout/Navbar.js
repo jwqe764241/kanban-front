@@ -66,7 +66,7 @@ const Navbar = () => {
   return (
     <Container>
       <ButtonContainer>
-        <Link href="/">
+        <Link href="/projects">
           <ButtonItem>
             <HomeIcon />
           </ButtonItem>

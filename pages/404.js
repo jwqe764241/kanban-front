@@ -73,7 +73,7 @@ const Error404 = () => {
           removed.
         </Hint>
         <div>
-          <PageLink onClick={() => router.push("/")}>
+          <PageLink onClick={() => router.push("/projects")}>
             <span>Go to homepage</span>
             <ChevronRightIcon />
           </PageLink>

@@ -85,7 +85,7 @@ const Login = () => {
       if (response.status === 200) {
         const { token } = response.data;
         dispatch({ type: "UPDATE_TOKEN", payload: `${token}` });
-        router.push("/");
+        router.push("/projects");
       }
     } catch (e) {
       let message = "Unknown error. try again later.";
@@ -171,7 +171,7 @@ export const getServerSideProps = async (context) => {
 
   return {
     redirect: {
-      destination: "/",
+      destination: "/projects",
       permanent: false,
     },
   };

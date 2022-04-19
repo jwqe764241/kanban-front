@@ -82,7 +82,7 @@ const Settings = ({ project }) => {
     try {
       const response = await requester.delete(`/projects/${id}`, token);
       if (response.status === 200) {
-        router.push(`/`);
+        router.push("/projects");
       }
     } catch (e) {
       alert("Failed to delete project");
