@@ -14,14 +14,15 @@ const Container = styled.div`
   justify-content: space-between;
   height: 2.5rem;
   padding: 0 0.5rem;
-  background-color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.secondary};
 `;
 
 const Name = styled.div`
   display: inline-block;
   padding: 0.5rem;
   font-weight: 700;
-  color: ${({ theme }) => theme.colors.darkgray70};
+  color: inherit;
   cursor: pointer;
 `;
 
@@ -37,12 +38,12 @@ const IconButton = styled.div`
   align-items: center;
   font-size: 0.75rem;
   font-weight: 400;
-  color: ${({ theme }) => theme.colors.darkgray60};
+  color: inherit;
   cursor: pointer;
   transition: color 0.1s ease;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.darkgray70};
+    color: ${({ theme }) => theme.colors.gray30};
   }
 
   & > svg {
