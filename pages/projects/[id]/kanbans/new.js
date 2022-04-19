@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
+import wrapper from "core/store";
+import { parseCookie } from "core/utils";
 import axios, { createRequester } from "core/apiAxios";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -12,6 +14,7 @@ import {
   Input,
   TextArea,
 } from "components/layout/Form";
+import ProjectHeader from "components/project/ProjectHeader";
 import { HorizontalRule, Title, Description } from "components/layout/Page";
 import { SuccessButton } from "components/layout/Button";
 
@@ -30,7 +33,7 @@ const Wrap = styled.div`
   color: ${({ theme }) => theme.colors.darkgray70};
 `;
 
-const NewKanban = () => {
+const NewKanban = ({ project }) => {
   const router = useRouter();
   const { id } = router.query;
   const { token } = useSelector((state) => state);
@@ -80,52 +83,84 @@ const NewKanban = () => {
   };
 
   return (
-    <Container>
-      <Wrap>
-        <Title>New kanban</Title>
-        <Description>Create a new kanban.</Description>
-        <HorizontalRule />
-        <Form>
-          <InputWrap>
-            <Label block required>
-              Name
-            </Label>
-            <LabelHint>Must be between 2-50 characters</LabelHint>
-            <Input
-              id="name"
-              type="text"
-              name="name"
-              style={{ width: "300px" }}
-              value={data.name}
-              onChange={onChange}
-              errors={errors}
-            />
-          </InputWrap>
-          <InputWrap>
-            <Label block>Description</Label>
-            <LabelHint>Must be less than or equal to 200 characters</LabelHint>
-            <TextArea
-              id="description"
-              name="description"
-              style={{ height: "100px" }}
-              value={data.description}
-              onChange={onChange}
-              errors={errors}
-            />
-          </InputWrap>
-          <SuccessButton
-            type="button"
-            style={{ width: "140px" }}
-            onClick={handleCreate}
-            disabled={!data.name}
-            doing={isProgressed}
-          >
-            {isProgressed ? "Creating" : "Create kanban"}
-          </SuccessButton>
-        </Form>
-      </Wrap>
-    </Container>
+    <>
+      <ProjectHeader project={project} />
+      <Container>
+        <Wrap>
+          <Title>New kanban</Title>
+          <Description>Create a new kanban.</Description>
+          <HorizontalRule />
+          <Form>
+            <InputWrap>
+              <Label block required>
+                Name
+              </Label>
+              <LabelHint>Must be between 2-50 characters</LabelHint>
+              <Input
+                id="name"
+                type="text"
+                name="name"
+                style={{ width: "300px" }}
+                value={data.name}
+                onChange={onChange}
+                errors={errors}
+              />
+            </InputWrap>
+            <InputWrap>
+              <Label block>Description</Label>
+              <LabelHint>
+                Must be less than or equal to 200 characters
+              </LabelHint>
+              <TextArea
+                id="description"
+                name="description"
+                style={{ height: "100px" }}
+                value={data.description}
+                onChange={onChange}
+                errors={errors}
+              />
+            </InputWrap>
+            <SuccessButton
+              type="button"
+              style={{ width: "140px" }}
+              onClick={handleCreate}
+              disabled={!data.name}
+              doing={isProgressed}
+            >
+              {isProgressed ? "Creating" : "Create kanban"}
+            </SuccessButton>
+          </Form>
+        </Wrap>
+      </Container>
+    </>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async (context) => {
+    const { id } = context.query;
+    const cookies = parseCookie(context.req.headers.cookie);
+    const requester = createRequester(
+      axios,
+      store.dispatch,
+      cookies.REFRESH_TOKEN,
+    );
+
+    const { token } = store.getState();
+
+    try {
+      const response = await requester.get(`/projects/${id}`, token);
+      return {
+        props: {
+          project: response.data,
+        },
+      };
+    } catch (e) {
+      return {
+        notFound: true,
+      };
+    }
+  },
+);
 
 export default NewKanban;
