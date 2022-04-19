@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import PropTypes from "prop-types";
 
+import PlusIcon from "public/icons/plus.svg";
 import SettingIcon from "public/icons/setting.svg";
 import Modal from "components/layout/Modal";
 import ProjectInfoModal from "./ProjectInfoModal";
@@ -24,10 +25,16 @@ const Name = styled.div`
   cursor: pointer;
 `;
 
-const Settings = styled.div`
+const ButtonContainer = styled.div`
+  display: grid;
+  grid-auto-flow: column;
+  grid-column-gap: 1rem;
+  margin-right: 0.5rem;
+`;
+
+const IconButton = styled.div`
   display: flex;
   align-items: center;
-  margin-right: 0.5rem;
   font-size: 0.75rem;
   font-weight: 400;
   color: ${({ theme }) => theme.colors.darkgray60};
@@ -57,14 +64,20 @@ const ProjectHeader = ({ project }) => {
             <Name>{name}</Name>
           </Link>
         </div>
-        <div>
+        <ButtonContainer>
+          <Link href={`/projects/${id}/kanbans/new`}>
+            <IconButton>
+              <PlusIcon />
+              <span>New kanban</span>
+            </IconButton>
+          </Link>
           <Link href={`/projects/${id}/settings`}>
-            <Settings>
+            <IconButton>
               <SettingIcon />
               <span>Settings</span>
-            </Settings>
+            </IconButton>
           </Link>
-        </div>
+        </ButtonContainer>
       </Container>
       <Modal.Portal>
         <ProjectInfoModal
