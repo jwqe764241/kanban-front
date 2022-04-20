@@ -9,7 +9,7 @@ import { parseCookie } from "core/utils";
 import ProjectHeader from "components/project/ProjectHeader";
 import { HorizontalRule, Title } from "components/layout/Page";
 import Sidebar from "components/project/settings/Sidebar";
-import MemberForm from "components/project/settings/MemberForm";
+import MemberList from "components/project/settings/MemberList";
 
 const Container = styled.div`
   display: flex;
@@ -32,17 +32,18 @@ const MemberSettings = ({ project, members }) => {
   const requester = createRequester(axios, dispatch);
   const [memberList, setMemberList] = useState([...members]);
 
-  const onRemove = async (userId) => {
-    let response;
-    try {
-      response = await requester.delete(
-        `/projects/${project.id}/members/${userId}`,
-        token,
-      );
-    } catch (e) {
-      response = e.response;
+  const handleRemove = async (userId) => {
+    const response = await requester.delete(
+      `/projects/${project.id}/members/${userId}`,
+      token,
+    );
+    if (response.status === 200) {
+      const index = memberList.findIndex((member) => member.id === userId);
+      if (index !== -1) {
+        memberList.splice(index, 1);
+        setMemberList([...memberList]);
+      }
     }
-    return response;
   };
 
   return (
@@ -53,11 +54,7 @@ const MemberSettings = ({ project, members }) => {
         <Wrap>
           <Title>Members ({memberList.length})</Title>
           <HorizontalRule />
-          <MemberForm
-            members={memberList}
-            setMembers={setMemberList}
-            onRemove={onRemove}
-          />
+          <MemberList members={memberList} onRemove={handleRemove} />
         </Wrap>
       </Container>
     </>
