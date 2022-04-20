@@ -10,6 +10,7 @@ import ProjectHeader from "components/project/ProjectHeader";
 import { HorizontalRule, Title } from "components/layout/Page";
 import Sidebar from "components/project/settings/Sidebar";
 import InviteMemberForm from "components/project/settings/InviteMemberForm";
+import MemberList from "components/project/settings/MemberList";
 
 const Container = styled.div`
   display: flex;
@@ -32,7 +33,7 @@ const InvitationSettings = ({ project, invitations }) => {
   const requester = createRequester(axios, dispatch);
   const [invitationList, setInvitationList] = useState([...invitations]);
 
-  const onSuggest = async (value) => {
+  const handleSuggest = async (value) => {
     try {
       const response = await requester.get(
         `/projects/${project.id}/members/suggestions?q=${value}`,
@@ -44,31 +45,31 @@ const InvitationSettings = ({ project, invitations }) => {
     }
   };
 
-  const onInvite = async (user) => {
-    let response;
-    try {
-      response = await requester.post(
-        `/projects/${project.id}/invitations`,
-        { userId: user.id },
-        token,
-      );
-    } catch (e) {
-      response = e.response;
+  const handleInvite = async (user) => {
+    const response = await requester.post(
+      `/projects/${project.id}/invitations`,
+      { userId: user.id },
+      token,
+    );
+
+    if (response.status === 200) {
+      setInvitationList((oldArray) => [...oldArray, response.data]);
     }
-    return response;
   };
 
-  const onRemove = async (userId) => {
-    let response;
-    try {
-      response = await requester.delete(
-        `/projects/${project.id}/invitations/${userId}`,
-        token,
-      );
-    } catch (e) {
-      response = e.response;
+  const handleRemove = async (userId) => {
+    const response = await requester.delete(
+      `/projects/${project.id}/invitations/${userId}`,
+      token,
+    );
+
+    if (response.status === 200) {
+      const index = invitationList.findIndex((user) => user.id === userId);
+      if (index !== -1) {
+        invitationList.splice(index, 1);
+        setInvitationList([...invitationList]);
+      }
     }
-    return response;
   };
 
   return (
@@ -79,13 +80,8 @@ const InvitationSettings = ({ project, invitations }) => {
         <Wrap>
           <Title>Invitations ({invitationList.length})</Title>
           <HorizontalRule />
-          <InviteMemberForm
-            invitations={invitationList}
-            setInvitations={setInvitationList}
-            onSuggest={onSuggest}
-            onInvite={onInvite}
-            onRemove={onRemove}
-          />
+          <InviteMemberForm onSuggest={handleSuggest} onInvite={handleInvite} />
+          <MemberList members={invitationList} onRemove={handleRemove} />
         </Wrap>
       </Container>
     </>

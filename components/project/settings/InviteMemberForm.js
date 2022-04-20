@@ -2,140 +2,41 @@ import { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import RemoveIcon from "public/icons/close-lg.svg";
-import { SuccessButton, NoStyleButton } from "components/layout/Button";
-import { Form } from "components/layout/Form";
+import { SuccessButton } from "components/layout/Button";
 import Modal from "components/layout/Modal";
 import InviteUserModal from "components/project/members/InviteUserModal";
 
 const ButtonWrap = styled.div`
   display: flex;
   flex-direction: row-reverse;
-  margin-bottom: 1rem;
 `;
 
-const Item = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 0;
-  color: ${({ theme }) => theme.colors.gray80};
-
-  &:first-child {
-    padding: 0 0 1rem;
-  }
-
-  & ~ & {
-    border-top: 1px solid ${({ theme }) => theme.colors.gray20};
-  }
-`;
-
-const Info = styled.div`
-  flex: 1;
-`;
-
-const Name = styled.div`
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-`;
-
-const Email = styled.div`
-  font-size: 0.875rem;
-  color: ${({ theme }) => theme.colors.gray50};
-`;
-
-const RemoveButton = styled(NoStyleButton)`
-  width: 1em;
-  height: 1em;
-  padding: 0;
-  float: right;
-  font-size: 1em;
-  color: currentColor;
-
-  & > svg {
-    display: block;
-    fill: currentColor;
-  }
-`;
-
-const EmptyMessage = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 6rem;
-  color: ${({ theme }) => theme.colors.darkgray70};
-  font-weight: 600;
-  border-radius: 4px;
-  background-color: ${({ theme }) => theme.colors.darkgray30};
-`;
-
-const InviteMemberForm = ({
-  invitations,
-  setInvitations,
-  onSuggest,
-  onInvite,
-  onRemove,
-}) => {
+const InviteMemberForm = ({ onSuggest, onInvite }) => {
   const [isInviteUserOpen, setInviteUserOpen] = useState(false);
 
   const handleInvite = async (user) => {
-    const response = await onInvite(user);
-    if (response.status === 200) {
-      setInvitations((oldArray) => [...oldArray, response.data]);
-    } else if (response.status === 409) {
-      alert("User was already invited");
-    }
-  };
-
-  const handleRemove = async (userId) => {
-    if (!window.confirm("Are you sure you want to remove this user?")) {
-      return;
-    }
-    const response = await onRemove(userId);
-    if (response.status === 200) {
-      const index = invitations.findIndex(
-        (invitedUser) => invitedUser.id === userId,
-      );
-      if (index !== -1) {
-        invitations.splice(index, 1);
-        setInvitations([...invitations]);
+    try {
+      await onInvite(user);
+    } catch (e) {
+      const { response } = e;
+      if (response.status === 409) {
+        alert("User was already invited");
       }
-    } else if (response.status === 403) {
-      alert("You have no permission to do this");
     }
   };
 
   return (
     <>
-      <Form>
-        <ButtonWrap>
-          <SuccessButton
-            style={{ width: "140px" }}
-            onClick={() => {
-              setInviteUserOpen(true);
-            }}
-          >
-            Invite a member
-          </SuccessButton>
-        </ButtonWrap>
-        {invitations.length > 0 ? (
-          <div>
-            {invitations.map((member) => (
-              <Item>
-                <Info>
-                  <Name>{member.name}</Name>
-                  <Email>{member.email}</Email>
-                </Info>
-                <RemoveButton onClick={() => handleRemove(member.id)}>
-                  <RemoveIcon />
-                </RemoveButton>
-              </Item>
-            ))}
-          </div>
-        ) : (
-          <EmptyMessage>You haven&apos;t invited any users yet</EmptyMessage>
-        )}
-      </Form>
+      <ButtonWrap>
+        <SuccessButton
+          style={{ width: "140px" }}
+          onClick={() => {
+            setInviteUserOpen(true);
+          }}
+        >
+          Invite a member
+        </SuccessButton>
+      </ButtonWrap>
       <Modal.Portal>
         <InviteUserModal
           show={isInviteUserOpen}
@@ -149,15 +50,8 @@ const InviteMemberForm = ({
 };
 
 InviteMemberForm.propTypes = {
-  invitations: PropTypes.arrayOf(PropTypes.object),
-  setInvitations: PropTypes.func.isRequired,
   onSuggest: PropTypes.func.isRequired,
   onInvite: PropTypes.func.isRequired,
-  onRemove: PropTypes.func.isRequired,
-};
-
-InviteMemberForm.defaultProps = {
-  invitations: [],
 };
 
 export default InviteMemberForm;

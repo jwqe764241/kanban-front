@@ -12,45 +12,45 @@ const InviteUserModal = ({ show, setShow, onSuggest, onInvite }) => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isInviting, setInviting] = useState(false);
 
-  const close = () => {
+  const handleClose = () => {
     setSuggestionUsers(null);
     setSelectedUser(null);
     setInviting(false);
     setShow(false);
   };
 
-  const onSuggestionSelect = (user) => {
+  const handleSelectSuggest = (user) => {
     setSelectedUser(user);
   };
 
   let timer = null;
-  const onStartDelay = (e) => {
+  const handleSearchChange = (e) => {
     clearTimeout(timer);
     timer = setTimeout(async () => {
       const { value } = e.target;
       if (value) {
-        const data = await onSuggest(value);
-        setSuggestionUsers(data);
+        const users = await onSuggest(value);
+        setSuggestionUsers(users);
       } else {
         setSuggestionUsers(null);
       }
     }, 1000);
   };
 
-  const onInviteClick = () => {
+  const handleInviteClick = () => {
     if (selectedUser) {
       setInviting(() => !isInviting);
       onInvite(selectedUser);
       setInviting(() => !isInviting);
     }
-    close();
+    handleClose();
   };
 
   return (
-    <Modal show={show} onClose={close}>
+    <Modal show={show} onClose={handleClose}>
       <Modal.Header>
         <Modal.Title>Invite a member</Modal.Title>
-        <Modal.CloseButton onClick={close} />
+        <Modal.CloseButton onClick={handleClose} />
       </Modal.Header>
       <Modal.Body>
         {selectedUser ? (
@@ -65,16 +65,16 @@ const InviteUserModal = ({ show, setShow, onSuggest, onInvite }) => {
             <Input
               type="text"
               placeholder="Search by username"
-              onChange={onStartDelay}
+              onChange={handleSearchChange}
             />
             <SuggestionSelect
               list={suggestionUsers}
-              onSelect={onSuggestionSelect}
+              onSelect={handleSelectSuggest}
             />
           </Form>
         )}
         <SuccessButton
-          onClick={onInviteClick}
+          onClick={handleInviteClick}
           disabled={!!(selectedUser == null || isInviting)}
         >
           {selectedUser != null
