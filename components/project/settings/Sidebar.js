@@ -42,8 +42,8 @@ const Item = styled.li`
 const Sidebar = ({ id, activeMenu }) => {
   const list = [
     {
-      id: "options",
-      name: "Options",
+      id: "general",
+      name: "General",
       href: `/projects/${id}/settings`,
     },
     {

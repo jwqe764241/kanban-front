@@ -93,9 +93,9 @@ const Settings = ({ project }) => {
     <>
       <ProjectHeader project={project} />
       <Container>
-        <Sidebar id={project.id} activeMenu="options" />
+        <Sidebar id={project.id} activeMenu="general" />
         <Wrap>
-          <Title>Settings</Title>
+          <Title>General</Title>
           <HorizontalRule />
           <RenameForm
             name={data.name}
