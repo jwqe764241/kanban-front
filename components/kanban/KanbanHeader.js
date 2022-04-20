@@ -23,6 +23,11 @@ const Name = styled.div`
   font-weight: 700;
   color: inherit;
   cursor: pointer;
+  transition: color 0.1s ease;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.gray30};
+  }
 `;
 
 const Edit = styled.div`
