@@ -81,7 +81,11 @@ const InvitationSettings = ({ project, invitations }) => {
           <Title>Invitations ({invitationList.length})</Title>
           <HorizontalRule />
           <InviteMemberForm onSuggest={handleSuggest} onInvite={handleInvite} />
-          <MemberList members={invitationList} onRemove={handleRemove} />
+          <MemberList
+            members={invitationList}
+            onRemove={handleRemove}
+            emptyMessage="You haven't invited any users yet"
+          />
         </Wrap>
       </Container>
     </>

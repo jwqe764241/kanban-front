@@ -63,7 +63,7 @@ const EmptyMessage = styled.div`
   background-color: ${({ theme }) => theme.colors.darkgray30};
 `;
 
-const MemberList = ({ members, onRemove }) => {
+const MemberList = ({ members, onRemove, emptyMessage }) => {
   const handleRemove = async (userId) => {
     if (!window.confirm("Are you sure you want to remove this member?")) {
       return;
@@ -98,7 +98,7 @@ const MemberList = ({ members, onRemove }) => {
           ))}
         </div>
       ) : (
-        <EmptyMessage>No members in this project</EmptyMessage>
+        <EmptyMessage>{emptyMessage}</EmptyMessage>
       )}
     </Container>
   );
@@ -107,10 +107,12 @@ const MemberList = ({ members, onRemove }) => {
 MemberList.propTypes = {
   members: PropTypes.arrayOf(PropTypes.object),
   onRemove: PropTypes.func.isRequired,
+  emptyMessage: PropTypes.string,
 };
 
 MemberList.defaultProps = {
   members: [],
+  emptyMessage: "List is empty",
 };
 
 export default MemberList;

@@ -54,7 +54,11 @@ const MemberSettings = ({ project, members }) => {
         <Wrap>
           <Title>Members ({memberList.length})</Title>
           <HorizontalRule />
-          <MemberList members={memberList} onRemove={handleRemove} />
+          <MemberList
+            members={memberList}
+            onRemove={handleRemove}
+            emptyMessage="No members in this project"
+          />
         </Wrap>
       </Container>
     </>
