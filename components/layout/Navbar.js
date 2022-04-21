@@ -116,7 +116,11 @@ Navbar.propTypes = {
     name: PropTypes.string,
     description: PropTypes.string,
     createdAt: PropTypes.string,
-  }).isRequired,
+  }),
+};
+
+Navbar.defaultProps = {
+  kanban: null,
 };
 
 export default Navbar;
