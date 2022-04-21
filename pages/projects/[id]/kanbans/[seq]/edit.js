@@ -12,6 +12,7 @@ import RenameForm from "components/kanban/edit/RenameForm";
 import UpdateDescriptionForm from "components/kanban/edit/UpdateDescriptionForm";
 import DeleteKanbanForm from "components/kanban/edit/DeleteKanbanForm";
 import { HorizontalRule, Title } from "components/layout/Page";
+import { DefaultLayout } from "components/layout/Layout";
 
 const Container = styled.div`
   display: flex;
@@ -127,6 +128,12 @@ EditKanban.propTypes = {
     description: PropTypes.string.isRequired,
     createdAt: PropTypes.string.isRequired,
   }).isRequired,
+};
+
+EditKanban.getLayout = (page) => {
+  const { props } = page;
+  const { kanban } = props;
+  return <DefaultLayout kanban={kanban}>{page}</DefaultLayout>;
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(

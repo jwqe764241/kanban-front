@@ -17,6 +17,7 @@ import PlusIcon from "public/icons/plus.svg";
 import { NoStyleButton } from "components/layout/Button";
 import Modal from "components/layout/Modal";
 import AddColumnModal from "components/kanban/AddColumnModal";
+import { DefaultLayout } from "components/layout/Layout";
 
 const Container = styled.div`
   flex: 1;
@@ -387,6 +388,12 @@ Kanban.propTypes = {
     description: PropTypes.string,
     createdAt: PropTypes.string,
   }).isRequired,
+};
+
+Kanban.getLayout = (page) => {
+  const { props } = page;
+  const { kanban } = props;
+  return <DefaultLayout kanban={kanban}>{page}</DefaultLayout>;
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(

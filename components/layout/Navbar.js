@@ -1,9 +1,11 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import Link from "next/link";
 import axios from "core/apiAxios";
 
 import Dropdown from "components/layout/Dropdown";
+import BackIcon from "public/icons/back.svg";
 import HomeIcon from "public/icons/home.svg";
 import PlusIcon from "public/icons/plus.svg";
 import ListIcon from "public/icons/list.svg";
@@ -19,7 +21,9 @@ const Container = styled.nav`
 `;
 
 const ButtonContainer = styled.div`
-  display: flex;
+  display: grid;
+  grid-auto-flow: column;
+  grid-column-gap: 0.5rem;
 `;
 
 const ButtonItem = styled.div`
@@ -45,7 +49,7 @@ const ButtonItem = styled.div`
   }
 `;
 
-const Navbar = () => {
+const Navbar = ({ kanban }) => {
   const router = useRouter();
 
   const onSignout = async () => {
@@ -66,6 +70,15 @@ const Navbar = () => {
   return (
     <Container>
       <ButtonContainer>
+        {kanban ? (
+          <Link href={`/projects/${kanban.projectId}/kanbans`}>
+            <ButtonItem>
+              <BackIcon />
+            </ButtonItem>
+          </Link>
+        ) : (
+          <></>
+        )}
         <Link href="/projects">
           <ButtonItem>
             <HomeIcon />
@@ -74,7 +87,7 @@ const Navbar = () => {
       </ButtonContainer>
       <ButtonContainer>
         <Link href="/projects/new">
-          <ButtonItem style={{ marginRight: "0.5rem" }}>
+          <ButtonItem>
             <PlusIcon />
           </ButtonItem>
         </Link>
@@ -94,6 +107,16 @@ const Navbar = () => {
       </ButtonContainer>
     </Container>
   );
+};
+
+Navbar.propTypes = {
+  kanban: PropTypes.shape({
+    projectId: PropTypes.number,
+    sequenceId: PropTypes.number,
+    name: PropTypes.string,
+    description: PropTypes.string,
+    createdAt: PropTypes.string,
+  }).isRequired,
 };
 
 export default Navbar;

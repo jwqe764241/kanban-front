@@ -32,13 +32,13 @@ NoStyleLayout.defaultProps = {
   children: <></>,
 };
 
-export const DefaultLayout = ({ children }) => {
+export const DefaultLayout = ({ kanban, children }) => {
   return (
     <>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
         <Main>
-          <Navbar />
+          <Navbar kanban={kanban} />
           {children}
         </Main>
         <div id="modal-root" />
@@ -48,9 +48,17 @@ export const DefaultLayout = ({ children }) => {
 };
 
 DefaultLayout.propTypes = {
+  kanban: PropTypes.shape({
+    projectId: PropTypes.number,
+    sequenceId: PropTypes.number,
+    name: PropTypes.string,
+    description: PropTypes.string,
+    createdAt: PropTypes.string,
+  }),
   children: PropTypes.node,
 };
 
 DefaultLayout.defaultProps = {
+  kanban: null,
   children: <></>,
 };
