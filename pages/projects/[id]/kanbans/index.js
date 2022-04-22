@@ -12,12 +12,16 @@ import ProjectHeader from "components/project/ProjectHeader";
 import KanbanCards from "components/project/KanbanCards";
 
 const Container = styled.div`
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0;
   overflow-y: auto;
 `;
 
-const CardContainer = styled.div`
-  padding: 2rem 5rem;
+const Wrap = styled.div`
+  width: 100%;
+  padding: 0 2rem;
 `;
 
 const Title = styled.div`
@@ -53,27 +57,26 @@ const NewKanbanLink = styled.div`
 `;
 
 const KanbanList = ({ project, kanbans }) => {
-  // const router = useRouter();
-  // const { id } = router.query;
-
   return (
-    <Container>
+    <>
       <ProjectHeader project={project} />
-      <CardContainer>
-        <Title>
-          <KanbanIcon />
-          <span>Kanbans</span>
-        </Title>
-        <KanbanCards.Grid>
-          {kanbans.map((kanban) => (
-            <KanbanCards.Card key={kanban.sequenceId} kanban={kanban} />
-          ))}
-          <Link href={`/projects/${project.id}/kanbans/new`}>
-            <NewKanbanLink>Create new kanban...</NewKanbanLink>
-          </Link>
-        </KanbanCards.Grid>
-      </CardContainer>
-    </Container>
+      <Container>
+        <Wrap>
+          <Title>
+            <KanbanIcon />
+            <span>Kanbans</span>
+          </Title>
+          <KanbanCards.Grid>
+            {kanbans.map((kanban) => (
+              <KanbanCards.Card key={kanban.sequenceId} kanban={kanban} />
+            ))}
+            <Link href={`/projects/${project.id}/kanbans/new`}>
+              <NewKanbanLink>Create new kanban...</NewKanbanLink>
+            </Link>
+          </KanbanCards.Grid>
+        </Wrap>
+      </Container>
+    </>
   );
 };
 

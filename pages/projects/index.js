@@ -10,12 +10,16 @@ import ProjectIcon from "public/icons/project.svg";
 import ProjectCards from "components/dashboard/ProjectCards";
 
 const Container = styled.div`
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0;
   overflow-y: auto;
 `;
 
-const CardContainer = styled.div`
-  padding: 2rem 5rem;
+const Wrap = styled.div`
+  width: 100%;
+  padding: 0 2rem;
 `;
 
 const Title = styled.div`
@@ -53,7 +57,7 @@ const NewProjectLink = styled.div`
 const Dashboard = ({ projects }) => {
   return (
     <Container>
-      <CardContainer>
+      <Wrap>
         <Title>
           <ProjectIcon />
           <span>Your Projects</span>
@@ -66,7 +70,7 @@ const Dashboard = ({ projects }) => {
             <NewProjectLink>Create new project...</NewProjectLink>
           </Link>
         </ProjectCards.Grid>
-      </CardContainer>
+      </Wrap>
     </Container>
   );
 };
