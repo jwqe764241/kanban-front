@@ -5,8 +5,7 @@ import axios from "core/apiAxios";
 import { parseCookie } from "core/utils";
 import { useDispatch } from "react-redux";
 
-import Alert from "@material-ui/lab/Alert";
-
+import Error from "components/layout/Error";
 import { NoStyleLayout } from "components/layout/Layout";
 import { Input, InputWrap } from "components/layout/Form";
 import { SuccessButton } from "components/layout/Button";
@@ -49,10 +48,6 @@ const Label = styled.label`
   display: block;
   font-size: 14px;
   margin-bottom: 10px;
-`;
-
-const AlertPanel = styled.div`
-  margin: 15px 0px;
 `;
 
 const Login = () => {
@@ -113,13 +108,7 @@ const Login = () => {
         <FormHeader>
           <HeaderText>Sign in</HeaderText>
         </FormHeader>
-        {isLoginFailed.status ? (
-          <AlertPanel>
-            <Alert severity="error">{isLoginFailed.message}</Alert>
-          </AlertPanel>
-        ) : (
-          <></>
-        )}
+        {isLoginFailed.status ? <Error>{isLoginFailed.message}</Error> : <></>}
         <FormBody>
           <InputWrap style={{ marginBottom: "15px" }}>
             <Label htmlFor="username">Username</Label>
