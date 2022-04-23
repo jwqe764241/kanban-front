@@ -1,60 +1,65 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-import { RemoveIcon } from "components/layout/Icon";
+import RemoveIcon from "public/icons/close-lg.svg";
 import { NoStyleButton } from "components/layout/Button";
 
-const RemoveButton = ({ onClick }) => {
-  return (
-    <NoStyleButton
-      style={{ float: "right", padding: 0 }}
-      type="button"
-      onClick={onClick}
-    >
-      <RemoveIcon style={{ verticalAlign: "baseline" }} />
-    </NoStyleButton>
-  );
-};
-
-RemoveButton.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
-
-const Container = styled.div`
-  padding: 10px;
-  border: 1px solid #e1e4e8;
-  border-radius: 6px;
+const Wrap = styled.div`
+  margin-bottom: 1rem;
+  border: 1px solid ${({ theme }) => theme.colors.gray20};
+  border-radius: 4px;
+  font-size: 0.875rem;
 `;
 
-const FlexContainer = styled.div`
+const Container = styled.div`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  color: ${({ theme }) => theme.colors.gray80};
+`;
+
+const Info = styled.div`
+  flex: 1;
 `;
 
 const Name = styled.div`
-  font-size: 14px;
-  font-weight: 400;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 `;
 
-const Login = styled.div`
-  font-size: 12px;
-  font-weight: 300;
-  color: #6a737d;
-  padding-top: 5px;
+const Username = styled.div`
+  color: ${({ theme }) => theme.colors.gray50};
+`;
+
+const RemoveButton = styled(NoStyleButton)`
+  width: 1em;
+  height: 1em;
+  padding: 0;
+  float: right;
+  font-size: 1em;
+  color: currentColor;
+
+  & > svg {
+    display: block;
+    fill: currentColor;
+  }
 `;
 
 const SelectedUser = ({ user, onCancel }) => {
   return (
-    <Container>
-      <FlexContainer>
-        <div style={{ width: "95%" }}>
+    <Wrap>
+      <Container>
+        <Info>
           <Name>{user.name}</Name>
-          <Login>{user.login}</Login>
-        </div>
-        <div style={{ width: "5%" }}>
-          <RemoveButton style={{ marginTop: "5px" }} onClick={onCancel} />
-        </div>
-      </FlexContainer>
-    </Container>
+          <Username>{user.username}</Username>
+        </Info>
+
+        <RemoveButton onClick={onCancel}>
+          <RemoveIcon />
+        </RemoveButton>
+      </Container>
+    </Wrap>
   );
 };
 
@@ -62,7 +67,7 @@ SelectedUser.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
-    login: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
   }).isRequired,
   onCancel: PropTypes.func.isRequired,
 };

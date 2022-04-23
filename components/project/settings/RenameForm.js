@@ -1,59 +1,66 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-import { InputWrap, Label, Input } from "components/layout/Form";
+import {
+  Form,
+  InputWrap,
+  Label,
+  LabelHint,
+  Input,
+} from "components/layout/Form";
 import { SecondaryButton } from "components/layout/Button";
 
-const RenameForm = ({ name, onRename }) => {
-  const [data, setData] = useState({ name });
+const RenameForm = ({ name, onNameChange, onRename, disabled }) => {
   const [errors, setErrors] = useState();
 
-  const onChange = (e) => {
-    const { target } = e;
-    setData({
-      ...data,
-      [target.name]: target.value,
-    });
-  };
-
-  const onRenameClick = async () => {
-    const response = await onRename(data);
-    const { status } = response;
-    if (status === 400) {
-      setErrors(response.data.data);
+  const handleRenameClick = async () => {
+    try {
+      await onRename();
+    } catch (e) {
+      const { response } = e;
+      const { status } = response;
+      if (status === 400) {
+        setErrors(response.data.data);
+      }
     }
   };
 
   return (
-    <InputWrap>
-      <Label block>Project name</Label>
-      <Input
-        id="name"
-        type="text"
-        name="name"
-        style={{ width: "250px" }}
-        value={data.name}
-        errors={errors}
-        onChange={onChange}
-      />
+    <Form>
+      <InputWrap>
+        <Label block>Name</Label>
+        <LabelHint>Must be between 2-50 characters</LabelHint>
+        <Input
+          id="name"
+          type="text"
+          name="name"
+          style={{ width: "300px" }}
+          value={name}
+          errors={errors}
+          onChange={onNameChange}
+        />
+      </InputWrap>
       <SecondaryButton
-        style={{ width: "80px", marginLeft: "10px" }}
-        onClick={onRenameClick}
-        disabled={!data.name || data.name === name}
+        style={{ width: "100px" }}
+        onClick={handleRenameClick}
+        disabled={disabled}
       >
         Rename
       </SecondaryButton>
-    </InputWrap>
+    </Form>
   );
 };
 
 RenameForm.propTypes = {
   name: PropTypes.string,
+  onNameChange: PropTypes.func.isRequired,
   onRename: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
 };
 
 RenameForm.defaultProps = {
   name: "",
+  disabled: false,
 };
 
 export default RenameForm;

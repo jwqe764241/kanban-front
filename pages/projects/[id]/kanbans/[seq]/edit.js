@@ -1,24 +1,33 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import styled from "styled-components";
 import PropTypes from "prop-types";
 import { connect, useSelector, useDispatch } from "react-redux";
 import axios, { createRequester } from "core/apiAxios";
 import wrapper from "core/store";
 import { parseCookie } from "core/utils";
 
-import ProjectHeader from "components/project/ProjectHeader";
-import DeleteKanbanForm from "components/kanban/DeleteKanbanForm";
-import {
-  Input,
-  TextArea,
-  Label,
-  Optional,
-  InputWrap,
-  HorizontalRule,
-} from "components/layout/Form";
-import { Header, Body } from "components/layout/Page";
-import { ContainerMd } from "components/layout/Container";
-import { SuccessButton } from "components/layout/Button";
+import KanbanHeader from "components/kanban/KanbanHeader";
+import RenameForm from "components/kanban/edit/RenameForm";
+import UpdateDescriptionForm from "components/kanban/edit/UpdateDescriptionForm";
+import DeleteKanbanForm from "components/kanban/edit/DeleteKanbanForm";
+import { HorizontalRule, Title } from "components/layout/Page";
+import { DefaultLayout } from "components/layout/Layout";
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0;
+  overflow-y: auto;
+`;
+
+const Wrap = styled.div`
+  width: 100%;
+  max-width: 720px;
+  padding: 0 1rem;
+  color: ${({ theme }) => theme.colors.darkgray70};
+`;
 
 const EditKanban = ({ project, kanban }) => {
   const router = useRouter();
@@ -26,99 +35,80 @@ const EditKanban = ({ project, kanban }) => {
   const { token } = useSelector((state) => state);
   const dispatch = useDispatch();
   const requester = createRequester(axios, dispatch);
-
-  const [isProgressed, setIsProgressed] = useState(false);
   const [data, setData] = useState({
     name: kanban.name,
     description: kanban.description,
   });
-  const [errors, setErrors] = useState();
 
-  const onChange = (e) => {
-    const { name, value } = e.target;
+  const handleNameChange = (e) => {
     setData({
       ...data,
-      [name]: value,
+      name: e.target.value,
     });
   };
 
-  const handleUpdate = async () => {
-    setIsProgressed(true);
-
-    try {
-      await requester.patch(`/projects/${id}/kanbans/${seq}`, data, token);
-      router.push(`/projects/${id}/kanbans/${seq}`);
-    } catch (e) {
-      const errorResponse = e.response;
-      if (errorResponse.status === 400) {
-        setErrors(errorResponse.data.data);
-      } else if (errorResponse.status === 403) {
-        alert("Use hanve no permission to do this.");
-      } else {
-        alert("Unknown error.");
-      }
+  const handleRename = async () => {
+    const response = await requester.patch(
+      `/projects/${id}/kanbans/${seq}/name`,
+      { name: data.name },
+      token,
+    );
+    if (response.status === 200) {
+      router.reload();
     }
+  };
 
-    setIsProgressed(false);
+  const handleDescriptionChange = (e) => {
+    setData({
+      ...data,
+      description: e.target.value,
+    });
+  };
+
+  const handleDescriptionUpdate = async () => {
+    const response = await requester.patch(
+      `/projects/${id}/kanbans/${seq}/description`,
+      { description: data.description },
+      token,
+    );
+    if (response.status === 200) {
+      router.reload();
+    }
   };
 
   const handleDelete = async () => {
-    try {
-      await requester.delete(`/projects/${id}/kanbans/${seq}`, token);
+    const response = await requester.delete(
+      `/projects/${id}/kanbans/${seq}`,
+      token,
+    );
+    if (response.status === 200) {
       router.push(`/projects/${id}/kanbans`);
-    } catch (e) {
-      alert("Unknown error.");
     }
   };
 
   return (
     <>
-      <ProjectHeader project={project} activeMenu="kanbans" />
-      <ContainerMd>
-        <Header title={`Edit ${kanban.name}`} />
-        <Body>
-          <InputWrap>
-            <Label block>Name</Label>
-            <Input
-              id="name"
-              type="text"
-              name="name"
-              style={{ width: "300px" }}
-              value={data.name}
-              onChange={onChange}
-              errors={errors}
-            />
-          </InputWrap>
-          <InputWrap>
-            <Label block>
-              Description <Optional>(optional)</Optional>
-            </Label>
-            <TextArea
-              id="description"
-              name="description"
-              style={{ height: "100px" }}
-              value={data.description}
-              onChange={onChange}
-              errors={errors}
-            />
-          </InputWrap>
-          {isProgressed ? (
-            <SuccessButton type="button" style={{ width: "120px" }} disabled>
-              Saving...
-            </SuccessButton>
-          ) : (
-            <SuccessButton
-              type="button"
-              style={{ width: "120px" }}
-              onClick={handleUpdate}
-            >
-              Save kanban
-            </SuccessButton>
-          )}
+      <KanbanHeader project={project} kanban={kanban} />
+      <Container>
+        <Wrap>
+          <Title>{`Edit ${kanban.name}`}</Title>
+          <HorizontalRule />
+          <RenameForm
+            name={data.name}
+            onNameChange={handleNameChange}
+            onRename={handleRename}
+            disabled={!data.name || data.name === kanban.name}
+          />
+          <UpdateDescriptionForm
+            description={data.description}
+            onDescriptionChange={handleDescriptionChange}
+            onDescriptionUpdate={handleDescriptionUpdate}
+            disabled={data.description === kanban.description}
+          />
           <HorizontalRule />
           <DeleteKanbanForm name={kanban.name} onDelete={handleDelete} />
-        </Body>
-      </ContainerMd>
+        </Wrap>
+      </Container>
     </>
   );
 };
@@ -138,6 +128,12 @@ EditKanban.propTypes = {
     description: PropTypes.string.isRequired,
     createdAt: PropTypes.string.isRequired,
   }).isRequired,
+};
+
+EditKanban.getLayout = (page) => {
+  const { props } = page;
+  const { kanban } = props;
+  return <DefaultLayout kanban={kanban}>{page}</DefaultLayout>;
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(

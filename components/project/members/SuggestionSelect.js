@@ -1,55 +1,44 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const Select = styled.ul`
-  width: 100%;
-  max-height: 200px;
-  margin-top: 20px;
-  border: 1px solid #e1e4e8;
-  border-radius: 6px;
-  overflow-y: auto;
+const List = styled.div`
+  margin-top: 1rem;
+  font-size: 0.875rem;
 `;
 
-const Item = styled.li`
-  padding: 10px;
+const Item = styled.div`
+  padding: 0.5rem;
+  color: ${({ theme }) => theme.colors.gray80};
   cursor: pointer;
-  border-bottom: 1px solid #e1e4e8;
+  transition: background-color 0.1s ease;
 
-  &: last-child {
-    border-bottom: none;
+  & ~ & {
+    border-top: 1px solid ${({ theme }) => theme.colors.gray20};
   }
 
   &:hover {
-    background-color: #00509d;
-    color: white !important;
-  }
-
-  &:hover * {
-    color: white !important;
+    background-color: ${({ theme }) => theme.colors.darkgray30};
   }
 `;
 
 const Name = styled.div`
-  font-size: 14px;
-  font-weight: 400;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 `;
 
-const Login = styled.div`
-  font-size: 12px;
-  font-weight: 300;
-  color: #6a737d;
-  padding-top: 5px;
+const Username = styled.div`
+  color: ${({ theme }) => theme.colors.gray50};
 `;
 
 const Empty = styled.div`
-  height: 50px;
-  text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  font-size: 14px;
+  height: 3rem;
+  margin-top: 1rem;
+  text-align: center;
   font-weight: 600;
-  color: #9e9e9e;
+  color: ${({ theme }) => theme.colors.darkgray50};
 `;
 
 const SuggestionSelect = ({ list, onSelect }) => {
@@ -64,18 +53,20 @@ const SuggestionSelect = ({ list, onSelect }) => {
   return (
     <>
       {list ? (
-        <Select>
+        <>
           {list.length > 0 ? (
-            list.map((user, index) => (
-              <Item key={user.id} data-index={index} onClick={onItemClick}>
-                <Name>{user.name}</Name>
-                <Login>{user.login}</Login>
-              </Item>
-            ))
+            <List>
+              {list.map((user, index) => (
+                <Item key={user.id} data-index={index} onClick={onItemClick}>
+                  <Name>{user.name}</Name>
+                  <Username>{user.username}</Username>
+                </Item>
+              ))}
+            </List>
           ) : (
             <Empty>Could not found matched users :(</Empty>
           )}
-        </Select>
+        </>
       ) : (
         <></>
       )}

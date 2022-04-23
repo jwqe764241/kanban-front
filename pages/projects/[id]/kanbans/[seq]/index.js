@@ -10,78 +10,63 @@ import { parseCookie } from "core/utils";
 import { DragDropContext, resetServerContext } from "react-beautiful-dnd";
 import KanbanDataStorage from "core/kanban-data-storage";
 
-import ProjectHeader from "components/project/ProjectHeader";
+import KanbanHeader from "components/kanban/KanbanHeader";
 import TaskColumnList from "components/kanban/TaskColumnList";
 import TaskColumn from "components/kanban/TaskColumn";
-import { PlusIcon } from "components/layout/Icon";
-import { NoStyleButton, SuccessButton } from "components/layout/Button";
-import { ModalPortal } from "components/layout/Modal";
+import PlusIcon from "public/icons/plus.svg";
+import { NoStyleButton } from "components/layout/Button";
+import Modal from "components/layout/Modal";
 import AddColumnModal from "components/kanban/AddColumnModal";
+import { DefaultLayout } from "components/layout/Layout";
 
-const KanbanInfo = styled.div`
-  padding: 20px 20px 0px 20px;
+const Container = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
 `;
 
-const KanbanName = styled.div`
-  font-size: 14px;
-  font-weight: 500;
-  color: #212427;
-`;
-
-const KanbanContainer = styled.div`
+const Body = styled.div`
   display: flex;
   flex: 1;
-  padding: 20px 15px;
+  padding: 0 0.5rem 0.5rem;
   overflow-x: auto;
-  color: #212427;
-`;
+  background-color: ${({ theme }) => theme.colors.secondary};
 
-const DashedButton = styled(NoStyleButton)`
-  width: 300px;
-  display: inline-block;
-  color: #5f5f5f;
-  border: 1px solid #d8dee4;
-  border-style: dashed;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  padding: 40px 0px;
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
 
-  &:hover {
-    text-decoration: underline;
+  &::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) => theme.colors.scrollbarThumb};
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 4px;
   }
 `;
 
-const AddColumnButton = ({ onClick }) => {
-  return (
-    <div>
-      <DashedButton onClick={onClick}>
-        <PlusIcon
-          style={{
-            marginRight: "5px",
-            fill: "#5f5f5f",
-            verticalAlign: "text-bottom",
-          }}
-        />
-        Add column
-      </DashedButton>
-    </div>
-  );
-};
+const AddColumnButton = styled(NoStyleButton)`
+  display: flex;
+  align-items: center;
+  width: 320px;
+  padding: 0.5em 1em;
+  color: ${({ theme }) => theme.colors.white};
+  font-size: 1rem;
+  border-radius: 4px;
+  transition: background-color 0.1s ease;
+  background-color: ${({ theme }) => theme.colors.secondaryLight};
 
-AddColumnButton.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.secondaryLightHover};
+  }
 
-const EmptyColumn = styled.div`
-  width: 100%;
-  text-align: center;
-
-  & > div:nth-child(1) {
-    margin-top: 50px;
-    margin-bottom: 15px;
-    font-size: 20px;
-    font-weight: 500;
+  & > svg {
+    width: 1em;
+    height: 1em;
+    margin-right: 0.5rem;
+    fill: currentColor;
   }
 `;
 
@@ -350,50 +335,41 @@ const Kanban = ({ project, kanban }) => {
   };
 
   return (
-    <>
-      <ProjectHeader project={project} activeMenu="kanbans" />
-      <KanbanInfo>
-        <KanbanName>{kanban.name}</KanbanName>
-      </KanbanInfo>
-      <KanbanContainer>
-        {columns && columns.length > 0 ? (
-          <DragDropContext onDragEnd={onDragEnd}>
-            <TaskColumnList>
-              {columns.map((data, index) => (
-                <TaskColumn
-                  key={data.id}
-                  taskColumn={data}
-                  index={index}
-                  onDeleteColumn={onDeleteColumn}
-                  onEditColumn={onEditColumn}
-                  onCreateTask={onCreateTask}
-                  onDeleteTask={onDeleteTask}
-                  onEditTask={onEditTask}
-                />
-              ))}
-            </TaskColumnList>
-            <AddColumnButton onClick={openAddColumnModal} />
-          </DragDropContext>
-        ) : (
-          <EmptyColumn>
-            <div>Add your first columns!</div>
-            <SuccessButton
-              style={{ width: "110px" }}
-              onClick={openAddColumnModal}
-            >
-              Add column
-            </SuccessButton>
-          </EmptyColumn>
-        )}
-      </KanbanContainer>
-      <ModalPortal>
+    <Container>
+      <KanbanHeader project={project} kanban={kanban} />
+      <Body>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <TaskColumnList>
+            {columns.map((data, index) => (
+              <TaskColumn
+                key={data.id}
+                taskColumn={data}
+                index={index}
+                onDeleteColumn={onDeleteColumn}
+                onEditColumn={onEditColumn}
+                onCreateTask={onCreateTask}
+                onDeleteTask={onDeleteTask}
+                onEditTask={onEditTask}
+              />
+            ))}
+          </TaskColumnList>
+          <div>
+            <AddColumnButton onClick={openAddColumnModal}>
+              <PlusIcon />
+              <div>Add a column</div>
+            </AddColumnButton>
+          </div>
+        </DragDropContext>
+        <div id="context-root" />
+      </Body>
+      <Modal.Portal>
         <AddColumnModal
           show={isAddColumnOpen}
           setShow={setAddColumnOpen}
           onCreate={onColumnCreate}
         />
-      </ModalPortal>
-    </>
+      </Modal.Portal>
+    </Container>
   );
 };
 
@@ -412,6 +388,12 @@ Kanban.propTypes = {
     description: PropTypes.string,
     createdAt: PropTypes.string,
   }).isRequired,
+};
+
+Kanban.getLayout = (page) => {
+  const { props } = page;
+  const { kanban } = props;
+  return <DefaultLayout kanban={kanban}>{page}</DefaultLayout>;
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(

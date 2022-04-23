@@ -3,10 +3,14 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import { TextArea } from "components/layout/Form";
-import { SuccessButton, CancelButton } from "components/layout/Button";
+import { SuccessButton, SecondaryButton } from "components/layout/Button";
 
-const Container = styled.div`
-  padding: 8px;
+const Container = styled.div.attrs(({ show }) => ({
+  style: {
+    display: show ? "" : "none",
+  },
+}))`
+  padding: 0 0.5rem 1rem;
 `;
 
 const ButtonContainer = styled.div`
@@ -22,9 +26,14 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const AddTaskForm = ({ taskColumn, setShow, onAddTask }) => {
+const AddTaskForm = ({ taskColumn, show, setShow, onAddTask }) => {
   const [data, setData] = useState({ text: "" });
   const [isCreating, setCreating] = useState(false);
+
+  const close = () => {
+    setData({ text: "" });
+    setShow(false);
+  };
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -40,16 +49,12 @@ const AddTaskForm = ({ taskColumn, setShow, onAddTask }) => {
     setCreating(false);
 
     if (response.status === 201) {
-      setShow(false);
+      close();
     }
   };
 
-  const onCancelButtonClick = () => {
-    setShow(false);
-  };
-
   return (
-    <Container>
+    <Container show={show}>
       <TextArea
         id="text"
         type="text"
@@ -62,11 +67,12 @@ const AddTaskForm = ({ taskColumn, setShow, onAddTask }) => {
       <ButtonContainer>
         <SuccessButton
           onClick={onAddButtonClick}
-          disabled={!data.text || isCreating}
+          disabled={!data.text}
+          doing={isCreating}
         >
           Add
         </SuccessButton>
-        <CancelButton onClick={onCancelButtonClick}>Cancel</CancelButton>
+        <SecondaryButton onClick={close}>Cancel</SecondaryButton>
       </ButtonContainer>
     </Container>
   );
@@ -80,8 +86,13 @@ AddTaskForm.propTypes = {
     createdAt: PropTypes.string,
     tasks: PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
+  show: PropTypes.bool,
   setShow: PropTypes.func.isRequired,
   onAddTask: PropTypes.func.isRequired,
+};
+
+AddTaskForm.defaultProps = {
+  show: false,
 };
 
 export default AddTaskForm;

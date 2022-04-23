@@ -2,104 +2,123 @@ import styled from "styled-components";
 
 const Button = styled.button`
   width: 100%;
-  padding: 8px 0px;
+  padding: 0.5em 0;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.1s ease;
   user-select: none;
 `;
 
-const PrimaryButton = styled(Button)`
-  color: #fff;
-  background-color: #2852a7;
+export const PrimaryButton = styled(Button).attrs(({ doing, theme }) => ({
+  style: {
+    backgroundColor: doing ? theme.colors.actionDoing : "",
+  },
+}))`
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.action};
 
   &:hover {
-    color: #fff;
-    background-color: #284b92;
+    background-color: ${({ theme }) => theme.colors.actionHover};
   }
 
   &:disabled {
-    background-color: #193266;
+    background-color: ${({ theme }) => theme.colors.actionDisable};
     cursor: default;
   }
 `;
 
-const SecondaryButton = styled(Button)`
-  color: #fff;
-  background-color: #6c757d;
+export const SecondaryButton = styled(Button).attrs(({ doing, theme }) => ({
+  style: {
+    backgroundColor: doing ? theme.colors.cancelDoing : "",
+  },
+}))`
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.cancel};
 
   &:hover {
-    color: #fff;
-    background-color: #5a6268;
+    background-color: ${({ theme }) => theme.colors.cancelHover};
   }
 
   &:disabled {
-    background-color: #3f4448;
+    background-color: ${({ theme }) => theme.colors.cancelDisable};
     cursor: default;
   }
 `;
 
-const SuccessButton = styled(Button)`
-  color: #fff;
-  background-color: #28a745;
+export const SuccessButton = styled(Button).attrs(({ doing, theme }) => ({
+  style: {
+    backgroundColor: doing ? theme.colors.successDoing : "",
+  },
+}))`
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.success};
 
   &:hover {
-    color: #fff;
-    background-color: #218838;
+    background-color: ${({ theme }) => theme.colors.successHover};
   }
 
   &:disabled {
-    background-color: #1d6a2f;
+    background-color: ${({ theme }) => theme.colors.successDisable};
     cursor: default;
   }
 `;
 
-const DangerButton = styled(Button)`
-  color: #fff;
-  background-color: #dc3545;
+export const DangerButton = styled(Button).attrs(({ doing, theme }) => ({
+  style: {
+    backgroundColor: doing ? theme.colors.errorDoing : "",
+  },
+}))`
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.error};
 
   &:hover {
-    color: #fff;
-    background-color: #be3241;
+    background-color: ${({ theme }) => theme.colors.errorHover};
   }
 
   &:disabled {
-    background-color: #a82e3a;
+    background-color: ${({ theme }) => theme.colors.errorDisable};
     cursor: default;
   }
 `;
 
-const WarningButton = undefined;
-
-const CancelButton = styled(Button)`
-  color: #24292f;
-  background-color: #f6f8fa;
-  border: 1px solid #1b1f2426;
-  font-weight: 500;
+export const WarningButton = styled(Button).attrs(({ doing, theme }) => ({
+  style: {
+    backgroundColor: doing ? theme.colors.warningDoing : "",
+  },
+}))`
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.warning};
 
   &:hover {
-    background-color: #f3f4f6;
+    background-color: ${({ theme }) => theme.colors.warningHover};
   }
 
   &:disabled {
-    background-color: #eaebeb;
+    background-color: ${({ theme }) => theme.colors.warningDisable};
     cursor: default;
   }
 `;
 
-const NoStyleButton = styled.button`
+export const NoStyleButton = styled.button`
   border: none;
   background-color: transparent;
   cursor: pointer;
 `;
 
-export {
-  PrimaryButton,
-  SecondaryButton,
-  SuccessButton,
-  DangerButton,
-  WarningButton,
-  CancelButton,
-  NoStyleButton,
+export const RemoveButton = ({ ...otherProps }) => {
+  return (
+    <NoStyleButton type="button" {...otherProps}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        fill="currentColor"
+        style={{ verticalAlign: "baseline" }}
+        viewBox="0 0 16 16"
+      >
+        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+      </svg>
+    </NoStyleButton>
+  );
 };

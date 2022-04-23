@@ -1,79 +1,81 @@
+import Link from "next/link";
 import { connect } from "react-redux";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import Link from "next/link";
 import wrapper from "core/store";
 import { parseCookie } from "core/utils";
 import axios, { createRequester } from "core/apiAxios";
 
+import KanbanIcon from "public/icons/kanban.svg";
 import ProjectHeader from "components/project/ProjectHeader";
-import KanbanListItem from "components/kanban/KanbanListItem";
-import { ContainerXL } from "components/layout/Container";
-import { SuccessButton } from "components/layout/Button";
+import KanbanCards from "components/project/KanbanCards";
 
-const NewKanbanButton = ({ projectId }) => {
-  return (
-    <Link href={`/projects/${projectId}/kanbans/new`}>
-      <SuccessButton style={{ width: "120px" }}>New Kanban</SuccessButton>
-    </Link>
-  );
-};
-
-NewKanbanButton.propTypes = {
-  projectId: PropTypes.string.isRequired,
-};
-
-const ButtonContainer = styled.div`
+const Container = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0;
+  overflow-y: auto;
 `;
 
-const EmptyKanban = styled.div`
-  margin-top: 60px;
-  text-align: center;
-  color: #3e3e3e;
-  & > * {
-    font-weight: 500;
-  }
+const Wrap = styled.div`
+  width: 100%;
+  padding: 0 2rem;
+`;
 
-  & > div:nth-child(1) {
-    font-size: 24px;
-    margin-bottom: 12px;
-  }
+const Title = styled.div`
+  display: flex;
+  align-items: center;
+  padding-bottom: 1rem;
+  color: ${({ theme }) => theme.colors.black};
 
-  & > div:nth-child(2) {
-    font-size: 18px;
-    margin-bottom: 25px;
+  & > svg {
+    width: 1em;
+    height: 1em;
+    margin-right: 0.5em;
+  }
+  & > span {
+    font-weight: 600;
   }
 `;
 
-const KanbanList = ({ project, kanbanList }) => {
-  const router = useRouter();
-  const { id } = router.query;
+const NewKanbanLink = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.darkgray70};
+  background-color: ${({ theme }) => theme.colors.darkgray30};
+  cursor: pointer;
+  transition: background-color 0.1s ease;
 
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.darkgray40};
+  }
+`;
+
+const KanbanList = ({ project, kanbans }) => {
   return (
     <>
-      <ProjectHeader project={project} activeMenu="kanbans" />
-      <ContainerXL>
-        {kanbanList && kanbanList.length > 0 ? (
-          <>
-            <ButtonContainer>
-              <div />
-              <NewKanbanButton projectId={id} />
-            </ButtonContainer>
-            {kanbanList.map((kanban) => (
-              <KanbanListItem key={kanban.sequenceId} kanban={kanban} />
+      <ProjectHeader project={project} />
+      <Container>
+        <Wrap>
+          <Title>
+            <KanbanIcon />
+            <span>Kanbans</span>
+          </Title>
+          <KanbanCards.Grid>
+            {kanbans.map((kanban) => (
+              <KanbanCards.Card key={kanban.sequenceId} kanban={kanban} />
             ))}
-          </>
-        ) : (
-          <EmptyKanban>
-            <div>No kanbans in this project!</div>
-            <div>Create your first kanban</div>
-            <NewKanbanButton projectId={id} />
-          </EmptyKanban>
-        )}
-      </ContainerXL>
+            <Link href={`/projects/${project.id}/kanbans/new`}>
+              <NewKanbanLink>Create new kanban...</NewKanbanLink>
+            </Link>
+          </KanbanCards.Grid>
+        </Wrap>
+      </Container>
     </>
   );
 };
@@ -86,7 +88,11 @@ KanbanList.propTypes = {
     registerUsername: PropTypes.string,
     createdAt: PropTypes.string,
   }).isRequired,
-  kanbanList: PropTypes.arrayOf(PropTypes.object).isRequired,
+  kanbans: PropTypes.arrayOf(PropTypes.object),
+};
+
+KanbanList.defaultProps = {
+  kanbans: [],
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
@@ -109,7 +115,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           project: projectResponse.data,
-          kanbanList: kanbanResponse.data,
+          kanbans: kanbanResponse.data,
         },
       };
     } catch (e) {

@@ -1,20 +1,40 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import styled from "styled-components";
+import PropTypes from "prop-types";
+import wrapper from "core/store";
+import { parseCookie } from "core/utils";
 import axios, { createRequester } from "core/apiAxios";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
+  Form,
+  InputWrap,
+  Label,
+  LabelHint,
   Input,
   TextArea,
-  Label,
-  Optional,
-  InputWrap,
 } from "components/layout/Form";
-import { Header, Body } from "components/layout/Page";
-import { ContainerMd } from "components/layout/Container";
+import ProjectHeader from "components/project/ProjectHeader";
+import { HorizontalRule, Title, Description } from "components/layout/Page";
 import { SuccessButton } from "components/layout/Button";
 
-const NewKanban = () => {
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0;
+  overflow-y: auto;
+`;
+
+const Wrap = styled.div`
+  width: 100%;
+  max-width: 720px;
+  padding: 0 1rem;
+  color: ${({ theme }) => theme.colors.darkgray70};
+`;
+
+const NewKanban = ({ project }) => {
   const router = useRouter();
   const { id } = router.query;
   const { token } = useSelector((state) => state);
@@ -64,50 +84,94 @@ const NewKanban = () => {
   };
 
   return (
-    <ContainerMd>
-      <Header title="New Kanban" description="Create new kanban." />
-      <Body>
-        <InputWrap>
-          <Label block>Name</Label>
-          <Input
-            id="name"
-            type="text"
-            name="name"
-            style={{ width: "300px" }}
-            value={data.name}
-            onChange={onChange}
-            errors={errors}
-          />
-        </InputWrap>
-        <InputWrap>
-          <Label block>
-            Description <Optional>(optional)</Optional>
-          </Label>
-          <TextArea
-            id="description"
-            name="description"
-            style={{ height: "100px" }}
-            value={data.description}
-            onChange={onChange}
-            errors={errors}
-          />
-        </InputWrap>
-        {isProgressed ? (
-          <SuccessButton type="button" style={{ width: "140px" }} disabled>
-            Creating...
-          </SuccessButton>
-        ) : (
-          <SuccessButton
-            type="button"
-            style={{ width: "140px" }}
-            onClick={handleCreate}
-          >
-            Create kanban
-          </SuccessButton>
-        )}
-      </Body>
-    </ContainerMd>
+    <>
+      <ProjectHeader project={project} />
+      <Container>
+        <Wrap>
+          <Title>New kanban</Title>
+          <Description>Create a new kanban.</Description>
+          <HorizontalRule />
+          <Form>
+            <InputWrap>
+              <Label block required>
+                Name
+              </Label>
+              <LabelHint>Must be between 2-50 characters</LabelHint>
+              <Input
+                id="name"
+                type="text"
+                name="name"
+                style={{ width: "300px" }}
+                value={data.name}
+                onChange={onChange}
+                errors={errors}
+              />
+            </InputWrap>
+            <InputWrap>
+              <Label block>Description</Label>
+              <LabelHint>
+                Must be less than or equal to 200 characters
+              </LabelHint>
+              <TextArea
+                id="description"
+                name="description"
+                style={{ height: "100px" }}
+                value={data.description}
+                onChange={onChange}
+                errors={errors}
+              />
+            </InputWrap>
+            <SuccessButton
+              type="button"
+              style={{ width: "140px" }}
+              onClick={handleCreate}
+              disabled={!data.name}
+              doing={isProgressed}
+            >
+              {isProgressed ? "Creating" : "Create kanban"}
+            </SuccessButton>
+          </Form>
+        </Wrap>
+      </Container>
+    </>
   );
 };
+
+NewKanban.propTypes = {
+  project: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string,
+    description: PropTypes.string,
+    registerUsername: PropTypes.string,
+    createdAt: PropTypes.string,
+  }).isRequired,
+};
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async (context) => {
+    const { id } = context.query;
+    const cookies = parseCookie(context.req.headers.cookie);
+    const requester = createRequester(
+      axios,
+      store.dispatch,
+      cookies.REFRESH_TOKEN,
+    );
+
+    const { token } = store.getState();
+
+    try {
+      const response = await requester.get(`/projects/${id}`, token);
+      return {
+        props: {
+          project: response.data,
+        },
+      };
+    } catch (e) {
+      return {
+        notFound: true,
+      };
+    }
+  },
+);
 
 export default NewKanban;

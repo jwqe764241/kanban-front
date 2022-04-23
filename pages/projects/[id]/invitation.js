@@ -19,7 +19,11 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
     const { token } = store.getState();
     try {
-      await requester.post(`/projects/${id}/invitation`, null, token);
+      await requester.post(
+        `/projects/${id}/members/accept-invitation`,
+        null,
+        token,
+      );
       return {
         redirect: {
           destination: `/projects/${id}/kanbans`,
@@ -29,7 +33,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     } catch (e) {
       return {
         redirect: {
-          destination: `/`,
+          destination: "/projects",
           permanent: false,
         },
       };

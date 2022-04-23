@@ -1,71 +1,58 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import styled from "styled-components";
 
-import { Modal } from "components/layout/Modal";
+import Modal from "components/layout/Modal";
 import { SuccessButton } from "components/layout/Button";
-import { Input } from "components/layout/Form";
+import { Form, Input } from "components/layout/Form";
 import SuggestionSelect from "components/project/members/SuggestionSelect";
 import SelectedUser from "components/project/members/SelectedUser";
-
-const Title = styled.div`
-  padding: 30px 20px 10px 20px;
-  text-align: center;
-  font-size: 20px;
-  font-weight: 500;
-`;
-
-const Container = styled.div`
-  padding: 20px;
-`;
-
-const ButtonContainer = styled.div`
-  padding: 0px 20px 15px 20px;
-  display: flex;
-  justify-content: flex-end;
-`;
 
 const InviteUserModal = ({ show, setShow, onSuggest, onInvite }) => {
   const [suggestionUsers, setSuggestionUsers] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isInviting, setInviting] = useState(false);
 
-  const close = () => {
+  const handleClose = () => {
     setSuggestionUsers(null);
     setSelectedUser(null);
+    setInviting(false);
     setShow(false);
   };
 
-  const onSuggestionSelect = (user) => {
+  const handleSelectSuggest = (user) => {
     setSelectedUser(user);
   };
 
   let timer = null;
-  const onStartDelay = (e) => {
+  const handleSearchChange = (e) => {
     clearTimeout(timer);
     timer = setTimeout(async () => {
       const { value } = e.target;
       if (value) {
-        const data = await onSuggest(value);
-        setSuggestionUsers(data);
+        const users = await onSuggest(value);
+        setSuggestionUsers(users);
       } else {
         setSuggestionUsers(null);
       }
     }, 1000);
   };
 
-  const onInviteClick = () => {
+  const handleInviteClick = () => {
     if (selectedUser) {
       setInviting(() => !isInviting);
       onInvite(selectedUser);
       setInviting(() => !isInviting);
     }
+    handleClose();
   };
 
   return (
-    <Modal show={show} onClose={close}>
-      <Title>Invite a member</Title>
-      <Container>
+    <Modal show={show} onClose={handleClose}>
+      <Modal.Header>
+        <Modal.Title>Invite a member</Modal.Title>
+        <Modal.CloseButton onClick={handleClose} />
+      </Modal.Header>
+      <Modal.Body>
         {selectedUser ? (
           <SelectedUser
             user={selectedUser}
@@ -74,22 +61,20 @@ const InviteUserModal = ({ show, setShow, onSuggest, onInvite }) => {
             }}
           />
         ) : (
-          <>
+          <Form>
             <Input
               type="text"
-              placeholder="Search by login"
-              onChange={onStartDelay}
+              placeholder="Search by username"
+              onChange={handleSearchChange}
             />
             <SuggestionSelect
               list={suggestionUsers}
-              onSelect={onSuggestionSelect}
+              onSelect={handleSelectSuggest}
             />
-          </>
+          </Form>
         )}
-      </Container>
-      <ButtonContainer>
         <SuccessButton
-          onClick={onInviteClick}
+          onClick={handleInviteClick}
           disabled={!!(selectedUser == null || isInviting)}
         >
           {selectedUser != null
@@ -98,7 +83,7 @@ const InviteUserModal = ({ show, setShow, onSuggest, onInvite }) => {
               : "Invite a member to project"
             : "Select a member to invite"}
         </SuccessButton>
-      </ButtonContainer>
+      </Modal.Body>
     </Modal>
   );
 };

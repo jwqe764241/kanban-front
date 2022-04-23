@@ -5,8 +5,8 @@ import axios from "core/apiAxios";
 import { parseCookie } from "core/utils";
 import { useDispatch } from "react-redux";
 
-import Alert from "@material-ui/lab/Alert";
-
+import Error from "components/layout/Error";
+import { NoStyleLayout } from "components/layout/Layout";
 import { Input, InputWrap } from "components/layout/Form";
 import { SuccessButton } from "components/layout/Button";
 
@@ -50,15 +50,11 @@ const Label = styled.label`
   margin-bottom: 10px;
 `;
 
-const AlertPanel = styled.div`
-  margin: 15px 0px;
-`;
-
 const Login = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const [data, setData] = useState({ login: "", password: "" });
+  const [data, setData] = useState({ username: "", password: "" });
   const [isLoginFailed, setIsLoginFailed] = useState({
     status: false,
     message: "",
@@ -77,14 +73,14 @@ const Login = () => {
     setIsLoginProgressed(true);
 
     try {
-      const response = await axios.post("/auth/login", data, {
+      const response = await axios.post("/auth/sign-in", data, {
         withCredentials: true,
       });
 
       if (response.status === 200) {
         const { token } = response.data;
         dispatch({ type: "UPDATE_TOKEN", payload: `${token}` });
-        router.push("/");
+        router.push("/projects");
       }
     } catch (e) {
       let message = "Unknown error. try again later.";
@@ -103,7 +99,7 @@ const Login = () => {
     setIsLoginProgressed(false);
   };
 
-  const { login, password } = data;
+  const { username, password } = data;
 
   return (
     <Panel>
@@ -112,21 +108,15 @@ const Login = () => {
         <FormHeader>
           <HeaderText>Sign in</HeaderText>
         </FormHeader>
-        {isLoginFailed.status ? (
-          <AlertPanel>
-            <Alert severity="error">{isLoginFailed.message}</Alert>
-          </AlertPanel>
-        ) : (
-          <></>
-        )}
+        {isLoginFailed.status ? <Error>{isLoginFailed.message}</Error> : <></>}
         <FormBody>
           <InputWrap style={{ marginBottom: "15px" }}>
-            <Label htmlFor="login">Username</Label>
+            <Label htmlFor="username">Username</Label>
             <Input
-              id="login"
+              id="username"
               type="text"
-              name="login"
-              value={login}
+              name="username"
+              value={username}
               onChange={onChange}
             />
           </InputWrap>
@@ -155,6 +145,10 @@ const Login = () => {
   );
 };
 
+Login.getLayout = (page) => {
+  return <NoStyleLayout>{page}</NoStyleLayout>;
+};
+
 export const getServerSideProps = async (context) => {
   const cookies = parseCookie(context.req.headers.cookie);
   const refreshCookie = cookies.REFRESH_TOKEN;
@@ -166,7 +160,7 @@ export const getServerSideProps = async (context) => {
 
   return {
     redirect: {
-      destination: "/",
+      destination: "/projects",
       permanent: false,
     },
   };

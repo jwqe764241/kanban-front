@@ -1,45 +1,9 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import styled from "styled-components";
 
-import { Modal } from "components/layout/Modal";
-import { SuccessButton, NoStyleButton } from "components/layout/Button";
-import { Input, Label } from "components/layout/Form";
-import { RemoveIcon } from "components/layout/Icon";
-
-const TitleContainer = styled.div`
-  padding: 20px 15px;
-  background-color: #f6f8fa;
-  border-bottom: 1px solid #d0d7de;
-  border-radius: 6px 6px 0px 0px;
-`;
-
-const Title = styled.div`
-  display: inline-block;
-  font-size: 14px;
-  font-weight: 600;
-  color: #24292f;
-`;
-
-const Container = styled.div`
-  padding: 0px 15px;
-`;
-
-const RemoveButton = ({ onClick }) => {
-  return (
-    <NoStyleButton
-      style={{ float: "right", padding: 0 }}
-      type="button"
-      onClick={onClick}
-    >
-      <RemoveIcon style={{ verticalAlign: "baseline" }} />
-    </NoStyleButton>
-  );
-};
-
-RemoveButton.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
+import Modal from "components/layout/Modal";
+import { SuccessButton, SecondaryButton } from "components/layout/Button";
+import { Form, Label, Input } from "components/layout/Form";
 
 const AddColumnModal = ({ show, setShow, onCreate }) => {
   const [isCreating, setCreating] = useState(false);
@@ -80,12 +44,12 @@ const AddColumnModal = ({ show, setShow, onCreate }) => {
 
   return (
     <Modal show={show} onClose={close}>
-      <TitleContainer>
-        <Title>Add column</Title>
-        <RemoveButton onClick={close} />
-      </TitleContainer>
-      <Container>
-        <div style={{ margin: "15px 0px" }}>
+      <Modal.Header>
+        <Modal.Title>Add column</Modal.Title>
+        <Modal.CloseButton onClick={close} />
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
           <Label htmlFor="name">Column name</Label>
           <Input
             id="name"
@@ -97,15 +61,19 @@ const AddColumnModal = ({ show, setShow, onCreate }) => {
             autoFocus
             placeholder="Enter column name (To do, In progress, Done)"
           />
-        </div>
+        </Form>
         <SuccessButton
-          style={{ width: "110px", marginBottom: "15px" }}
+          style={{ width: "120px", marginRight: "0.5rem" }}
           onClick={onCreateClick}
-          disabled={!data.name || isCreating}
+          disabled={!data.name}
+          doing={isCreating}
         >
           Add column
         </SuccessButton>
-      </Container>
+        <SecondaryButton style={{ width: "80px" }} onClick={close}>
+          Cancel
+        </SecondaryButton>
+      </Modal.Body>
     </Modal>
   );
 };
