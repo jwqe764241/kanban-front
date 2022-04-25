@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import Link from "next/link";
-import axios from "core/apiAxios";
 
 import Dropdown from "components/layout/Dropdown";
 import BackIcon from "public/icons/back.svg";
@@ -52,19 +51,8 @@ const ButtonItem = styled.div`
 const Navbar = ({ kanban }) => {
   const router = useRouter();
 
-  const onSignout = async () => {
-    try {
-      const response = await axios.post("/auth/sign-out", null, {
-        withCredentials: true,
-      });
-
-      if (response.status === 200) {
-        router.push("/login");
-      }
-    } catch (e) {
-      // TODO: replace alert to modal
-      alert("Failed to logout!");
-    }
+  const onSignout = () => {
+    router.push("/logout");
   };
 
   return (
