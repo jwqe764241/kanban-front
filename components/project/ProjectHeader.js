@@ -12,8 +12,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 2.5rem;
-  padding: 0 0.5rem;
+  padding: 0.25rem 0.5rem;
   color: ${({ theme }) => theme.colors.white};
   background-color: ${({ theme }) => theme.colors.secondary};
 `;
